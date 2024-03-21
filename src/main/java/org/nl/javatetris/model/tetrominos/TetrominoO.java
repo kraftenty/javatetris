@@ -1,29 +1,36 @@
 package org.nl.javatetris.model.tetrominos;
 
-public class TetrominoO implements Tetromino {
+import org.nl.javatetris.model.ModelConst;
 
-    private static int[][][] shapes = {
-        {
-            {1, 1},
-            {1, 1}
-        }
-    };
+public class TetrominoO extends AbstractTetromino {
 
-    private int currentShapeIndex = 0;
+    public static final int SHAPE_NUMBER = ModelConst.O;
 
-
-    @Override
-    public void rotateRight() {
-
+    public TetrominoO() {
+        setShapes();
     }
 
     @Override
-    public void rotateLeft() {
-
+    protected void setShapes() {
+        shapes = new int[][][]{
+            {
+                {1, 1},
+                {1, 1}
+            }
+        };
     }
 
     @Override
-    public int[][] getCurrentShape() {
-        return shapes[currentShapeIndex];
+    public int getShapeNumber() {
+        return ModelConst.O;
     }
+
+    @Override
+    public Tetromino getRotatedTetromino() {
+        Tetromino tetromino = new TetrominoO();
+        tetromino.setShapeIndex(this.getShapeIndex());
+        tetromino.rotateRight();
+        return tetromino;
+    }
+
 }

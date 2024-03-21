@@ -1,49 +1,54 @@
 package org.nl.javatetris.model.tetrominos;
 
-public class TetrominoI implements Tetromino {
+import org.nl.javatetris.model.ModelConst;
 
-    private static int[][][] shapes = {
-        {
-                {0, 0, 0, 0},
-                {1, 1, 1, 1},
-                {0, 0, 0, 0},
-                {0, 0, 0, 0}
-        },
-        {
-                {0, 0, 1, 0},
-                {0, 0, 1, 0},
-                {0, 0, 1, 0},
-                {0, 0, 1, 0}
-        },
-        {
-                {0, 0, 0, 0},
-                {0, 0, 0, 0},
-                {1, 1, 1, 1},
-                {0, 0, 0, 0}
-        },
-        {
-                {0, 1, 0, 0},
-                {0, 1, 0, 0},
-                {0, 1, 0, 0},
-                {0, 1, 0, 0}
-        }
-    };
+public class TetrominoI extends AbstractTetromino {
 
-    private int currentShapeIndex = 0;
-
-
-    @Override
-    public void rotateRight() {
-        currentShapeIndex = (currentShapeIndex + 1) % shapes.length;
+    public TetrominoI() {
+        setShapes();
     }
 
     @Override
-    public void rotateLeft() {
-        currentShapeIndex = (currentShapeIndex - 1 + shapes.length) % shapes.length;
+    protected void setShapes() {
+        shapes = new int[][][]{
+                {
+//                        {0, 0, 0, 0}, EXCEPTION
+                        {1, 1, 1, 1},
+                        {0, 0, 0, 0},
+                        {0, 0, 0, 0}
+                },
+                {
+                        {0, 0, 1, 0},
+                        {0, 0, 1, 0},
+                        {0, 0, 1, 0},
+                        {0, 0, 1, 0}
+                },
+                {
+                        {0, 0, 0, 0},
+                        {0, 0, 0, 0},
+                        {1, 1, 1, 1},
+                        {0, 0, 0, 0}
+                },
+                {
+                        {0, 1, 0, 0},
+                        {0, 1, 0, 0},
+                        {0, 1, 0, 0},
+                        {0, 1, 0, 0}
+                }
+        };
     }
 
     @Override
-    public int[][] getCurrentShape() {
-        return shapes[currentShapeIndex];
+    public int getShapeNumber() {
+        return ModelConst.I;
     }
+
+    @Override
+    public Tetromino getRotatedTetromino() {
+        Tetromino tetromino = new TetrominoI();
+        tetromino.setShapeIndex(this.getShapeIndex());
+        tetromino.rotateRight();
+        return tetromino;
+    }
+
 }

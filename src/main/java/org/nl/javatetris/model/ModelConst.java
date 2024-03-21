@@ -1,6 +1,6 @@
 package org.nl.javatetris.model;
 
-public class BoardConst {
+public class ModelConst {
 
     public static final int EMPTY = 0;          // 0
     public static final int I = 1;              // 1

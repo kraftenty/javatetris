@@ -1,45 +1,50 @@
 package org.nl.javatetris.model.tetrominos;
 
-public class TetrominoZ implements Tetromino {
+import org.nl.javatetris.model.ModelConst;
 
-    private static int[][][] shapes = {
-        {
-            {1, 1, 0},
-            {0, 1, 1},
-            {0, 0, 0}
-        },
-        {
-            {0, 0, 1},
-            {0, 1, 1},
-            {0, 1, 0}
-        },
-        {
-            {0, 0, 0},
-            {1, 1, 0},
-            {0, 1, 1}
-        },
-        {
-            {0, 1, 0},
-            {1, 1, 0},
-            {1, 0, 0}
-        }
-    };
+public class TetrominoZ extends AbstractTetromino {
 
-    private int currentShapeIndex = 0;
-
-
-    @Override
-    public void rotateRight() {
-        currentShapeIndex = (currentShapeIndex + 1) % shapes.length;
+    public TetrominoZ() {
+        setShapes();
     }
 
     @Override
-    public void rotateLeft() {
-        currentShapeIndex = (currentShapeIndex - 1 + shapes.length) % shapes.length;
+    protected void setShapes() {
+        shapes = new int[][][]{
+                {
+                        {1, 1, 0},
+                        {0, 1, 1},
+                        {0, 0, 0}
+                },
+                {
+                        {0, 0, 1},
+                        {0, 1, 1},
+                        {0, 1, 0}
+                },
+                {
+                        {0, 0, 0},
+                        {1, 1, 0},
+                        {0, 1, 1}
+                },
+                {
+                        {0, 1, 0},
+                        {1, 1, 0},
+                        {1, 0, 0}
+                }
+        };
     }
 
     @Override
-    public int[][] getCurrentShape() {
-        return shapes[currentShapeIndex];
+    public int getShapeNumber() {
+        return ModelConst.Z;
     }
+
+    @Override
+    public Tetromino getRotatedTetromino() {
+        Tetromino tetromino = new TetrominoZ();
+        tetromino.setShapeIndex(this.getShapeIndex());
+        tetromino.rotateRight();
+        return tetromino;
+    }
+
 }
