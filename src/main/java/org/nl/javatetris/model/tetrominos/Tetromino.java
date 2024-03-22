@@ -5,13 +5,13 @@ public interface Tetromino {
 
     int[][] getShape();
 
-    int getShapeIndex();
+    int getShapeIndex();  // 블록 회전 인덱스
 
     int getShapeWidth();
 
     int getShapeHeight();
 
-    int getShapeNumber();
+    int getShapeNumber();   // 블록 종류 넘버
 
     Tetromino getRotatedTetromino();
 
