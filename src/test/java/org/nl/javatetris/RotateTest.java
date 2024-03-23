@@ -94,7 +94,7 @@ public class RotateTest {
             if (tetNum == 1) {
                 Assertions.assertEquals(1, xy[1]); // 1칸 밀림
                 board.clearTetrominoFromBoard();
-                board.setXY(-1,7);
+                board.setXY(5,-1);
                 board.setRotate(2);
                 board.rotateTetromino();
                 Assertions.assertEquals(1, xy[1]); // 2칸 밀림
@@ -128,7 +128,6 @@ public class RotateTest {
 
             board.clearTetrominoFromBoard();
         }
-
     }
 
 
