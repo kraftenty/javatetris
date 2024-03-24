@@ -30,26 +30,6 @@ public class Board {
         }
     }
 
-    public void setXY(int x, int y) {
-        tetrominoY = y;
-        tetrominoX = x;
-        return;
-    }
-
-    public int[] getXY() {
-        int[] xy= new int[] {tetrominoX,tetrominoY};
-        return xy;
-    }
-
-    public Tetromino getTet() {
-        return currentTetromino;
-    }
-    public void setRotate(int idx) {
-        currentTetromino.setShapeIndex(idx);
-    }
-
-
-
     // 현재 테트로미노가 차지하고 있는 위치인지 확인하는 메서드
     private boolean isCurrentTetrominoPosition(int x, int y) {
         for (int row = 0; row < currentTetromino.getShape().length; row++) {
@@ -229,9 +209,6 @@ public class Board {
             return;
         }
         clearTetrominoFromBoard();
-        int[] tetXY = stuckEscape();
-        tetrominoX = tetXY[0];
-        tetrominoY = tetXY[1];
         currentTetromino.rotateRight();
         placeTetrominoOnBoard();
     }
@@ -296,61 +273,20 @@ public class Board {
         return true; // 위의 모든 검사를 통과한 경우, 이동 가능
     }
 
-    //벽/블록에 붙은 상태에서의 회전인지 확인
-    public int isStuckRotate(int tetNum, int rotIdx) { //1 2 3 4 : 상 우 하 좌 1칸, 5 6 7 8 2칸
-        if (tetNum == 4) return 0;
-        if (tetNum == 1) {
-            int[] dx = new int[] {2,2,2,1,0,3,1,1,1,2,3,0};
-            int[] dy = new int[] {2,3,0,2,2,2,1,0,3,1,1,1};
-            if (board[tetrominoY + dy[rotIdx*3]][tetrominoX + dx[rotIdx*3]] != EMPTY)
-                return rotIdx + 5;
-            else if(board[tetrominoY + dy[rotIdx*3+1]][tetrominoX + dx[rotIdx*3+1]] != EMPTY)
-                return rotIdx + 1;
-            else if(board[tetrominoY + dy[rotIdx*3+2]][tetrominoX + dx[rotIdx*3+2]] != EMPTY)
-                return (rotIdx + 2) % 4 + 1;
-            else
-                return 0;
-        }
-        int[] dx = new int[] {1,0,1,2};
-        int[] dy = new int[] {2,1,0,1};
-
-        if (board[tetrominoY+Math.abs(2-rotIdx)][tetrominoX+Math.abs(1-rotIdx)] != EMPTY)
-            return rotIdx + 1;
-
-        return 0;
-    }
-    //회전할 수 있도록 이동
-    public int[] stuckEscape() {
-        int tetNum = currentTetromino.getShapeNumber();
-        int rotIdx = currentTetromino.getShapeIndex();
-
-        int[] xy = {tetrominoX, tetrominoY};
-        int move = isStuckRotate(tetNum, rotIdx);
-
-        int[] dx = new int[] {0,0,1,0,-1,0,2,0,-2};
-        int[] dy = new int[] {0,-1,0,1,0,-2,0,2,0};
-        xy[0] += dx[move];
-        xy[1] += dy[move];
-        return xy;
-    }
-
     // 회전 가능 여부를 검사하는 메서드
     public boolean canRotate() {
         Tetromino rotatedTetromino = currentTetromino.getRotatedTetromino();
         int[][] shape = rotatedTetromino.getShape();
-
-        int[] tempXY = stuckEscape(); //회전할 수 있도록 이동시킨 후 위치
-
         for (int y = 0; y < shape.length; y++) {
             for (int x = 0; x < shape[y].length; x++) {
                 if (shape[y][x] != 0) {
-                    int boardX = tempXY[0] + x;
-                    int boardY = tempXY[1] + y;
+                    int boardX = tetrominoX + x;
+                    int boardY = tetrominoY + y;
 
-                    // 경계 조건 검사 (후에 확인 후 삭제)
-                    /*if (boardX < 0 || boardX >= X_MAX || boardY < 0 || boardY >= Y_MAX) {
+                    // 경계 조건 검사
+                    if (boardX < 0 || boardX >= X_MAX || boardY < 0 || boardY >= Y_MAX) {
                         return false; // 게임 보드의 경계를 벗어나는 경우
-                    }*/
+                    }
 
                     // 이미 채워진 칸(다른 테트로미노)과의 충돌 검사, 현재 테트로미노의 위치를 제외
                     if (!isCurrentTetrominoPosition(boardX, boardY) && board[boardY][boardX] != EMPTY) {
