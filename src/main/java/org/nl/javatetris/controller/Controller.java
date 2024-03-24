@@ -25,6 +25,9 @@ public class Controller {
             case UP:
                 board.rotateTetromino();
                 break;
+            case SPACE:
+                board.dropTetromino();
+                break;
             default:
                 break;
         }

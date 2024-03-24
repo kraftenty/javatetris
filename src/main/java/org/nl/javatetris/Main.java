@@ -27,6 +27,10 @@ public class Main extends Application {
         primaryStage.setTitle("JavaTetris");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+
+
+
     }
 
     public static void main(String[] args) {

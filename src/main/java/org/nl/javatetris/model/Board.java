@@ -35,6 +35,7 @@ public class Board {
         tetrominoX = x;
         return;
     }
+
     public int[] getXY() {
         int[] xy= new int[] {tetrominoX,tetrominoY};
         return xy;
@@ -213,7 +214,6 @@ public class Board {
             tetrominoY++;
             placeTetrominoOnBoard();
 
-
         } else {
             clearCompletedLines();
             spawnTetromino();
@@ -236,9 +236,19 @@ public class Board {
         placeTetrominoOnBoard();
     }
 
+    // 스페이스바를 눌러 테트로미노를 가장 아래로 내리는 메서드
+    public void dropTetromino(){
+        while(canMove(tetrominoX, tetrominoY+1)){
+            clearTetrominoFromBoard();
+            tetrominoY++;
+            placeTetrominoOnBoard();
+        }
+        clearCompletedLines();
+        spawnTetromino();
+    }
 
     /**
-     * Checing Methods
+     * Checking Methods
      */
 
     public boolean canSpawn() {
