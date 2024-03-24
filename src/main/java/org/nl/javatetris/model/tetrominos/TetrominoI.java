@@ -12,7 +12,7 @@ public class TetrominoI extends AbstractTetromino {
     protected void setShapes() {
         shapes = new int[][][]{
                 {
-//                        {0, 0, 0, 0}, EXCEPTION
+                        {0, 0, 0, 0},
                         {1, 1, 1, 1},
                         {0, 0, 0, 0},
                         {0, 0, 0, 0}

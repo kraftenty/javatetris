@@ -1,0 +1,185 @@
+<3/22(금) 에 분배된 업무>
+0. 중요사항: 원본 테트리스도 I자모양 블록이 한칸 띄워서 나옴!!!!!!!
+
+1. 스페이스바 눌러서 테트로미노 바로 한방에 내리기                  -> 강현
+
+// 스페이스바를 눌러 테트로미노를 가장 아래로 내리는 메서드
+// dropTetromino() 메서드에서,
+   while문 안에 실제로 테트로미노를 한칸씩 내리는 것이 아니라
+   내릴 만큼의 y값을 offset으로 저장해 놓고 한번에 내리는 것이 성능상, 그리고 미관상 좋음
+    public void dropTetromino(){
+        while(canMove(tetrominoX, tetrominoY+1)){
+            clearTetrominoFromBoard();
+            tetrominoY++;
+            placeTetrominoOnBoard();
+        }
+        clearCompletedLines();
+        spawnTetromino();
+    }
+
+
+--------------------------------------------------------------------------------
+2. 벽에서 회전 안되는 문제 해결 (좀 어려울것..)                   -> 준표
+ * PR명을 '회전기능 추가' --> '벽에서 테트로미노가 회전 안되는 문제 해결' 등의 명확하고 구체적인 제목으로 변경
+ * 게터/세터 부분
+    // 구조적인 문제:
+    // tetrominoY, tetrominoX에 대한 게터/세터가 하나로 묶여 있는 문제.
+    // 이를 분리하여 게터/세터를 각각 만들어야 함.
+    // void타입은 리턴값이 없다.
+    // getXY()같은 게터가 나와서도 안되지만, 이렇게 같이 두 개를 반환해야 하는 경우에는 array 대신 List<>를 사용하는 것이 좋다.
+    // 보통은 getter/setter는 public으로 열어두지만, 내부에서만 쓰는 경우 접근제어자는 default로 설정하는 것이 좋다.
+    // setRotate는 월권하고 있으며 이름마저 너무 애매함. --> getCurrentTetromino().setShapeIndex()로 사용
+    // 코드 컨벤션적인 문제:
+    // 게터/세터의 이름은 필드명을 그대로 따라가야 함.
+    // 게터가 먼저 오고, 세터가 나중에 와야 함
+    public void setXY(int x, int y) {
+        tetrominoY = y;
+        tetrominoX = x;
+        return;
+    }
+
+    public int[] getXY() {
+        int[] xy= new int[] {tetrominoX,tetrominoY};
+        return xy;
+    }
+
+    public Tetromino getTet() {
+        return currentTetromino;
+    }
+    public void setRotate(int idx) {
+        currentTetromino.setShapeIndex(idx);
+    }
+
+    // 해결 방안
+    int getTetrominoY() {
+        return this.tetrominoY;
+    }
+
+    void setTetrominoY() {
+        this.tetrominoY = tetrominoY;
+    }
+
+    int getTetrominoX() {
+        return this.tetrominoX;
+    }
+
+    void setTetrominoX() {
+        this.tetrominoX = tetrominoX;
+    }
+
+    Tetromino getCurrentTetromino() {
+        return this.currentTetromino;
+    }
+
+ * 신규 메서드 (3개)
+ // 메서드 이름 : 목적과 동작을 명확히 알 수 없음. 너무 모호해
+ // 메서드 내부 코드 : 역시 동작을 한 눈에 알 수 없음. 전체적인 가독성이 너무 떨어짐.
+    public int isStuckRotate(int tetNum, int rotIdx) { //1 2 3 4 : 상 우 하 좌 1칸, 5 6 7 8 2칸
+      if (tetNum == 4) return 0;
+      if (tetNum == 1) {
+          int[] dx = new int[] {2,2,2,1,0,3,1,1,1,2,3,0};
+          int[] dy = new int[] {2,3,0,2,2,2,1,0,3,1,1,1};
+          if (board[tetrominoY + dy[rotIdx*3]][tetrominoX + dx[rotIdx*3]] != EMPTY)
+              return rotIdx + 5;
+          else if(board[tetrominoY + dy[rotIdx*3+1]][tetrominoX + dx[rotIdx*3+1]] != EMPTY)
+              return rotIdx + 1;
+          else if(board[tetrominoY + dy[rotIdx*3+2]][tetrominoX + dx[rotIdx*3+2]] != EMPTY)
+              return (rotIdx + 2) % 4 + 1;
+          else
+              return 0;
+      }
+      int[] dx = new int[] {1,0,1,2};
+      int[] dy = new int[] {2,1,0,1};
+
+      if (board[tetrominoY+Math.abs(2-rotIdx)][tetrominoX+Math.abs(1-rotIdx)] != EMPTY)
+          return rotIdx + 1;
+
+      return 0;
+    }
+    //회전할 수 있도록 이동
+    public int[] stuckEscape() {
+      int tetNum = currentTetromino.getShapeNumber();
+      int rotIdx = currentTetromino.getShapeIndex();
+
+      int[] xy = {tetrominoX, tetrominoY};
+      int move = isStuckRotate(tetNum, rotIdx);
+
+      int[] dx = new int[] {0,0,1,0,-1,0,2,0,-2};
+      int[] dy = new int[] {0,-1,0,1,0,-2,0,2,0};
+      xy[0] += dx[move];
+      xy[1] += dy[move];
+      return xy;
+    }
+    public boolean canRotate() {
+        Tetromino rotatedTetromino = currentTetromino.getRotatedTetromino();
+        int[][] shape = rotatedTetromino.getShape();
+
+        int[] tempXY = stuckEscape(); //회전할 수 있도록 이동시킨 후 위치
+
+        for (int y = 0; y < shape.length; y++) {
+            for (int x = 0; x < shape[y].length; x++) {
+                if (shape[y][x] != 0) {
+                    int boardX = tetrominoX + x;
+                    int boardY = tetrominoY + y;
+                    int boardX = tempXY[0] + x;
+                    int boardY = tempXY[1] + y;
+
+                    // 경계 조건 검사
+                    if (boardX < 0 || boardX >= X_MAX || boardY < 0 || boardY >= Y_MAX) {
+                    // 경계 조건 검사 (후에 확인 후 삭제)
+                    /*if (boardX < 0 || boardX >= X_MAX || boardY < 0 || boardY >= Y_MAX) {
+                        return false; // 게임 보드의 경계를 벗어나는 경우
+                    }
+                    }*/
+
+                    // 이미 채워진 칸(다른 테트로미노)과의 충돌 검사, 현재 테트로미노의 위치를 제외
+                    if (!isCurrentTetrominoPosition(boardX, boardY) && board[boardY][boardX] != EMPTY) {
+                        return false; // 이동하려는 위치가 빈 공간이 아니고, 현재 테트로미노의 위치도 아닌 경우
+                    }
+                }
+            }
+        }
+        return true; // 위의 모든 검사를 통과한 경우, 회전 가능
+    }
+
+
+    // 해결 방안
+    // 다른 코드를 전혀 건들 필요 없이 이 메서드만 수정했다.
+    // 왜냐면 --> 다른 메서드를 잘 설계했기 때문에 다른 것을 건들 필요가 없다.
+    // 따라서 --> 메서드를 잘 설계하는 것이 매우 중요하다. 특히 Readability 측면과 유지보수 측면에서.
+    public void rotateTetromino() {
+        if (canRotate()) {
+            clearTetrominoFromBoard();
+            currentTetromino.rotateRight();
+            placeTetrominoOnBoard();
+        } else {
+            boolean canMoveButCannotRotateBecauseOfWallFlag = false;
+            if (tetrominoX < X_MAX / 2) {
+                while (!canRotate() && canMove(tetrominoX + 1, tetrominoY)) {
+                    moveTetrominoRight();
+                    canMoveButCannotRotateBecauseOfWallFlag = true;
+                }
+            } else {
+                while (!canRotate() && canMove(tetrominoX - 1, tetrominoY)) {
+                    moveTetrominoLeft();
+                    canMoveButCannotRotateBecauseOfWallFlag = true;
+                }
+            }
+
+            if (canMoveButCannotRotateBecauseOfWallFlag) {
+                clearTetrominoFromBoard();
+                currentTetromino.rotateRight();
+                placeTetrominoOnBoard();
+            }
+        }
+    }
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+3. 다음 블럭 보여주기 (블럭을 두 개씩 만들어놓고 flush 하는 방법으로?) -> 서영
+
+================================================================================

@@ -30,6 +30,11 @@ public class Board {
         }
     }
 
+    // 딱 그 점의 값을 가져오는 메서드
+    public int getValueAt(int y, int x) {
+        return board[y][x];
+    }
+
 
     // 현재 테트로미노가 차지하고 있는 위치인지 확인하는 메서드
     private boolean isCurrentTetrominoPosition(int x, int y) {
@@ -123,7 +128,7 @@ public class Board {
 
 
     // 테트로미노를 상단에 스폰시키는 메서드
-    public void spawnTetromino() {
+    public boolean spawnTetromino() {
         // 테트로미노를 생성한다.
         currentTetromino = TetrominoGenerator.getRandomTetromino();
         // 생성한 테트로미노를 화면 상단에 위치시킨다.
@@ -131,9 +136,11 @@ public class Board {
         tetrominoY = 1;
         // 테트로미노를 스폰시킬 수 있는지 검사하고, 없으면 게임 오버
         if (!canSpawn()) {
-            System.out.println("-------GAME OVER-------");
+            System.out.println("Game Over!");
+            return false;
         } else {
             placeTetrominoOnBoard();
+            return true;
         }
     }
 
@@ -189,30 +196,47 @@ public class Board {
     }
 
     // 테트로미노를 아래로 이동시키는 메서드
-    public void moveTetrominoDown() {
+    public boolean moveTetrominoDown() {
         if (canMove(tetrominoX, tetrominoY + 1)) {
             clearTetrominoFromBoard();
             tetrominoY++;
             placeTetrominoOnBoard();
-
-
+            return true;
         } else {
             clearCompletedLines();
-            spawnTetromino();
+            return spawnTetromino();
         }
     }
 
-    // 테트로미노 회전이 가능한지 여부를 검사하고, 가능하면 회전을 수행하는 메서드
+    /**
+     * 테트로미노를 회전시키는 메서드
+     * 벽에 붙어 회전이 불가능한 경우, 벽에 붙지 않도록 이동시킨 후 회전
+     */
     public void rotateTetromino() {
-        // 회전 후의 테트로미노 모양을 계산합니다.
-        // 이 예시에서는 현재 테트로미노의 회전 메서드를 호출하여 "가상의" 회전을 수행하고,
-        // 그 결과를 기반으로 회전 가능 여부를 판단합니다.
-        if (!canRotate()) {
-            return;
+        if (canRotate()) {
+            clearTetrominoFromBoard();
+            currentTetromino.rotateRight();
+            placeTetrominoOnBoard();
+        } else {
+            boolean canMoveButCannotRotateBecauseOfWallFlag = false;
+            if (tetrominoX < X_MAX / 2) {
+                while (!canRotate() && canMove(tetrominoX + 1, tetrominoY)) {
+                    moveTetrominoRight();
+                    canMoveButCannotRotateBecauseOfWallFlag = true;
+                }
+            } else {
+                while (!canRotate() && canMove(tetrominoX - 1, tetrominoY)) {
+                    moveTetrominoLeft();
+                    canMoveButCannotRotateBecauseOfWallFlag = true;
+                }
+            }
+
+            if (canMoveButCannotRotateBecauseOfWallFlag) {
+                clearTetrominoFromBoard();
+                currentTetromino.rotateRight();
+                placeTetrominoOnBoard();
+            }
         }
-        clearTetrominoFromBoard();
-        currentTetromino.rotateRight();
-        placeTetrominoOnBoard();
     }
 
 
