@@ -2,6 +2,8 @@ package org.nl.javatetris.model;
 
 public class ModelConst {
 
+    public static final int TETROMINO_TYPES = 7; // 테트로미노 종류 수
+
     public static final int EMPTY = 0;          // 0
     public static final int I = 1;              // 1
     public static final int J = 2;              // 2
