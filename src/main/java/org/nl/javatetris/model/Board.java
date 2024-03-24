@@ -10,9 +10,11 @@ public class Board {
 
     // 보드 자체 관련 필드
     private int[][] board;
+    private int[][] nextBoard;
 
     // 테트로미노 관련 필드
     private Tetromino currentTetromino;
+    private Tetromino nextTetromino;
     private int tetrominoY, tetrominoX;
 
     // 생성자
@@ -28,6 +30,18 @@ public class Board {
                 }
             }
         }
+        //다음 테트로미노를 보여주는 보드
+        nextBoard=new int[Y_MAX/2][X_MAX];
+        for (int y = 0; y < Y_MAX/2; y++) {
+            for (int x = 0; x < X_MAX; x++) {
+                if (isBorder(y, x)) {
+                    nextBoard[y][x] = BORDER; // 테두리 설정
+                } else {
+                    nextBoard[y][x] = EMPTY; // 내부 칸은 빈 칸으로
+                }
+            }
+        }
+        nextTetromino = TetrominoGenerator.getRandomTetromino();
     }
 
     public void setXY(int x, int y) {
@@ -42,6 +56,9 @@ public class Board {
 
     public Tetromino getTet() {
         return currentTetromino;
+    }
+    public Tetromino getNextTet() {
+        return nextTetromino;
     }
     public void setRotate(int idx) {
         currentTetromino.setShapeIndex(idx);
@@ -138,12 +155,28 @@ public class Board {
             System.out.println();
         }
     }
-
+    //다음 테트로미노 생성하고 nextBoard에 저장하는 메서드
+    public Tetromino getNextTetromino() {
+        nextTetromino = TetrominoGenerator.getRandomTetromino(); // 다음 테트로미노 생성
+        int[][] nextShape = nextTetromino.getShape(); // 다음 테트로미노의 모양 가져오기
+        // nextBoard에 다음 테트로미노 모양 저장
+        for (int y = 0; y < nextShape.length; y++) {
+            for (int x = 0; x < nextShape[y].length; x++) {
+                int boardX = x + (X_MAX - nextShape[y].length) / 2;
+                int boardY = y + (Y_MAX / 2 - nextShape.length) / 2;
+                if (nextShape[y][x] != 0) {
+                    nextBoard[boardY][boardX] = nextShape[y][x];
+                }
+            }
+        }
+        return nextTetromino;
+    }
 
     // 테트로미노를 상단에 스폰시키는 메서드
     public void spawnTetromino() {
         // 테트로미노를 생성한다.
-        currentTetromino = TetrominoGenerator.getRandomTetromino();
+        currentTetromino = nextTetromino;
+        nextTetromino = getNextTetromino();
         // 생성한 테트로미노를 화면 상단에 위치시킨다.
         tetrominoX = X_MAX / 2 - 1;
         tetrominoY = 1;
@@ -154,8 +187,6 @@ public class Board {
             placeTetrominoOnBoard();
         }
     }
-
-
     // 이전 위치의 테트로미노를 보드에서 지우는 메서드
     public void clearTetrominoFromBoard() {
         for (int y = 0; y < currentTetromino.getShapeWidth(); y++) {
