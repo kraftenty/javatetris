@@ -17,8 +17,6 @@ public class Main extends Application {
 
 
         Board board = new Board();
-        board.drawBoard();
-        board.getNextTetromino();
         board.spawnTetromino();
         Controller controller = new Controller(board);
 

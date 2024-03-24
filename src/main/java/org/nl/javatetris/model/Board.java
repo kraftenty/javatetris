@@ -31,13 +31,13 @@ public class Board {
             }
         }
         //다음 테트로미노를 보여주는 보드
-        nextBoard=new int[Y_MAX/2][X_MAX];
-        for (int y = 0; y < Y_MAX/2; y++) {
+        nextBoard=new int[Y_MAX][X_MAX];
+        for (int y = 0; y < Y_MAX; y++) {
             for (int x = 0; x < X_MAX; x++) {
                 if (isBorder(y, x)) {
-                    nextBoard[y][x] = BORDER; // 테두리 설정
+                    nextBoard[y][x] = BORDER;
                 } else {
-                    nextBoard[y][x] = EMPTY; // 내부 칸은 빈 칸으로
+                    nextBoard[y][x] = EMPTY;
                 }
             }
         }
@@ -59,6 +59,12 @@ public class Board {
     }
     public Tetromino getNextTet() {
         return nextTetromino;
+    }
+    public int[][] getNextBoard() {
+        return nextBoard;
+    }
+    public int[][] getBoard() {
+        return board;
     }
     public void setRotate(int idx) {
         currentTetromino.setShapeIndex(idx);
@@ -162,8 +168,8 @@ public class Board {
         // nextBoard에 다음 테트로미노 모양 저장
         for (int y = 0; y < nextShape.length; y++) {
             for (int x = 0; x < nextShape[y].length; x++) {
-                int boardX = x + (X_MAX - nextShape[y].length) / 2;
-                int boardY = y + (Y_MAX / 2 - nextShape.length) / 2;
+                int boardX = x + nextShape[y].length;
+                int boardY = y + nextShape.length;
                 if (nextShape[y][x] != 0) {
                     nextBoard[boardY][boardX] = nextShape[y][x];
                 }
@@ -269,7 +275,7 @@ public class Board {
 
 
     /**
-     * Checing Methods
+     * Checking Methods
      */
 
     public boolean canSpawn() {
