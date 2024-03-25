@@ -26,7 +26,6 @@ public class Board {
         initialize();
     }
 
-
     /**
      * 유틸 메서드
      */
@@ -178,22 +177,33 @@ public class Board {
 
     }
 
-   // 테트로미노를 보드 내에서 회전시키는 메서드. 벽 때문에 회전할 수 없는 경우, 왼쪽 또는 오른쪽으로 이동시킨 후 회전
-   public void rotateTetromino() {
-       // 회전 후의 테트로미노 모양을 계산합니다.
-       // 이 예시에서는 현재 테트로미노의 회전 메서드를 호출하여 "가상의" 회전을 수행하고,
-       // 그 결과를 기반으로 회전 가능 여부를 판단합니다.
-       clearTetrominoFromBoard();
-       if (!canRotate()) {
-           placeTetrominoOnBoard();
-           return;
-       }
-       int[] tetYX = moveForRotate();
-       tetrominoY = tetYX[0];
-       tetrominoX = tetYX[1];
-       currentTetromino.rotateRight();
-       placeTetrominoOnBoard();
-   }
+    // 테트로미노를 보드 내에서 회전시키는 메서드. 벽 때문에 회전할 수 없는 경우, 왼쪽 또는 오른쪽으로 이동시킨 후 회전
+    public void rotateTetromino() {
+        // 회전 후의 테트로미노 모양을 계산합니다.
+        // 이 예시에서는 현재 테트로미노의 회전 메서드를 호출하여 "가상의" 회전을 수행하고,
+        // 그 결과를 기반으로 회전 가능 여부를 판단합니다.
+        clearTetrominoFromBoard();
+        if (!canRotate()) {
+            placeTetrominoOnBoard();
+            return;
+        }
+        int[] tetYX = moveForRotate();
+        tetrominoY = tetYX[0];
+        tetrominoX = tetYX[1];
+        currentTetromino.rotateRight();
+        placeTetrominoOnBoard();
+    }
+
+    // 스페이스바를 눌러 테트로미노를 가장 아래로 내리는 메서드
+    public void dropTetromino() {
+        clearTetrominoFromBoard();
+        while (canMove(tetrominoY + 1, tetrominoX)) {
+            tetrominoY ++;
+        }
+        placeTetrominoOnBoard();
+        clearCompletedLines();
+        spawnTetromino();
+    }
 
 
 
@@ -248,7 +258,7 @@ public class Board {
                     }
 
                     // 이미 채워진 칸(다른 테트로미노)과의 충돌 검사
-                    if(board[boardY][boardX] != EMPTY){
+                    if (board[boardY][boardX] != EMPTY) {
                         return false;
                     }
                 }
@@ -261,15 +271,15 @@ public class Board {
     public int getRotatedMove(int tetrominoNum, int rotationIdx) { //1 2 3 4 : 상 우 하 좌 1칸, 5 6 7 8 2칸
         if (tetrominoNum == 4) return 0;
         if (tetrominoNum == 1) {
-            int[] dy = new int[] {2,3,0,2,2,2,1,0,3,1,1,1};  // I가 회전할 때 걸리는 부분
-            int[] dx = new int[] {2,2,2,1,0,3,1,1,1,2,3,0};
+            int[] dy = new int[]{2, 3, 0, 2, 2, 2, 1, 0, 3, 1, 1, 1};  // I가 회전할 때 걸리는 부분
+            int[] dx = new int[]{2, 2, 2, 1, 0, 3, 1, 1, 1, 2, 3, 0};
 
 
-            if (board[tetrominoY + dy[rotationIdx*3]][tetrominoX + dx[rotationIdx*3]] != EMPTY) //1자가 두칸 밀리는 경우
+            if (board[tetrominoY + dy[rotationIdx * 3]][tetrominoX + dx[rotationIdx * 3]] != EMPTY) //1자가 두칸 밀리는 경우
                 return rotationIdx + 5;
-            else if(board[tetrominoY + dy[rotationIdx*3+1]][tetrominoX + dx[rotationIdx*3+1]] != EMPTY) //1자가 한칸 밀리는 경우
+            else if (board[tetrominoY + dy[rotationIdx * 3 + 1]][tetrominoX + dx[rotationIdx * 3 + 1]] != EMPTY) //1자가 한칸 밀리는 경우
                 return rotationIdx + 1;
-            else if(board[tetrominoY + dy[rotationIdx*3+2]][tetrominoX + dx[rotationIdx*3+2]] != EMPTY) //1자가 반대편(빈칸이 한칸)에서 밀리는 경우
+            else if (board[tetrominoY + dy[rotationIdx * 3 + 2]][tetrominoX + dx[rotationIdx * 3 + 2]] != EMPTY) //1자가 반대편(빈칸이 한칸)에서 밀리는 경우
                 return (rotationIdx + 2) % 4 + 1;
             else
                 return 0;
@@ -278,8 +288,8 @@ public class Board {
         Tetromino rotatedTetromino = currentTetromino.getRotatedTetromino();
         int[][] shape = rotatedTetromino.getShape();
 
-        for(int y = 0; y < 3; y++) {  //걸리는 부분 탐색
-            for (int x = 0 ; x < 3; x++) {
+        for (int y = 0; y < 3; y++) {  //걸리는 부분 탐색
+            for (int x = 0; x < 3; x++) {
                 if (shape[y][x] == 0) continue;
                 int boardY = tetrominoY + y;
                 int boardX = tetrominoX + x;
@@ -287,8 +297,7 @@ public class Board {
                 if (board[boardY][boardX] == EMPTY) continue;
                 if (rotationIdx % 2 == 0 && y != 1) {
                     return 3 - y;
-                }
-                else if (rotationIdx % 2 == 1 && x != 1){
+                } else if (rotationIdx % 2 == 1 && x != 1) {
                     return x + 2;
                 }
             }
@@ -304,8 +313,8 @@ public class Board {
         int[] yx = {tetrominoY, tetrominoX};
         int move = getRotatedMove(tetrominoNum, rotationIdx);
 
-        int[] dy = new int[] {0,-1,0,1,0,-2,0,2,0};
-        int[] dx = new int[] {0,0,1,0,-1,0,2,0,-2};
+        int[] dy = new int[]{0, -1, 0, 1, 0, -2, 0, 2, 0};
+        int[] dx = new int[]{0, 0, 1, 0, -1, 0, 2, 0, -2};
 
         yx[0] += dy[move];
         yx[1] += dx[move];
@@ -313,7 +322,6 @@ public class Board {
     }
 
     // 테트로미노가 보드 내에서 회전할 수 있는지 검사하는 메서드
-    // 회전 가능 여부를 검사하는 메서드
     public boolean canRotate() {
         Tetromino rotatedTetromino = currentTetromino.getRotatedTetromino();
         int[][] shape = rotatedTetromino.getShape();

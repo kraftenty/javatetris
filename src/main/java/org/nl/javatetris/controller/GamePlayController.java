@@ -28,7 +28,7 @@ public class GamePlayController {
     private int score = 0;                          // 게임 점수
     private boolean isGameOver = false;             // 게임오버 여부
 
-
+    // 생성자
     public GamePlayController(Runnable onPause, Runnable onBoardUpdate, Runnable onGameOver) {
         this.tetrominoGenerator = new TetrominoGenerator();
         this.onPause = onPause;
@@ -144,6 +144,9 @@ public class GamePlayController {
                 break;
             case UP:
                 board.rotateTetromino();
+                break;
+            case SPACE:
+                board.dropTetromino();
                 break;
             default:
                 break;
