@@ -12,11 +12,6 @@ public class TetrominoJ extends AbstractTetromino {
     protected void setShapes() {
         shapes = new int[][][]{
                 {
-                        {0, 1, 0},
-                        {0, 1, 0},
-                        {1, 1, 0}
-                },
-                {
                         {1, 0, 0},
                         {1, 1, 1},
                         {0, 0, 0}
@@ -30,6 +25,11 @@ public class TetrominoJ extends AbstractTetromino {
                         {0, 0, 0},
                         {1, 1, 1},
                         {0, 0, 1}
+                },
+                {
+                        {0, 1, 0},
+                        {0, 1, 0},
+                        {1, 1, 0}
                 }
         };
     }
