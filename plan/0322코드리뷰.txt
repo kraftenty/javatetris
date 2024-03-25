@@ -8,7 +8,6 @@
    while문 안에 실제로 테트로미노를 한칸씩 내리는 것이 아니라
    내릴 만큼의 y값을 offset으로 저장해 놓고 한번에 내리는 것이 성능상, 그리고 미관상 좋음
     public void dropTetromino(){
-        int offset = 0;
         while(canMove(tetrominoX, tetrominoY+1)){
             clearTetrominoFromBoard();
             tetrominoY++;
