@@ -9,11 +9,13 @@ public class StartMenuController {
     private int menuItemsCount;
     private Runnable onStartGame;
     private Runnable onSettings;
+    private Runnable onScoreBoard;
 
-    public StartMenuController(int menuItemsCount, Runnable onStartGame, Runnable onSettings) {
+    public StartMenuController(int menuItemsCount, Runnable onStartGame, Runnable onSettings, Runnable onScoreBoard) {
         this.menuItemsCount = menuItemsCount;
         this.onStartGame = onStartGame;
         this.onSettings = onSettings;
+        this.onScoreBoard = onScoreBoard;
     }
 
     public void handleKeyPress(KeyEvent e) {
@@ -33,8 +35,7 @@ public class StartMenuController {
                         onSettings.run();
                         break;
                     case 2:
-                        System.out.println("Score Board");
-                        //TODO : 점수판 run
+                        onScoreBoard.run();
                         break;
                     case 3:
                         Platform.exit();

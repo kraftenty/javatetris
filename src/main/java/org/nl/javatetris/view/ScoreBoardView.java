@@ -7,34 +7,31 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.nl.javatetris.controller.StartMenuController;
+import org.nl.javatetris.controller.ScoreBoardController;
 
-import static org.nl.javatetris.view.ViewConst.*;
+import static org.nl.javatetris.view.ViewConst.WINDOW_HEIGHT;
+import static org.nl.javatetris.view.ViewConst.WINDOW_WIDTH;
 
-public class StartMenuScene {
+public class ScoreBoardView {
 
-    private StartMenuController startMenuController;
+    private ScoreBoardController scoreBoardController;
     private static Label[] menuItems = new Label[]{
             // 메뉴 항목. 추가할거면 여기에 추가해
-            new Label("Start Game"),
-            new Label("Settings"),
-            new Label("Score Board"),
-            new Label("Quit")
+            new Label("Main Menu"),
     };
 
-
-    public StartMenuScene(Runnable onStartGame, Runnable onSettings) {
-        this.startMenuController = new StartMenuController(menuItems.length, onStartGame, onSettings);
+    public ScoreBoardView(Runnable onBackToMenu) {
+        this.scoreBoardController = new ScoreBoardController(onBackToMenu);
     }
 
     public Scene createScene() {
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
 
-        // 게임의 이름
-        Text title = new Text("Tetris");
+        Text title = new Text("ScoreBoard");
         title.setFont(new Font(20));
         layout.getChildren().add(title);
+
 
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
@@ -46,16 +43,15 @@ public class StartMenuScene {
 
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {
-            startMenuController.handleKeyPress(e);
+            scoreBoardController.handleKeyPress(e);
             // 현재 선택된 항목을 기반으로 UI를 업데이트합니다.
-            updateMenuItems(startMenuController.getSelectedItemIndex());
+            updateMenuItems(scoreBoardController.getSelectedItemIndex());
         });
 
         // 초기 선택 상태 업데이트
-        updateMenuItems(startMenuController.getSelectedItemIndex());
+        updateMenuItems(scoreBoardController.getSelectedItemIndex());
 
         return scene;
-
     }
 
     // 선택된 항목에 따라 UI 업데이트

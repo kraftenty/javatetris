@@ -6,12 +6,14 @@ import javafx.scene.input.KeyEvent;
 public class PauseMenuController {
 
     private Runnable onResume;
+    private Runnable onBackToMenu;
     private int selectedItemIndex = 0;
     private int menuItemsCount;
 
-    public PauseMenuController(Runnable onResume, int menuItemsCount) {
-        this.onResume = onResume;
+    public PauseMenuController(int menuItemsCount, Runnable onResume, Runnable onBackToMenu) {
         this.menuItemsCount = menuItemsCount;
+        this.onResume = onResume;
+        this.onBackToMenu = onBackToMenu;
     }
 
     public void handleKeyPress(KeyEvent e) {
@@ -28,6 +30,11 @@ public class PauseMenuController {
                         onResume.run();
                         break;
                     case 1:
+                        // TODO : 메인 메뉴로 돌아갈 때 게임을 초기화하는 코드를 추가하세요.
+
+                        onBackToMenu.run();
+                        break;
+                    case 2:
                         Platform.exit();
                         break;
                 }

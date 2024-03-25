@@ -12,12 +12,12 @@ import org.nl.javatetris.model.tetrominos.Tetromino;
 import static org.nl.javatetris.model.ModelConst.*;
 import static org.nl.javatetris.view.ViewConst.*;
 
-public class GamePlayScene {
+public class GamePlayView {
 
     private GamePlayController gamePlayController;
     private Pane pane;
 
-    public GamePlayScene(Runnable onPause) {
+    public GamePlayView(Runnable onPause) {
         gamePlayController = new GamePlayController(onPause, this::drawGamePlayScreen, this::drawGameOverScreen);
     }
 
@@ -127,6 +127,7 @@ public class GamePlayScene {
 
     // 게임오버 화면을 그리는 메서드
     private void drawGameOverScreen() {
+        System.out.println("drawGameOverScreen");
         pane.getChildren().clear(); // 기존에 그려진 모든 Rectangle 제거
 
         for (int y = 0; y < Y_MAX; y++) {

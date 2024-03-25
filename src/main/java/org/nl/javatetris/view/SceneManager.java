@@ -14,6 +14,7 @@ public class SceneManager {
     private Scene gamePlayScene;
     private Scene pauseMenuScene;
     private Scene settingsMenuScene;
+    private Scene scoreBoardScene;
 
     private static int currentSceneNumber; // 현재 Scene 번호
 
@@ -39,11 +40,12 @@ public class SceneManager {
 
     public void showStartMenu() {
         if (startMenuScene == null) {
-            StartMenuScene startMenuScene = new StartMenuScene(
+            StartMenuView startMenuView = new StartMenuView(
                     this::showGamePlay,
-                    this::showSettingsMenu
+                    this::showSettingsMenu,
+                    this::showScoreBoard
             );
-            this.startMenuScene = startMenuScene.createScene();
+            this.startMenuScene = startMenuView.createScene();
         }
 
         setScene(startMenuScene);
@@ -51,10 +53,12 @@ public class SceneManager {
     }
 
     public void showGamePlay() {
-        if (gamePlayScene == null) {
-            GamePlayScene gamePlayScene = new GamePlayScene(this::showPauseMenu);
-            this.gamePlayScene = gamePlayScene.createScene();
-        }
+//        if (true) {
+//            GamePlayScene gamePlayScene = new GamePlayScene(this::showPauseMenu);
+//            this.gamePlayScene = gamePlayScene.createScene();
+//        }
+        GamePlayView gamePlayView = new GamePlayView(this::showPauseMenu);
+        this.gamePlayScene = gamePlayView.createScene();
 
         setScene(gamePlayScene);
         currentSceneNumber = GAME_PLAY_SCENE;
@@ -65,10 +69,14 @@ public class SceneManager {
         setScene(gamePlayScene);
     }
 
+    private void endGame() {
+        showStartMenu();
+    }
+
     public void showPauseMenu() {
         if (pauseMenuScene == null) {
-            PauseMenuScene pauseMenuScene = new PauseMenuScene(this::resumeGame);
-            this.pauseMenuScene = pauseMenuScene.createScene();
+            PauseMenuView pauseMenuView = new PauseMenuView(this::resumeGame, this::endGame);
+            this.pauseMenuScene = pauseMenuView.createScene();
         }
 
         setScene(pauseMenuScene);
@@ -77,12 +85,21 @@ public class SceneManager {
 
     public void showSettingsMenu() {
         if (settingsMenuScene == null) {
-            SettingsMenuScene settingsMenuScene = new SettingsMenuScene(this::showStartMenu);
-            this.settingsMenuScene = settingsMenuScene.createScene();
+            SettingsMenuView settingsMenuView = new SettingsMenuView(this::showStartMenu);
+            this.settingsMenuScene = settingsMenuView.createScene();
         }
 
         setScene(settingsMenuScene);
         currentSceneNumber = SETTINGS_MENU_SCENE;
     }
 
+    public void showScoreBoard() {
+        if (scoreBoardScene == null) {
+            ScoreBoardView scoreBoardView = new ScoreBoardView(this::showStartMenu);
+            this.scoreBoardScene = scoreBoardView.createScene();
+        }
+
+        setScene(scoreBoardScene);
+        currentSceneNumber = SCORE_BOARD_SCENE;
+    }
 }

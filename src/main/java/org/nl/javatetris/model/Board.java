@@ -169,11 +169,13 @@ public class Board {
             tetrominoY++;
             placeTetrominoOnBoard();
             return true;
+
         } else {
             placeTetrominoOnBoard();
             clearCompletedLines();
             return spawnTetromino();
         }
+
     }
 
    // 테트로미노를 보드 내에서 회전시키는 메서드. 벽 때문에 회전할 수 없는 경우, 왼쪽 또는 오른쪽으로 이동시킨 후 회전
@@ -192,6 +194,7 @@ public class Board {
        currentTetromino.rotateRight();
        placeTetrominoOnBoard();
    }
+
 
 
     /**
@@ -232,8 +235,8 @@ public class Board {
 
     // 테트로미노가 보드 내에서 이동할 수 있는지 검사하는 메서드
     private boolean canMove(int newY, int newX) {
-        for (int y = 0; y < currentTetromino.getShape().length; y++) {
-            for (int x = 0; x < currentTetromino.getShape()[y].length; x++) {
+        for (int y = 0; y < currentTetromino.getShapeHeight(); y++) {
+            for (int x = 0; x < currentTetromino.getShapeWidth(); x++) {
                 if (currentTetromino.getShape()[y][x] != 0) {
                     int boardY = newY + y;
                     int boardX = newX + x;
@@ -244,8 +247,8 @@ public class Board {
                         return false;
                     }
 
-                    // 이미 채워진 칸(다른 테트로미노)과의 충돌 검사, 현재 테트로미노의 위치를 제외
-                    if (board[boardY][boardX] != EMPTY) {
+                    // 이미 채워진 칸(다른 테트로미노)과의 충돌 검사
+                    if(board[boardY][boardX] != EMPTY){
                         return false;
                     }
                 }

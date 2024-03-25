@@ -16,4 +16,7 @@ public class ModelConst {
 
     public static final int Y_MAX = 22;          // 세로 크기 (20 + 테두리 2칸)
     public static final int X_MAX = 12;          // 가로 크기 (10 + 테두리 2칸)
+
+
+    public static final int MAX_SCORE_STORE_SIZE = 10; // 최대
 }
