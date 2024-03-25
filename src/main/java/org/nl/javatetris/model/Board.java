@@ -146,62 +146,52 @@ public class Board {
 
     // 테트로미노를 보드 내에서 왼쪽으로 이동시키는 메서드
     public void moveTetrominoLeft() {
+        clearTetrominoFromBoard();
         if (canMove(tetrominoY, tetrominoX - 1)) {
-            clearTetrominoFromBoard();
             tetrominoX--;
-            placeTetrominoOnBoard();
         }
+        placeTetrominoOnBoard();
     }
 
     // 테트로미노를 보드 내에서 오른쪽으로 이동시키는 메서드
     public void moveTetrominoRight() {
+        clearTetrominoFromBoard();
         if (canMove(tetrominoY, tetrominoX + 1)) {
-            clearTetrominoFromBoard();
             tetrominoX++;
-            placeTetrominoOnBoard();
         }
+        placeTetrominoOnBoard();
     }
 
     // 테트로미노를 보드 내에서 아래로 이동시키는 메서드
     public boolean moveTetrominoDown() {
+        clearTetrominoFromBoard();
         if (canMove(tetrominoY + 1, tetrominoX)) {
-            clearTetrominoFromBoard();
             tetrominoY++;
             placeTetrominoOnBoard();
             return true;
         } else {
+            placeTetrominoOnBoard();
             clearCompletedLines();
             return spawnTetromino();
         }
     }
 
    // 테트로미노를 보드 내에서 회전시키는 메서드. 벽 때문에 회전할 수 없는 경우, 왼쪽 또는 오른쪽으로 이동시킨 후 회전
-    public void rotateTetromino() {
-        if (canRotate()) {
-            clearTetrominoFromBoard();
-            currentTetromino.rotateRight();
-            placeTetrominoOnBoard();
-        } else {
-            boolean canMoveButCannotRotateBecauseOfWallFlag = false;
-            if (tetrominoX < X_MAX / 2) {
-                while (!canRotate() && canMove(tetrominoY, tetrominoX + 1)) {
-                    moveTetrominoRight();
-                    canMoveButCannotRotateBecauseOfWallFlag = true;
-                }
-            } else {
-                while (!canRotate() && canMove(tetrominoY, tetrominoX - 1)) {
-                    moveTetrominoLeft();
-                    canMoveButCannotRotateBecauseOfWallFlag = true;
-                }
-            }
-
-            if (canMoveButCannotRotateBecauseOfWallFlag) {
-                clearTetrominoFromBoard();
-                currentTetromino.rotateRight();
-                placeTetrominoOnBoard();
-            }
-        }
-    }
+   public void rotateTetromino() {
+       // 회전 후의 테트로미노 모양을 계산합니다.
+       // 이 예시에서는 현재 테트로미노의 회전 메서드를 호출하여 "가상의" 회전을 수행하고,
+       // 그 결과를 기반으로 회전 가능 여부를 판단합니다.
+       clearTetrominoFromBoard();
+       if (!canRotate()) {
+           placeTetrominoOnBoard();
+           return;
+       }
+       int[] tetYX = moveForRotate();
+       tetrominoY = tetYX[0];
+       tetrominoX = tetYX[1];
+       currentTetromino.rotateRight();
+       placeTetrominoOnBoard();
+   }
 
 
     /**
@@ -224,18 +214,7 @@ public class Board {
     }
 
     // 보드 내에서 현재 테트로미노가 차지하고 있는 위치인지 확인하는 메서드
-    private boolean isCurrentTetrominoPosition(int testY, int testX) {
-        for (int y = 0; y < currentTetromino.getShape().length; y++) {
-            for (int x = 0; x < currentTetromino.getShape()[y].length; x++) {
-                if (currentTetromino.getShape()[y][x] != 0) {
-                    if (tetrominoY + y == testY && tetrominoX + x == testX) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
+
 
     // 테트로미노가 보드 내에서 생성될 수 있는지 검사하는 메서드
     private boolean canSpawn() {
@@ -256,8 +235,9 @@ public class Board {
         for (int y = 0; y < currentTetromino.getShape().length; y++) {
             for (int x = 0; x < currentTetromino.getShape()[y].length; x++) {
                 if (currentTetromino.getShape()[y][x] != 0) {
-                    int boardX = newX + x;
                     int boardY = newY + y;
+                    int boardX = newX + x;
+
 
                     // 경계 조건 검사
                     if (boardX < 0 || boardX >= X_MAX || boardY < 0 || boardY >= Y_MAX) {
@@ -265,7 +245,7 @@ public class Board {
                     }
 
                     // 이미 채워진 칸(다른 테트로미노)과의 충돌 검사, 현재 테트로미노의 위치를 제외
-                    if (!isCurrentTetrominoPosition(boardY, boardX) && board[boardY][boardX] != EMPTY) {
+                    if (board[boardY][boardX] != EMPTY) {
                         return false;
                     }
                 }
@@ -274,28 +254,84 @@ public class Board {
         return true; // 위의 모든 검사를 통과한 경우, 이동 가능
     }
 
-    // 테트로미노가 보드 내에서 회전할 수 있는지 검사하는 메서드
-    private boolean canRotate() {
-        int[][] rotatedTetrominoShape = currentTetromino.getRotatedTetromino().getShape();
-        for (int y = 0; y < rotatedTetrominoShape.length; y++) {
-            for (int x = 0; x < rotatedTetrominoShape[y].length; x++) {
-                if (rotatedTetrominoShape[y][x] != 0) {
-                    int boardX = tetrominoX + x;
-                    int boardY = tetrominoY + y;
+    // 회전할 때 걸리는 부분을 찾고, 이동해야할 방향과 거리 리턴
+    public int getRotatedMove(int tetrominoNum, int rotationIdx) { //1 2 3 4 : 상 우 하 좌 1칸, 5 6 7 8 2칸
+        if (tetrominoNum == 4) return 0;
+        if (tetrominoNum == 1) {
+            int[] dy = new int[] {2,3,0,2,2,2,1,0,3,1,1,1};  // I가 회전할 때 걸리는 부분
+            int[] dx = new int[] {2,2,2,1,0,3,1,1,1,2,3,0};
 
-                    // 경계 조건 검사
-                    if (boardX < 0 || boardX >= X_MAX || boardY < 0 || boardY >= Y_MAX) {
-                        return false;
-                    }
+
+            if (board[tetrominoY + dy[rotationIdx*3]][tetrominoX + dx[rotationIdx*3]] != EMPTY) //1자가 두칸 밀리는 경우
+                return rotationIdx + 5;
+            else if(board[tetrominoY + dy[rotationIdx*3+1]][tetrominoX + dx[rotationIdx*3+1]] != EMPTY) //1자가 한칸 밀리는 경우
+                return rotationIdx + 1;
+            else if(board[tetrominoY + dy[rotationIdx*3+2]][tetrominoX + dx[rotationIdx*3+2]] != EMPTY) //1자가 반대편(빈칸이 한칸)에서 밀리는 경우
+                return (rotationIdx + 2) % 4 + 1;
+            else
+                return 0;
+        }
+        // 그 외 블록 회전
+        Tetromino rotatedTetromino = currentTetromino.getRotatedTetromino();
+        int[][] shape = rotatedTetromino.getShape();
+
+        for(int y = 0; y < 3; y++) {  //걸리는 부분 탐색
+            for (int x = 0 ; x < 3; x++) {
+                if (shape[y][x] == 0) continue;
+                int boardY = tetrominoY + y;
+                int boardX = tetrominoX + x;
+
+                if (board[boardY][boardX] == EMPTY) continue;
+                if (rotationIdx % 2 == 0 && y != 1) {
+                    return 3 - y;
+                }
+                else if (rotationIdx % 2 == 1 && x != 1){
+                    return x + 2;
+                }
+            }
+        }
+        return 0;
+    }
+
+    //회전할 수 있도록 이동
+    public int[] moveForRotate() {
+        int tetrominoNum = currentTetromino.getShapeNumber();
+        int rotationIdx = currentTetromino.getShapeIndex();
+
+        int[] yx = {tetrominoY, tetrominoX};
+        int move = getRotatedMove(tetrominoNum, rotationIdx);
+
+        int[] dy = new int[] {0,-1,0,1,0,-2,0,2,0};
+        int[] dx = new int[] {0,0,1,0,-1,0,2,0,-2};
+
+        yx[0] += dy[move];
+        yx[1] += dx[move];
+        return yx;
+    }
+
+    // 테트로미노가 보드 내에서 회전할 수 있는지 검사하는 메서드
+    // 회전 가능 여부를 검사하는 메서드
+    public boolean canRotate() {
+        Tetromino rotatedTetromino = currentTetromino.getRotatedTetromino();
+        int[][] shape = rotatedTetromino.getShape();
+
+        int[] tempYX = moveForRotate(); //회전할 수 있도록 이동시킨 후 위치
+
+        for (int y = 0; y < shape.length; y++) {
+            for (int x = 0; x < shape[y].length; x++) {
+                if (shape[y][x] != 0) {
+                    int boardY = tempYX[0] + y;
+                    int boardX = tempYX[1] + x;
 
                     // 이미 채워진 칸(다른 테트로미노)과의 충돌 검사, 현재 테트로미노의 위치를 제외
-                    if (!isCurrentTetrominoPosition(boardY, boardX) && board[boardY][boardX] != EMPTY) {
-                        return false;
+                    if (board[boardY][boardX] != EMPTY) {
+                        return false; // 이동하려는 위치가 빈 공간이 아니고, 현재 테트로미노의 위치도 아닌 경우
                     }
                 }
             }
         }
         return true; // 위의 모든 검사를 통과한 경우, 회전 가능
     }
+
 
 }
