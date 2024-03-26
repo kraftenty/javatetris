@@ -32,6 +32,8 @@ public class ScoreBoardView {
         title.setFont(new Font(20));
         layout.getChildren().add(title);
 
+        // TODO : 스코어보드 뷰 코드를 여기에 짜면됨
+
 
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);

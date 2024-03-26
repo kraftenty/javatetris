@@ -17,7 +17,7 @@ public class SettingsMenuView {
     private static Label[] menuItems = new Label[]{
             // TODO : 설정 메뉴 항목. 추가할거면 여기에 추가해
             new Label("hello1"),
-            new Label("hello2"),
+            new Label("색맹모드"),
             new Label("Main Menu"),
     };
 

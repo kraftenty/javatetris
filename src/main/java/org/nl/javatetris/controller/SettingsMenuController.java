@@ -22,7 +22,7 @@ public class SettingsMenuController {
                 selectedItemIndex = Math.min(meunItemsCount - 1, selectedItemIndex + 1);
                 break;
             case ENTER:
-                switch(selectedItemIndex){
+                switch(selectedItemIndex) {
                     // TODO : 설정 메뉴 로직들. 추가할거면 여기에 추가해
                     case 0:
                         System.out.println("hello1");
@@ -41,4 +41,5 @@ public class SettingsMenuController {
     public int getSelectedItemIndex() {
         return selectedItemIndex;
     }
+
 }
