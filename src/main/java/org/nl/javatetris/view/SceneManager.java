@@ -53,11 +53,10 @@ public class SceneManager {
     }
 
     public void showGamePlay() {
-//        if (true) {
-//            GamePlayScene gamePlayScene = new GamePlayScene(this::showPauseMenu);
-//            this.gamePlayScene = gamePlayScene.createScene();
-//        }
-        GamePlayView gamePlayView = new GamePlayView(this::showPauseMenu);
+        GamePlayView gamePlayView = new GamePlayView(
+                this::showPauseMenu,
+                score -> showGameOver(score)
+        );
         this.gamePlayScene = gamePlayView.createScene();
 
         setScene(gamePlayScene);
@@ -71,6 +70,17 @@ public class SceneManager {
 
     private void endGame() {
         showStartMenu();
+    }
+
+    public void showGameOver(Integer score) {
+        GameOverView gameOverView = new GameOverView(
+                score,
+                this::showStartMenu
+        );
+        Scene gameOverScene = gameOverView.createScene();
+
+        setScene(gameOverScene);
+        currentSceneNumber = GAME_OVER_SCENE;
     }
 
     public void showPauseMenu() {
@@ -102,4 +112,5 @@ public class SceneManager {
         setScene(scoreBoardScene);
         currentSceneNumber = SCORE_BOARD_SCENE;
     }
+
 }

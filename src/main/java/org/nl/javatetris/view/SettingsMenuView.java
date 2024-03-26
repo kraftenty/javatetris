@@ -11,7 +11,7 @@ import org.nl.javatetris.controller.SettingsMenuController;
 
 import static org.nl.javatetris.view.ViewConst.*;
 
-public class SettingsMenuView {
+public class SettingsMenuView implements View {
 
     private SettingsMenuController settingsMenuController;
     private static Label[] menuItems = new Label[]{

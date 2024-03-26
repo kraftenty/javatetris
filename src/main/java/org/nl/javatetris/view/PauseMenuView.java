@@ -11,7 +11,7 @@ import org.nl.javatetris.controller.PauseMenuController;
 
 import static org.nl.javatetris.view.ViewConst.*;
 
-public class PauseMenuView {
+public class PauseMenuView implements View {
 
     private PauseMenuController pauseMenuController;
     private static Label[] menuItems = new Label[]{

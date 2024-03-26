@@ -12,7 +12,7 @@ import org.nl.javatetris.controller.ScoreBoardController;
 import static org.nl.javatetris.view.ViewConst.WINDOW_HEIGHT;
 import static org.nl.javatetris.view.ViewConst.WINDOW_WIDTH;
 
-public class ScoreBoardView {
+public class ScoreBoardView implements View {
 
     private ScoreBoardController scoreBoardController;
     private static Label[] menuItems = new Label[]{

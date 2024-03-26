@@ -11,7 +11,7 @@ import org.nl.javatetris.controller.StartMenuController;
 
 import static org.nl.javatetris.view.ViewConst.*;
 
-public class StartMenuView {
+public class StartMenuView implements View {
 
     private StartMenuController startMenuController;
     private static Label[] menuItems = new Label[]{
