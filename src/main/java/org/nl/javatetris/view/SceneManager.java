@@ -15,6 +15,8 @@ public class SceneManager {
     private Scene pauseMenuScene;
     private Scene settingsMenuScene;
     private Scene scoreBoardScene;
+    private Scene CheckingInitSetScene;
+    private Scene CheckingBoardInitScene;
 
     private static int currentSceneNumber; // 현재 Scene 번호
 
@@ -75,7 +77,10 @@ public class SceneManager {
 
     public void showPauseMenu() {
         if (pauseMenuScene == null) {
-            PauseMenuView pauseMenuView = new PauseMenuView(this::resumeGame, this::endGame);
+            PauseMenuView pauseMenuView = new PauseMenuView(
+                    this::resumeGame,
+                    this::endGame,
+                    this::showSettingsMenu);
             this.pauseMenuScene = pauseMenuView.createScene();
         }
 
@@ -85,12 +90,36 @@ public class SceneManager {
 
     public void showSettingsMenu() {
         if (settingsMenuScene == null) {
-            SettingsMenuView settingsMenuView = new SettingsMenuView(this::showStartMenu);
+            SettingsMenuView settingsMenuView = new SettingsMenuView(
+                    this::showStartMenu,
+                    this::showCheckingInitSet,
+                    this::showCheckingBoardInit
+            );
             this.settingsMenuScene = settingsMenuView.createScene();
         }
 
         setScene(settingsMenuScene);
         currentSceneNumber = SETTINGS_MENU_SCENE;
+    }
+
+    public void showCheckingInitSet() {
+        if (CheckingInitSetScene == null) {
+            CheckingInitSetView checkingInitSetView = new CheckingInitSetView(this::showSettingsMenu);
+            this.CheckingInitSetScene = checkingInitSetView.createScene();
+        }
+
+        setScene(CheckingInitSetScene);
+        currentSceneNumber = CHECKING_INIT_SET_SCENE;
+    }
+
+    public void showCheckingBoardInit() {
+        if (CheckingBoardInitScene == null) {
+            CheckingBoardInitView checkingBoardInitView = new CheckingBoardInitView(this::showSettingsMenu);
+            this.CheckingBoardInitScene = checkingBoardInitView.createScene();
+        }
+
+        setScene(CheckingBoardInitScene);
+        currentSceneNumber = CHECKING_BOARD_INIT;
     }
 
     public void showScoreBoard() {

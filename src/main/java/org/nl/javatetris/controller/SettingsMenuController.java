@@ -6,11 +6,15 @@ public class SettingsMenuController {
 
     private int meunItemsCount;
     private Runnable onBack;
+    private Runnable onCheckingInitSet;
+    private Runnable onCheckingBoardInit;
     private int selectedItemIndex = 0;
 
-    public SettingsMenuController(int menuItemsCount, Runnable onResume) {
+    public SettingsMenuController(int menuItemsCount, Runnable onResume, Runnable onCheckingInitSet, Runnable onCheckingBoardInit) {
         this.meunItemsCount = menuItemsCount;
         this.onBack = onResume;
+        this.onCheckingInitSet=onCheckingInitSet;
+        this.onCheckingBoardInit=onCheckingBoardInit;
     }
 
     public void handleKeyPress(KeyEvent e) {
@@ -24,15 +28,31 @@ public class SettingsMenuController {
             case ENTER:
                 switch(selectedItemIndex) {
                     // TODO : 설정 메뉴 로직들. 추가할거면 여기에 추가해
+                    //로직 추가예정
                     case 0:
-                        System.out.println("hello1");
+                        //화면 크기 조정
+                        System.out.println("화면 크기 조정");
                         break;
                     case 1:
-                        System.out.println("hello2");
+                        //게임 조작 키 변경
+                        System.out.println("게임 조작 키 변경");
                         break;
                     case 2:
+                        System.out.println("색맹모드");
+                        break;
+
+                    case 3:
+                        onCheckingBoardInit.run();
+                        break;
+
+                    case 4:
+                        onCheckingInitSet.run();
+                        break;
+                    case 5:
                         onBack.run();
                         break;
+
+
                 }
                 break;
         }
