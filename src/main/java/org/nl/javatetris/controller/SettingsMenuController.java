@@ -8,13 +8,15 @@ public class SettingsMenuController {
     private Runnable onBack;
     private Runnable onCheckingInitSet;
     private Runnable onCheckingBoardInit;
+    private Runnable onSettingKeyMenu;
     private int selectedItemIndex = 0;
 
-    public SettingsMenuController(int menuItemsCount, Runnable onResume, Runnable onCheckingInitSet, Runnable onCheckingBoardInit) {
+    public SettingsMenuController(int menuItemsCount, Runnable onResume, Runnable onCheckingInitSet, Runnable onCheckingBoardInit, Runnable onSettingKeyMenu) {
         this.meunItemsCount = menuItemsCount;
         this.onBack = onResume;
         this.onCheckingInitSet=onCheckingInitSet;
         this.onCheckingBoardInit=onCheckingBoardInit;
+        this.onSettingKeyMenu=onSettingKeyMenu;
     }
 
     public void handleKeyPress(KeyEvent e) {
@@ -35,7 +37,7 @@ public class SettingsMenuController {
                         break;
                     case 1:
                         //게임 조작 키 변경
-                        System.out.println("게임 조작 키 변경");
+                        onSettingKeyMenu.run();
                         break;
                     case 2:
                         System.out.println("색맹모드");

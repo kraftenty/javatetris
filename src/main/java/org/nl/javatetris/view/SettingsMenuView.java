@@ -24,11 +24,13 @@ public class SettingsMenuView {
             new Label("Main Menu"),
     };
 
-    public SettingsMenuView(Runnable onBackToMenu, Runnable onCheckingInitSet, Runnable ChekingBoardInit) {
+    public SettingsMenuView(Runnable onBackToMenu, Runnable onCheckingInitSet, Runnable onChekingBoardInit, Runnable onSettingKeyMenu) {
         this.settingsMenuController = new SettingsMenuController(menuItems.length,
                 onBackToMenu,
                 onCheckingInitSet,
-                ChekingBoardInit);
+                onChekingBoardInit,
+                onSettingKeyMenu
+                );
     }
 
     public Scene createScene(){

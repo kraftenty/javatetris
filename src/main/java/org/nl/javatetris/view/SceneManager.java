@@ -17,6 +17,7 @@ public class SceneManager {
     private Scene scoreBoardScene;
     private Scene CheckingInitSetScene;
     private Scene CheckingBoardInitScene;
+    private Scene SettingKeyScene;
 
     private static int currentSceneNumber; // 현재 Scene 번호
 
@@ -93,7 +94,8 @@ public class SceneManager {
             SettingsMenuView settingsMenuView = new SettingsMenuView(
                     this::showStartMenu,
                     this::showCheckingInitSet,
-                    this::showCheckingBoardInit
+                    this::showCheckingBoardInit,
+                    this::showSettingKeyScene
             );
             this.settingsMenuScene = settingsMenuView.createScene();
         }
@@ -120,6 +122,15 @@ public class SceneManager {
 
         setScene(CheckingBoardInitScene);
         currentSceneNumber = CHECKING_BOARD_INIT;
+    }
+    public void showSettingKeyScene() {
+        if (SettingKeyScene == null) {
+            SettingsKeyMenuView settingsKeyMenuView = new SettingsKeyMenuView(this::showSettingsMenu);
+            this.SettingKeyScene = settingsKeyMenuView.createScene();
+        }
+
+        setScene(SettingKeyScene);
+        currentSceneNumber = SETTING_KEY_MENU_SCENE;
     }
 
     public void showScoreBoard() {
