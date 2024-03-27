@@ -2,6 +2,7 @@ package org.nl.javatetris.controller;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+//import org.nl.javatetris.model.settings.Settings;
 
 public class SettingsMenuController {
 
@@ -20,6 +21,8 @@ public class SettingsMenuController {
         this.onCheckingInitSet=onCheckingInitSet;
         this.onCheckingBoardInit=onCheckingBoardInit;
         this.onSettingKeyMenu=onSettingKeyMenu;
+
+
     }
 
     public void handleKeyPress(KeyEvent e) {

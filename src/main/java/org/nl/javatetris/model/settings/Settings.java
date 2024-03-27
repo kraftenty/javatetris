@@ -1,127 +1,177 @@
 package org.nl.javatetris.model.settings;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import javafx.scene.paint.Color;
+
+import static org.nl.javatetris.controller.ControllerConst.*;
+import static org.nl.javatetris.model.ModelConst.*;
+import static org.nl.javatetris.view.ViewConst.*;
 
 public class Settings {
-    private int screen;
+
+    private ScreenSizeSettings screenSizeSettings;
+
     private KeySetting keySetting;
-    private int colorBlind;
 
+    private ColorSetting colorSetting;
 
+    private static Settings singletonInstance;
 
-    public Settings() {
-        this.keySetting = new KeySetting();
+    private Settings() {
+        screenSizeSettings = new ScreenSizeSettings();
+        keySetting = new KeySetting();
+        colorSetting = new ColorSetting();
     }
 
-    public int getScreen() {
-        return screen;
+    public static Settings getInstance() {
+        if (singletonInstance == null) {
+            // TODO : JSON 파일을 읽어오는 로직
+            singletonInstance = new Settings();
+        }
+        return singletonInstance;
     }
 
-    public void setScreen(int screen) {
-        this.screen = screen;
+    public ScreenSizeSettings getScreenSize() {
+        return screenSizeSettings;
     }
 
     public KeySetting getKeySetting() {
         return keySetting;
     }
 
-    public void setKeySetting(KeySetting keySetting) {
-        this.keySetting = keySetting;
+    public ColorSetting getColorSetting() {
+        return colorSetting;
     }
 
-    // Load settings from JSON file
-    public static Settings loadSettings(String filePath) throws IOException {
-        Settings settings = new Settings();
-        try (FileReader reader = new FileReader(filePath)) {
-            JSONObject jsonSettings = new JSONObject(new JSONTokener(reader));
-            JSONObject jsonSettingsData = jsonSettings.getJSONObject("settings");
-            settings.setScreen(jsonSettingsData.getInt("screen"));
-            settings.setKeySetting(new KeySetting(jsonSettingsData.getJSONObject("key_mapping")));
+    public class ScreenSizeSettings {
+
+        private int blockSize;
+
+        private int screenWidth;
+
+        private int screenHeight;
+
+        private int offset = 1;
+
+        public ScreenSizeSettings() {
+            this.blockSize = CELL_SIZE;
+            this.screenWidth = DEFAULT_WINDOW_WIDTH;
+            this.screenHeight = DEFAULT_WINDOW_HEIGHT;
         }
-        return settings;
-    }
 
-    // Save settings to JSON file
-    public void saveSettings(String filePath) throws IOException {
-        JSONObject jsonSettings = new JSONObject();
-        JSONObject jsonSettingsData = new JSONObject();
-        jsonSettingsData.put("screen", screen);
-        jsonSettingsData.put("key_mapping", keySetting.toJsonObject());
-        jsonSettings.put("settings", jsonSettingsData);
-        try (FileWriter writer = new FileWriter(filePath)) {
-            writer.write(jsonSettings.toString(4));
+        public int getBlockSize() {
+            return blockSize;
+        }
+
+        public int getScreenWidth() {
+            return screenWidth;
+        }
+
+        public int getScreenHeight() {
+            return screenHeight;
+        }
+
+        public void setScreenSizeBigger() {
+            if (offset < 2) {
+                blockSize = (int) (blockSize * 1.5);
+                screenWidth = blockSize * X_MAX + DEFAULT_SIDEBAR_SIZE;
+                screenHeight = blockSize * Y_MAX;
+                offset++;
+            }
+        }
+
+        public void setScreenSizeSmaller() {
+            if (offset > 0) {
+                blockSize = (int) (blockSize / 1.5);
+                screenWidth = blockSize * X_MAX + DEFAULT_SIDEBAR_SIZE;
+                screenHeight = blockSize * Y_MAX;
+                offset--;
+            }
         }
     }
 
-    public static class KeySetting {
-        private String moveLeft;
-        private String moveRight;
-        private String rotate;
-        private String softDrop;
-        private String hardDrop;
+
+    public class KeySetting {
+
+        private int leftKeyValue;
+
+        private int rightKeyValue;
+
+        private int downKeyValue;
+
+        private int rotateKeyValue;
+
+        private int dropKeyValue;
 
         public KeySetting() {
+            this.leftKeyValue = DEFAULT_LEFT_KEY;
+            this.rightKeyValue = DEFAULT_RIGHT_KEY;
+            this.downKeyValue = DEFAULT_DOWN_KEY;
+            this.rotateKeyValue = DEFAULT_ROTATE_KEY;
+            this.dropKeyValue = DEFAULT_DROP_KEY;
         }
 
-        public KeySetting(JSONObject jsonObject) {
-            this.moveLeft = jsonObject.getString("move_left");
-            this.moveRight = jsonObject.getString("move_right");
-            this.rotate = jsonObject.getString("rotate");
-            this.softDrop = jsonObject.getString("soft_drop");
-            this.hardDrop = jsonObject.getString("hard_drop");
+        public int getLeftKeyValue() {
+            return leftKeyValue;
         }
 
-        public String getMoveLeft() {
-            return moveLeft;
+        public void setLeftKeyValue(int leftKeyValue) {
+            this.leftKeyValue = leftKeyValue;
         }
 
-        public void setMoveLeft(String moveLeft) {
-            this.moveLeft = moveLeft;
+        public int getRightKeyValue() {
+            return rightKeyValue;
         }
 
-        public String getMoveRight() {
-            return moveRight;
+        public void setRightKeyValue(int rightKeyValue) {
+            this.rightKeyValue = rightKeyValue;
         }
 
-        public void setMoveRight(String moveRight) {
-            this.moveRight = moveRight;
+        public int getDownKeyValue() {
+            return downKeyValue;
         }
 
-        public String getRotate() {
-            return rotate;
+        public void setDownKeyValue(int downKeyValue) {
+            this.downKeyValue = downKeyValue;
         }
 
-        public void setRotate(String rotate) {
-            this.rotate = rotate;
+        public int getRotateKeyValue() {
+            return rotateKeyValue;
         }
 
-        public String getSoftDrop() {
-            return softDrop;
+        public void setRotateKeyValue(int rotateKeyValue) {
+            this.rotateKeyValue = rotateKeyValue;
         }
 
-        public void setSoftDrop(String softDrop) {
-            this.softDrop = softDrop;
+        public int getDropKeyValue() {
+            return dropKeyValue;
         }
 
-        public String getHardDrop() {
-            return hardDrop;
+        public void setDropKeyValue(int dropKeyValue) {
+            this.dropKeyValue = dropKeyValue;
+        }
+    }
+
+
+    public class ColorSetting {
+
+        private Color[][] colorArray;
+
+        private int offset = 0;
+
+        public ColorSetting() {
+            colorArray = new Color[][] {
+                    {},
+                    {},
+                    {}
+            };
         }
 
-        public void setHardDrop(String hardDrop) {
-            this.hardDrop = hardDrop;
+        public Color getColorOfTetrominoType(Integer type) {
+            return colorArray[offset][type];
         }
 
-        public JSONObject toJsonObject() {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("move_left", moveLeft);
-            jsonObject.put("move_right", moveRight);
-            jsonObject.put("rotate", rotate);
-            jsonObject.put("soft_drop", softDrop);
-            jsonObject.put("hard_drop", hardDrop);
-            return jsonObject;
+        public void roundColorSetting() {
+            offset = (offset + 1) % 3;
         }
+
     }
 }

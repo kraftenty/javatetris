@@ -1,14 +1,15 @@
 package org.nl.javatetris.view;
 
-import org.nl.javatetris.model.ModelConst;
+import static org.nl.javatetris.model.ModelConst.*;
 
 public class ViewConst {
 
     public static final int CELL_SIZE = 30;
     public static final int PREVIEW_CELL_SIZE = 20;
+    public static final int DEFAULT_SIDEBAR_SIZE = 140;
 
-    public static final int WINDOW_WIDTH = 500;
-    public static final int WINDOW_HEIGHT = CELL_SIZE * ModelConst.Y_MAX;
+    public static int DEFAULT_WINDOW_WIDTH = X_MAX * CELL_SIZE + DEFAULT_SIDEBAR_SIZE;
+    public static final int DEFAULT_WINDOW_HEIGHT = Y_MAX * CELL_SIZE;
 
     public static final int NO_SCENE = 0;
     public static final int START_MENU_SCENE = 1;

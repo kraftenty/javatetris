@@ -8,10 +8,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.nl.javatetris.controller.CheckingBoardInitController;
-import org.nl.javatetris.controller.CheckingInitSetController;
+import org.nl.javatetris.model.settings.Settings;
 
-import static org.nl.javatetris.view.ViewConst.WINDOW_HEIGHT;
-import static org.nl.javatetris.view.ViewConst.WINDOW_WIDTH;
+import static org.nl.javatetris.view.ViewConst.DEFAULT_WINDOW_HEIGHT;
+import static org.nl.javatetris.view.ViewConst.DEFAULT_WINDOW_WIDTH;
 
 public class CheckingBoardInitView {
     private CheckingBoardInitController checkingBoardInitController;
@@ -44,7 +44,7 @@ public class CheckingBoardInitView {
             layout.getChildren().add(menuItem);
         }
 
-        Scene scene = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT);
+        Scene scene = new Scene(layout, Settings.getInstance().getScreenSize().getScreenWidth(), DEFAULT_WINDOW_HEIGHT);
 
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {

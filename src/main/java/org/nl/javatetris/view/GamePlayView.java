@@ -23,7 +23,7 @@ public class GamePlayView {
 
     public Scene createScene() {
         pane = new Pane();
-        Scene scene = new Scene(pane, WINDOW_WIDTH, WINDOW_HEIGHT);
+        Scene scene = new Scene(pane, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
         drawGamePlayScreen();
 
         // 키 이벤트 핸들러 설정
@@ -92,7 +92,7 @@ public class GamePlayView {
         Text scoreText = new Text("Score: " + gamePlayController.getScore());
         scoreText.setFont(Font.font("Arial", 18));
         scoreText.setFill(Color.BLACK);
-        scoreText.setLayoutX(WINDOW_WIDTH - 130);
+        scoreText.setLayoutX(DEFAULT_WINDOW_WIDTH - 130);
         scoreText.setLayoutY(25);
         pane.getChildren().add(scoreText);
 
@@ -100,7 +100,7 @@ public class GamePlayView {
         Text levelText = new Text("Level: " + gamePlayController.getLevel());
         levelText.setFont(Font.font("Arial", 18));
         levelText.setFill(Color.BLACK);
-        levelText.setLayoutX(WINDOW_WIDTH - 130);
+        levelText.setLayoutX(DEFAULT_WINDOW_WIDTH - 130);
         levelText.setLayoutY(50);
         pane.getChildren().add(levelText);
 
@@ -111,7 +111,7 @@ public class GamePlayView {
             for (int x = 0; x < nextTetromino.getShapeWidth(); x++) {
                 if (shape[y][x] != EMPTY) {
                     Rectangle previewCell = new Rectangle(
-                            WINDOW_WIDTH - 100 + x * PREVIEW_CELL_SIZE,
+                            DEFAULT_WINDOW_WIDTH - 100 + x * PREVIEW_CELL_SIZE,
                             100 + y * PREVIEW_CELL_SIZE,
                             PREVIEW_CELL_SIZE,
                             PREVIEW_CELL_SIZE

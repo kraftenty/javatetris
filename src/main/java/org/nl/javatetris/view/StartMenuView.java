@@ -42,7 +42,7 @@ public class StartMenuView {
             layout.getChildren().add(menuItem);
         }
 
-        Scene scene = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT);
+        Scene scene = new Scene(layout, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
 
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {
