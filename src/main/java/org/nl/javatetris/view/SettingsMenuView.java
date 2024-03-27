@@ -8,8 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.nl.javatetris.controller.SettingsMenuController;
-
-import static org.nl.javatetris.view.ViewConst.*;
+import org.nl.javatetris.model.settings.Settings;
 
 public class SettingsMenuView {
 
@@ -48,7 +47,7 @@ public class SettingsMenuView {
             layout.getChildren().add(menuItem);
         }
 
-        Scene scene = new Scene(layout, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+        Scene scene = new Scene(layout, Settings.getInstance().getScreenSizeSettings().getScreenWidth(), Settings.getInstance().getScreenSizeSettings().getScreenHeight());
 
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {

@@ -7,6 +7,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.nl.javatetris.controller.GamePlayController;
+import org.nl.javatetris.model.settings.Settings;
 import org.nl.javatetris.model.tetrominos.Tetromino;
 
 import static org.nl.javatetris.model.ModelConst.*;
@@ -23,7 +24,8 @@ public class GamePlayView {
 
     public Scene createScene() {
         pane = new Pane();
-        Scene scene = new Scene(pane, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+        Scene scene = new Scene(pane,Settings.getInstance().getScreenSizeSettings().getScreenWidth() , Settings.getInstance().getScreenSizeSettings().getScreenHeight());
+
         drawGamePlayScreen();
 
         // 키 이벤트 핸들러 설정

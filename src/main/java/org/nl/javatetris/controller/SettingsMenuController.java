@@ -1,8 +1,8 @@
 package org.nl.javatetris.controller;
 
-import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
-//import org.nl.javatetris.model.settings.Settings;
+import org.nl.javatetris.model.settings.Settings;
+
 
 public class SettingsMenuController {
 
@@ -12,7 +12,7 @@ public class SettingsMenuController {
     private Runnable onCheckingBoardInit;
     private Runnable onSettingKeyMenu;
     private int selectedItemIndex = 0;
-    private int screenSizeIndex=0;
+
     private int colorBlindModeIndex=0;
 
     public SettingsMenuController(int menuItemsCount, Runnable onResume, Runnable onCheckingInitSet, Runnable onCheckingBoardInit, Runnable onSettingKeyMenu) {
@@ -36,25 +36,26 @@ public class SettingsMenuController {
             case ENTER:
                 switch(selectedItemIndex) {
                     // TODO : 설정 메뉴 로직들. 추가할거면 여기에 추가해
-                    //로직 추가예정
                     case 0:
                         //화면 크기 조정
-                        switch(screenSizeIndex) {
+                        switch(Settings.getInstance().getScreenSizeSettings().getOffset()) {
                             case 0:
-                                System.out.println("화면 크기1"); //작은화면으로 변경
-
+                                System.out.println("화면 크기 커짐"); //화면 크기 커짐
+                                Settings.getInstance().getScreenSizeSettings().setScreenSizeBigger();
+                                System.out.println(Settings.getInstance().getScreenSizeSettings().getScreenWidth());
                                 break;
                             case 1:
-                                System.out.println("화면 크기2"); //중간화면으로 변경
+                                System.out.println("화면 크기 더 커짐"); //화면 크기 더 커짐
+                                Settings.getInstance().getScreenSizeSettings().setScreenSizeBigger();
+                                System.out.println(Settings.getInstance().getScreenSizeSettings().getScreenWidth());
                                 break;
                             case 2:
-                                System.out.println("화면 크기3"); //큰 화면으로 변경
+                                System.out.println("다시 원래크기로 돌아옴"); //다시 기본화면으로 돌아옴
+                                Settings.getInstance().getScreenSizeSettings().setScreenSizeDefault();
+                                System.out.println(Settings.getInstance().getScreenSizeSettings().getScreenWidth());
                                 break;
                         }
-                        screenSizeIndex++;
-                        if (screenSizeIndex >= 3) {
-                            screenSizeIndex = 0;
-                        }
+                        // TODO
                         break;
                     case 1:
                         //게임 조작 키 변경

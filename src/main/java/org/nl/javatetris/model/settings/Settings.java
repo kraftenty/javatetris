@@ -29,7 +29,7 @@ public class Settings {
         return singletonInstance;
     }
 
-    public ScreenSizeSettings getScreenSize() {
+    public ScreenSizeSettings getScreenSizeSettings() {
         return screenSizeSettings;
     }
 
@@ -49,7 +49,7 @@ public class Settings {
 
         private int screenHeight;
 
-        private int offset = 1;
+        private int offset = 0;
 
         public ScreenSizeSettings() {
             this.blockSize = CELL_SIZE;
@@ -59,6 +59,10 @@ public class Settings {
 
         public int getBlockSize() {
             return blockSize;
+        }
+
+        public int getOffset(){
+            return offset;
         }
 
         public int getScreenWidth() {
@@ -78,15 +82,16 @@ public class Settings {
             }
         }
 
-        public void setScreenSizeSmaller() {
-            if (offset > 0) {
-                blockSize = (int) (blockSize / 1.5);
-                screenWidth = blockSize * X_MAX + DEFAULT_SIDEBAR_SIZE;
-                screenHeight = blockSize * Y_MAX;
-                offset--;
-            }
+        public void setScreenSizeDefault() {
+            blockSize = CELL_SIZE;
+            screenWidth = DEFAULT_WINDOW_WIDTH;
+            screenHeight = DEFAULT_WINDOW_HEIGHT;
+            offset = 0;
         }
+
     }
+
+
 
 
     public class KeySetting {
