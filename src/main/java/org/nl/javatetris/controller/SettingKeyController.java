@@ -2,6 +2,13 @@ package org.nl.javatetris.controller;
 
 import javafx.scene.input.KeyEvent;
 import org.nl.javatetris.model.settings.Settings;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Collectors;
+
+import static org.nl.javatetris.controller.ControllerConst.invalidKeys;
+
 public class SettingKeyController {
     private int menuItemsCount;
     private Runnable onSettings;
@@ -16,6 +23,14 @@ public class SettingKeyController {
     public void handleKeyPress(KeyEvent e) {
         if (isWaitingForKey) {
             // 키 입력 대기 중인 경우
+            if (isInvalidKey(e.getCode().getCode())) {
+                System.out.println("유효하지 않은 키입니다.");
+                return;
+            }
+            if (isduplicated(e.getCode().getCode())) {
+                System.out.println("중복된 키입니다.");
+                return;
+            }
             switch (selectedItemIndex) {
                 case 0:
                     // 회전 조작 키 변경
@@ -65,6 +80,25 @@ public class SettingKeyController {
                     break;
             }
         }
+    }
+    public boolean isInvalidKey(int key) {
+        if (Arrays.stream(invalidKeys).anyMatch(i -> i == key)) return true;
+        return false;
+    }
+    public boolean isduplicated(int key) {
+        int rotate_key = Settings.getInstance().getKeySetting().getRotateKeyValue();
+        int down_key = Settings.getInstance().getKeySetting().getDownKeyValue();
+        int left_key = Settings.getInstance().getKeySetting().getLeftKeyValue();
+        int right_key = Settings.getInstance().getKeySetting().getRightKeyValue();
+        int drop_key = Settings.getInstance().getKeySetting().getDropKeyValue();
+
+        if (key == rotate_key) return true;
+        if (key == down_key) return true;
+        if (key == left_key) return true;
+        if (key == right_key) return true;
+        if (key == drop_key) return true;
+
+        return false;
     }
 
     public int getSelectedItemIndex() {

@@ -11,6 +11,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Settings.getInstance(); // 싱글톤 인스턴스 생성 및 JSON 파일 로드
         new SceneManager(primaryStage).showStartMenu();
+        Settings.saveSettings(); // JSON 파일 저장
     }
 
 

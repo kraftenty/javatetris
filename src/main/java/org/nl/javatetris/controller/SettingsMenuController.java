@@ -62,32 +62,18 @@ public class SettingsMenuController {
                         onSettingKeyMenu.run();
                         break;
                     case 2:
-                        switch(colorBlindModeIndex) {
-                            case 0:
-                                System.out.println("색맹모드1"); //색맹모드1로 변경
-
-                                break;
-                            case 1:
-                                System.out.println("색맹모드2"); //색맹모드2로 변경
-                                break;
-                            case 2:
-                                System.out.println("색맹모드3"); //색맹모드3으로 변경
-                                break;
-                        }
-                        colorBlindModeIndex++;
-                        if (colorBlindModeIndex >= 3) {
-                            colorBlindModeIndex = 0;
-                        }
+                        Settings.getInstance().getColorSetting().roundColorSetting();
                         break;
 
-                    case 3:
+                    case 3: //스코어 보드 초기화
                         onCheckingBoardInit.run();
                         break;
 
-                    case 4:
+                    case 4:  // 모든 설정 초기화
                         onCheckingInitSet.run();
                         break;
                     case 5:
+                        Settings.saveSettings(); //setting 메뉴 나갈 때 저장
                         onBack.run();
                         break;
 

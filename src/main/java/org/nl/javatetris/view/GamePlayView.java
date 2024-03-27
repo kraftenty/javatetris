@@ -49,10 +49,10 @@ public class GamePlayView {
         for (int y = 0; y < Y_MAX; y++) {
             for (int x = 0; x < X_MAX; x++) {
                 Rectangle cell = new Rectangle(
-                        x * CELL_SIZE,
-                        y * CELL_SIZE,
-                        CELL_SIZE,
-                        CELL_SIZE
+                        x * Settings.getInstance().getScreenSizeSettings().getBlockSize(),
+                        y * Settings.getInstance().getScreenSizeSettings().getBlockSize(),
+                        Settings.getInstance().getScreenSizeSettings().getBlockSize(),
+                        Settings.getInstance().getScreenSizeSettings().getBlockSize()
                 );
                 cell.setStroke(Color.LIGHTGRAY); // 셀의 테두리 색상
 
@@ -113,10 +113,10 @@ public class GamePlayView {
             for (int x = 0; x < nextTetromino.getShapeWidth(); x++) {
                 if (shape[y][x] != EMPTY) {
                     Rectangle previewCell = new Rectangle(
-                            DEFAULT_WINDOW_WIDTH - 100 + x * PREVIEW_CELL_SIZE,
-                            100 + y * PREVIEW_CELL_SIZE,
-                            PREVIEW_CELL_SIZE,
-                            PREVIEW_CELL_SIZE
+                            DEFAULT_WINDOW_WIDTH - 100 + x * Settings.getInstance().getScreenSizeSettings().getPreviewBlockSize(),
+                            100 + y * Settings.getInstance().getScreenSizeSettings().getPreviewBlockSize(),
+                            Settings.getInstance().getScreenSizeSettings().getPreviewBlockSize(),
+                            Settings.getInstance().getScreenSizeSettings().getPreviewBlockSize()
                     );
                     previewCell.setFill(Color.GRAY); // 다음 나올 테트로미노의 색상
                     previewCell.setStroke(Color.LIGHTGRAY); // 테두리 색상
@@ -134,7 +134,11 @@ public class GamePlayView {
 
         for (int y = 0; y < Y_MAX; y++) {
             for (int x = 0; x < X_MAX; x++) {
-                Rectangle cell = new Rectangle(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                Rectangle cell = new Rectangle(
+                        x * Settings.getInstance().getScreenSizeSettings().getBlockSize(),
+                        y * Settings.getInstance().getScreenSizeSettings().getBlockSize(),
+                        Settings.getInstance().getScreenSizeSettings().getBlockSize(),
+                        Settings.getInstance().getScreenSizeSettings().getBlockSize());
                 cell.setStroke(Color.LIGHTGRAY); // 셀의 테두리 색상
 
                 int cellValue = gamePlayController.getBoard().getValueAt(y, x);
@@ -158,8 +162,8 @@ public class GamePlayView {
         Text gameOverText = new Text("GAME OVER");
         gameOverText.setFont(Font.font("Verdana", 40));
         gameOverText.setFill(Color.RED);
-        gameOverText.setLayoutY(Y_MAX*CELL_SIZE/2);
-        gameOverText.setLayoutX(X_MAX*CELL_SIZE/2 - 120);
+        gameOverText.setLayoutY(Y_MAX*Settings.getInstance().getScreenSizeSettings().getBlockSize()/2);
+        gameOverText.setLayoutX(X_MAX*Settings.getInstance().getScreenSizeSettings().getBlockSize()/2 - 120);
 
         // 문구를 pane에 추가
         pane.getChildren().add(gameOverText);

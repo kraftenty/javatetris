@@ -1,13 +1,1 @@
-{
-  "settings": {
-    "screen": "Medium",
-
-    "key_mapping": {
-      "move_left": "ArrowLeft",
-      "move_right": "ArrowRight",
-      "rotate": "ArrowUp",
-      "soft_drop": "ArrowDown",
-      "hard_drop": "Space"
-    }
-  }
-}
+{"settings":{"key_setting":{"right_key":39,"drop_key":32,"left_key":37,"down_key":40,"rotate_key":38},"color_setting":2,"screen_size":0}}

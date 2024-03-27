@@ -2,6 +2,7 @@ package org.nl.javatetris.controller;
 
 import javafx.scene.input.KeyEvent;
 import javafx.application.Platform;
+import org.nl.javatetris.model.settings.Settings;
 
 public class CheckingInitSetController {
     private int meunItemsCount;
@@ -26,6 +27,7 @@ public class CheckingInitSetController {
                     //로직 추가예정
                     case 0:
                         //예 -> 초기화 진행
+                        Settings.initSettings();
                         System.out.println("설정 초기화");
                         break;
                     case 1:

@@ -14,11 +14,11 @@ import org.nl.javatetris.model.settings.Settings;
 public class SettingsKeyMenuView {
     private SettingKeyController settingKeyController;
     private static Label[] menuItems = new Label[]{
-            new Label("Up"),
-            new Label("Left"),
-            new Label("Right"),
-            new Label("Down"),
-            new Label("Space Bar"),
+            new Label(Settings.getInstance().getKeySetting().getRotateKeyString()),
+            new Label(Settings.getInstance().getKeySetting().getLeftKeyString()),
+            new Label(Settings.getInstance().getKeySetting().getRightKeyString()),
+            new Label(Settings.getInstance().getKeySetting().getDowntKeyString()),
+            new Label(Settings.getInstance().getKeySetting().getDropKeyString()),
             new Label("Back to settings")
     };
 
@@ -76,6 +76,7 @@ public class SettingsKeyMenuView {
         scene.setOnKeyPressed(e -> {
             settingKeyController.handleKeyPress(e);
             // 현재 선택된 항목을 기반으로 UI를 업데이트합니다.
+            updateSetting();
             updateMenuItems(settingKeyController.getSelectedItemIndex());
         });
 
@@ -89,5 +90,13 @@ public class SettingsKeyMenuView {
         for (int i = 0; i < menuItems.length; i++) {
             menuItems[i].setTextFill(i == selectedIndex ? Color.RED : Color.WHITE);
         }
+    }
+
+    private void updateSetting(){
+        menuItems[0].setText(Settings.getInstance().getKeySetting().getRotateKeyString());
+        menuItems[1].setText(Settings.getInstance().getKeySetting().getLeftKeyString());
+        menuItems[2].setText(Settings.getInstance().getKeySetting().getRightKeyString());
+        menuItems[3].setText(Settings.getInstance().getKeySetting().getDowntKeyString());
+        menuItems[4].setText(Settings.getInstance().getKeySetting().getDropKeyString());
     }
 }

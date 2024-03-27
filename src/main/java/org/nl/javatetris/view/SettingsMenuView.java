@@ -15,14 +15,32 @@ public class SettingsMenuView {
     private SettingsMenuController settingsMenuController;
     private static Label[] menuItems = new Label[]{
             // TODO : 설정 메뉴 항목. 추가할거면 여기에 추가해
-            new Label("화면 크기 설정"),
+            new Label(getLabelOfColorBlindModeSetting()),
             new Label("게임 조작 키 설정"),
-            new Label("색맹모드"),
+            new Label(getLabelOfColorBlindModeSetting()),
             new Label("스코어 보드 초기화"),
             new Label("모든 설정 초기화"),
             new Label("Main Menu"),
     };
 
+    private static String getLabelOfColorBlindModeSetting() {
+        if (Settings.getInstance().getColorSetting().getColorOffset() == 0) {
+            return "색맹모드 : OFF";
+        } else if (Settings.getInstance().getColorSetting().getColorOffset() == 1) {
+            return "색맹모드 : 적록";
+        } else {
+            return "색맹모드 : 청";
+        }
+    }
+    private static String getLabelOfScreenSizeSetting() {
+        if (Settings.getInstance().getScreenSizeSettings().getOffset() == 0) {
+            return "화면 크기 : 작음";
+        } else if (Settings.getInstance().getScreenSizeSettings().getOffset() == 1) {
+            return "화면 크기 : 중간";
+        } else {
+            return "화면 크기 : 큼";
+        }
+    }
     public SettingsMenuView(Runnable onBackToMenu, Runnable onCheckingInitSet, Runnable onChekingBoardInit, Runnable onSettingKeyMenu) {
         this.settingsMenuController = new SettingsMenuController(menuItems.length,
                 onBackToMenu,
@@ -53,6 +71,7 @@ public class SettingsMenuView {
         scene.setOnKeyPressed(e -> {
             settingsMenuController.handleKeyPress(e);
             // 현재 선택된 항목을 기반으로 UI를 업데이트합니다.
+            updateSetting();
             updateMenuItems(settingsMenuController.getSelectedItemIndex());
         });
 
@@ -69,4 +88,12 @@ public class SettingsMenuView {
             menuItems[i].setTextFill(i == selectedIndex ? Color.RED : Color.WHITE);
         }
     }
+
+    // 화면에 나타나는 설정을 업데이트
+    private void updateSetting(){
+        menuItems[0].setText(getLabelOfScreenSizeSetting());
+        menuItems[2].setText(getLabelOfColorBlindModeSetting());
+    }
+
+
 }
