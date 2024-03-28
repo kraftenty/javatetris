@@ -33,6 +33,7 @@ public class ScoreBoardView implements View {
         layout.getChildren().add(title);
 
         // TODO : 스코어보드 뷰 코드를 여기에 짜면됨
+        Text Score = new Text("score");
 
 
         for (Label menuItem : menuItems) {
