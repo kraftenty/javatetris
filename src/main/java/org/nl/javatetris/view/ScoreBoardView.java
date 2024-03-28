@@ -8,6 +8,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.nl.javatetris.controller.ScoreBoardController;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.nl.javatetris.model.score.Score;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.nl.javatetris.view.ViewConst.WINDOW_HEIGHT;
 import static org.nl.javatetris.view.ViewConst.WINDOW_WIDTH;
@@ -19,7 +28,16 @@ public class ScoreBoardView implements View {
             // 메뉴 항목. 추가할거면 여기에 추가해
             new Label("Main Menu"),
     };
-
+    private List<Score> readScoreboardData(String filePath) {
+        try (FileReader reader = new FileReader(filePath)) {
+            Gson gson = new Gson();
+            Score[] scores = gson.fromJson(reader, Score[].class);
+            return List.of(scores);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
     public ScoreBoardView(Runnable onBackToMenu) {
         this.scoreBoardController = new ScoreBoardController(onBackToMenu);
     }
@@ -33,7 +51,12 @@ public class ScoreBoardView implements View {
         layout.getChildren().add(title);
 
         // TODO : 스코어보드 뷰 코드를 여기에 짜면됨
-        Text Score = new Text("score");
+        List<Score> scoreboardData = readScoreboardData("scoreboard.json");
+
+        for (Score entry : scoreboardData) {
+            Text entryText = new Text(entry.getName() + ": " + entry.getScore());
+            layout.getChildren().add(entryText);
+        }
 
 
         for (Label menuItem : menuItems) {
