@@ -195,17 +195,16 @@ public class Board {
     }
 
     // 스페이스바를 눌러 테트로미노를 가장 아래로 내리는 메서드
-    public void dropTetromino() {
+    public void dropTetromino(){
+        int offset=0;
         clearTetrominoFromBoard();
-        while (canMove(tetrominoY + 1, tetrominoX)) {
-            tetrominoY ++;
+        while(canMove(tetrominoY+offset+1,tetrominoX)){
+            offset++;
         }
+        tetrominoY+=offset;
         placeTetrominoOnBoard();
-        clearCompletedLines();
-        spawnTetromino();
+        moveTetrominoDown();
     }
-
-
 
     /**
      * 검사 메서드

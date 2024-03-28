@@ -3,6 +3,7 @@ module org.nl.javatetris {
     requires javafx.fxml;
 
     requires org.kordamp.bootstrapfx.core;
+    requires com.google.gson;
 
     opens org.nl.javatetris to javafx.fxml;
     exports org.nl.javatetris;
