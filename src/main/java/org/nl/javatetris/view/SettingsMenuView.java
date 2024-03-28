@@ -65,7 +65,11 @@ public class SettingsMenuView {
             layout.getChildren().add(menuItem);
         }
 
-        Scene scene = new Scene(layout, Settings.getInstance().getScreenSizeSettings().getScreenWidth(), Settings.getInstance().getScreenSizeSettings().getScreenHeight());
+        Scene scene = new Scene(
+                layout,
+                Settings.getInstance().getScreenSizeSettings().getScreenWidth(),
+                Settings.getInstance().getScreenSizeSettings().getScreenHeight()
+        );
 
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {

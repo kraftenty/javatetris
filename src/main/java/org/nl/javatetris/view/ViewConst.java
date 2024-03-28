@@ -4,10 +4,9 @@ import static org.nl.javatetris.model.ModelConst.*;
 
 public class ViewConst {
 
-    public static final int CELL_SIZE = 30;
-    public static final int PREVIEW_CELL_SIZE = 20;
+    public static final int CELL_SIZE = 20;
+    public static final int PREVIEW_CELL_SIZE = 15;
     public static final int DEFAULT_SIDEBAR_SIZE = 140;
-
     public static int DEFAULT_WINDOW_WIDTH = X_MAX * CELL_SIZE + DEFAULT_SIDEBAR_SIZE;
     public static int DEFAULT_WINDOW_HEIGHT = Y_MAX * CELL_SIZE;
 

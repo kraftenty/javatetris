@@ -29,6 +29,7 @@ public class CheckingInitSetController {
                         //예 -> 초기화 진행
                         Settings.initSettings();
                         System.out.println("설정 초기화");
+                        onSettings.run();
                         break;
                     case 1:
                         //아니오-> 설정으로 돌아가기

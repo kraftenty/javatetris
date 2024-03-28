@@ -159,7 +159,7 @@ public class Settings {
             previewBlockSize = PREVIEW_CELL_SIZE;
             screenWidth = DEFAULT_WINDOW_WIDTH;
             screenHeight = DEFAULT_WINDOW_HEIGHT;
-            offset = 0;
+            offset = 0 ;
         }
 
     }

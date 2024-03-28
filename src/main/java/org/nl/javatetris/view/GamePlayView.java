@@ -94,7 +94,7 @@ public class GamePlayView {
         Text scoreText = new Text("Score: " + gamePlayController.getScore());
         scoreText.setFont(Font.font("Arial", 18));
         scoreText.setFill(Color.BLACK);
-        scoreText.setLayoutX(DEFAULT_WINDOW_WIDTH - 130);
+        scoreText.setLayoutX(Settings.getInstance().getScreenSizeSettings().getBlockSize()*12 + 10);
         scoreText.setLayoutY(25);
         pane.getChildren().add(scoreText);
 
@@ -102,7 +102,7 @@ public class GamePlayView {
         Text levelText = new Text("Level: " + gamePlayController.getLevel());
         levelText.setFont(Font.font("Arial", 18));
         levelText.setFill(Color.BLACK);
-        levelText.setLayoutX(DEFAULT_WINDOW_WIDTH - 130);
+        levelText.setLayoutX(Settings.getInstance().getScreenSizeSettings().getBlockSize()*12 + 10);
         levelText.setLayoutY(50);
         pane.getChildren().add(levelText);
 
@@ -113,7 +113,7 @@ public class GamePlayView {
             for (int x = 0; x < nextTetromino.getShapeWidth(); x++) {
                 if (shape[y][x] != EMPTY) {
                     Rectangle previewCell = new Rectangle(
-                            DEFAULT_WINDOW_WIDTH - 100 + x * Settings.getInstance().getScreenSizeSettings().getPreviewBlockSize(),
+                            Settings.getInstance().getScreenSizeSettings().getBlockSize()*12 + 10 + x * Settings.getInstance().getScreenSizeSettings().getPreviewBlockSize(),
                             100 + y * Settings.getInstance().getScreenSizeSettings().getPreviewBlockSize(),
                             Settings.getInstance().getScreenSizeSettings().getPreviewBlockSize(),
                             Settings.getInstance().getScreenSizeSettings().getPreviewBlockSize()
