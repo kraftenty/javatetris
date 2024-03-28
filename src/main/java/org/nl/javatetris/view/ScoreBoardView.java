@@ -1,5 +1,7 @@
 package org.nl.javatetris.view;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -8,14 +10,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.nl.javatetris.controller.ScoreBoardController;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.nl.javatetris.model.score.Score;
 
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.nl.javatetris.view.ViewConst.WINDOW_HEIGHT;
@@ -28,16 +28,7 @@ public class ScoreBoardView implements View {
             // 메뉴 항목. 추가할거면 여기에 추가해
             new Label("Main Menu"),
     };
-    private List<Score> readScoreboardData(String filePath) {
-        try (FileReader reader = new FileReader(filePath)) {
-            Gson gson = new Gson();
-            Score[] scores = gson.fromJson(reader, Score[].class);
-            return List.of(scores);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
-    }
+
     public ScoreBoardView(Runnable onBackToMenu) {
         this.scoreBoardController = new ScoreBoardController(onBackToMenu);
     }
@@ -51,13 +42,23 @@ public class ScoreBoardView implements View {
         layout.getChildren().add(title);
 
         // TODO : 스코어보드 뷰 코드를 여기에 짜면됨
-        List<Score> scoreboardData = readScoreboardData("scoreboard.json");
+        //json파일에서 읽어오기
+        List<Score> scoreboard = loadScoreboard("src/main/resources/scoreboard.json");
 
-        for (Score entry : scoreboardData) {
-            Text entryText = new Text(entry.getName() + ": " + entry.getScore());
-            layout.getChildren().add(entryText);
+        //내림차순 정렬
+        scoreboard.sort(Comparator.comparingInt(Score::getScore).reversed());
+
+        //스코어 10개 내림차순으로 display
+        int count = 0;
+        for (Score score : scoreboard) {
+            if (count >= 10) {
+                break;
+            }
+            Label scoreLabel = new Label(score.getName() + ": " + score.getScore());
+            scoreLabel.setFont(new Font(16));
+            layout.getChildren().add(scoreLabel);
+            count++;
         }
-
 
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
@@ -79,7 +80,17 @@ public class ScoreBoardView implements View {
 
         return scene;
     }
-
+    //json파일로부터 scoreboard 읽어오기
+    private List<Score> loadScoreboard(String filename) {
+        List<Score> scoreboard = new ArrayList<>();
+        try {
+            Gson gson = new Gson();
+            scoreboard = gson.fromJson(new FileReader(filename), new TypeToken<List<Score>>(){}.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return scoreboard;
+    }
     // 선택된 항목에 따라 UI 업데이트
     private void updateMenuItems(int selectedIndex) {
         for (int i = 0; i < menuItems.length; i++) {
