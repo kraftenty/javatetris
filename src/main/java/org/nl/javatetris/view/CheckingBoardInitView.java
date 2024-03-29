@@ -7,33 +7,33 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.nl.javatetris.controller.StartMenuController;
+import org.nl.javatetris.controller.CheckingBoardInitController;
 import org.nl.javatetris.model.settings.Settings;
 
-public class StartMenuView implements View {
+public class CheckingBoardInitView {
+    private CheckingBoardInitController checkingBoardInitController;
 
-    private StartMenuController startMenuController;
     private static Label[] menuItems = new Label[]{
-            // 메뉴 항목. 추가할거면 여기에 추가해
-            new Label("Start Game"),
-            new Label("Settings"),
-            new Label("Score Board"),
-            new Label("Quit")
+            new Label("예"),
+            new Label("아니오"),
     };
 
-
-    public StartMenuView(Runnable onStartGame, Runnable onSettings, Runnable onScoreBoard) {
-        this.startMenuController = new StartMenuController(menuItems.length, onStartGame, onSettings, onScoreBoard);
+    public CheckingBoardInitView(Runnable onSettings) {
+        this.checkingBoardInitController = new CheckingBoardInitController(menuItems.length,onSettings);
     }
 
-    public Scene createScene() {
+    public Scene createScene(){
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
 
-        // 게임의 이름
-        Text title = new Text("Tetris");
+        Text title = new Text("Settings");
         title.setFont(new Font(20));
         layout.getChildren().add(title);
+
+        Text title2= new Text("스코어 보드를 초기화 하시겠습니까?");
+        title2.setFont(new Font(18));
+        layout.getChildren().add(title2);
+
 
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
@@ -45,19 +45,18 @@ public class StartMenuView implements View {
 
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {
-            startMenuController.handleKeyPress(e);
+            checkingBoardInitController.handleKeyPress(e);
             // 현재 선택된 항목을 기반으로 UI를 업데이트합니다.
-            updateMenuItems(startMenuController.getSelectedItemIndex());
+            updateMenuItems(checkingBoardInitController.getSelectedItemIndex());
         });
 
         // 초기 선택 상태 업데이트
-        updateMenuItems(startMenuController.getSelectedItemIndex());
+        updateMenuItems(checkingBoardInitController.getSelectedItemIndex());
 
         return scene;
 
     }
 
-    // 선택된 항목에 따라 UI 업데이트
     private void updateMenuItems(int selectedIndex) {
         for (int i = 0; i < menuItems.length; i++) {
             menuItems[i].setTextFill(i == selectedIndex ? Color.RED : Color.WHITE);

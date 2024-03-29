@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import org.nl.javatetris.controller.GamePlayController;
+import org.nl.javatetris.model.settings.Settings;
 import org.nl.javatetris.model.tetrominos.Tetromino;
 
 import java.util.function.Consumer;
@@ -34,7 +35,8 @@ public class GamePlayView implements View {
 
     public Scene createScene() {
         pane = new Pane();
-        Scene scene = new Scene(pane, WINDOW_WIDTH, WINDOW_HEIGHT);
+        Scene scene = new Scene(pane,Settings.getInstance().getScreenSizeSettings().getScreenWidth() , Settings.getInstance().getScreenSizeSettings().getScreenHeight());
+
         drawGamePlayScreen();
 
         // 키 이벤트 핸들러 설정
@@ -58,10 +60,10 @@ public class GamePlayView implements View {
         for (int y = 0; y < Y_MAX; y++) {
             for (int x = 0; x < X_MAX; x++) {
                 Rectangle cell = new Rectangle(
-                        x * CELL_SIZE,
-                        y * CELL_SIZE,
-                        CELL_SIZE,
-                        CELL_SIZE
+                        x * Settings.getInstance().getScreenSizeSettings().getBlockSize(),
+                        y * Settings.getInstance().getScreenSizeSettings().getBlockSize(),
+                        Settings.getInstance().getScreenSizeSettings().getBlockSize(),
+                        Settings.getInstance().getScreenSizeSettings().getBlockSize()
                 );
                 cell.setStroke(Color.LIGHTGRAY); // 셀의 테두리 색상
 
@@ -102,6 +104,7 @@ public class GamePlayView implements View {
         drawScore();
         drawLevel();
         drawNextTetromino();
+
     }
 
     // 게임오버 화면을 그리는 메서드
@@ -110,7 +113,11 @@ public class GamePlayView implements View {
 
         for (int y = 0; y < Y_MAX; y++) {
             for (int x = 0; x < X_MAX; x++) {
-                Rectangle cell = new Rectangle(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                Rectangle cell = new Rectangle(
+                        x * Settings.getInstance().getScreenSizeSettings().getBlockSize(),
+                        y * Settings.getInstance().getScreenSizeSettings().getBlockSize(),
+                        Settings.getInstance().getScreenSizeSettings().getBlockSize(),
+                        Settings.getInstance().getScreenSizeSettings().getBlockSize());
                 cell.setStroke(Color.LIGHTGRAY); // 셀의 테두리 색상
 
                 int cellValue = gamePlayController.getBoard().getValueAt(y, x);
@@ -137,8 +144,10 @@ public class GamePlayView implements View {
         Text gameOverText = new Text("GAME OVER");
         gameOverText.setFont(Font.font("Arial", 40));
         gameOverText.setFill(Color.RED);
-        gameOverText.setLayoutY(Y_MAX*CELL_SIZE/2);
-        gameOverText.setLayoutX(X_MAX*CELL_SIZE/2 - 120);
+        gameOverText.setLayoutY(Y_MAX*Settings.getInstance().getScreenSizeSettings().getBlockSize()/2);
+        gameOverText.setLayoutX(X_MAX*Settings.getInstance().getScreenSizeSettings().getBlockSize()/2 - 120);
+
+        // 문구를 pane에 추가
         pane.getChildren().add(gameOverText);
 
         // 깜빡임 효과를 위한 Timeline 생성
