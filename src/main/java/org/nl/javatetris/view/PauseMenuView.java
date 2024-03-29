@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import org.nl.javatetris.controller.PauseMenuController;
 import org.nl.javatetris.model.settings.Settings;
 
-public class PauseMenuView {
+public class PauseMenuView implements View {
 
     private PauseMenuController pauseMenuController;
     private static Label[] menuItems = new Label[]{

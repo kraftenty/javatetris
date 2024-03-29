@@ -1,25 +1,36 @@
 package org.nl.javatetris.view;
 
+import javafx.animation.KeyFrame;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 import org.nl.javatetris.controller.GamePlayController;
 import org.nl.javatetris.model.settings.Settings;
 import org.nl.javatetris.model.tetrominos.Tetromino;
 
+import java.util.function.Consumer;
+
 import static org.nl.javatetris.model.ModelConst.*;
 import static org.nl.javatetris.view.ViewConst.*;
 
-public class GamePlayView {
+public class GamePlayView implements View {
 
     private GamePlayController gamePlayController;
     private Pane pane;
+    private Consumer<Integer> showGameOver; // Runnable 대신 Consumer<> 사용
 
-    public GamePlayView(Runnable onPause) {
-        gamePlayController = new GamePlayController(onPause, this::drawGamePlayScreen, this::drawGameOverScreen);
+    public GamePlayView(Runnable onPause, Consumer<Integer> showGameOver) {
+        this.gamePlayController = new GamePlayController(
+                onPause,
+                this::drawGamePlayScreen,
+                this::drawGameOverScreen
+        );
+        this.showGameOver = showGameOver;
     }
 
     public Scene createScene() {
@@ -90,47 +101,15 @@ public class GamePlayView {
             }
         }
 
-        // 점수 표시
-        Text scoreText = new Text("Score: " + gamePlayController.getScore());
-        scoreText.setFont(Font.font("Arial", 18));
-        scoreText.setFill(Color.BLACK);
-        scoreText.setLayoutX(Settings.getInstance().getScreenSizeSettings().getBlockSize()*12 + 10);
-        scoreText.setLayoutY(25);
-        pane.getChildren().add(scoreText);
-
-        // 레벨 표시
-        Text levelText = new Text("Level: " + gamePlayController.getLevel());
-        levelText.setFont(Font.font("Arial", 18));
-        levelText.setFill(Color.BLACK);
-        levelText.setLayoutX(Settings.getInstance().getScreenSizeSettings().getBlockSize()*12 + 10);
-        levelText.setLayoutY(50);
-        pane.getChildren().add(levelText);
-
-        // 다음 테트로미노 표시
-        Tetromino nextTetromino = gamePlayController.getTetrominoGenerator().peekNextTetromino(); // 다음 나올 테트로미노 가져오기
-        int[][] shape = nextTetromino.getShape(); // 다음 나올 테트로미노의 형태 가져오기\
-        for (int y = 0; y < nextTetromino.getShapeHeight(); y++) {
-            for (int x = 0; x < nextTetromino.getShapeWidth(); x++) {
-                if (shape[y][x] != EMPTY) {
-                    Rectangle previewCell = new Rectangle(
-                            Settings.getInstance().getScreenSizeSettings().getBlockSize()*12 + 10 + x * Settings.getInstance().getScreenSizeSettings().getPreviewBlockSize(),
-                            100 + y * Settings.getInstance().getScreenSizeSettings().getPreviewBlockSize(),
-                            Settings.getInstance().getScreenSizeSettings().getPreviewBlockSize(),
-                            Settings.getInstance().getScreenSizeSettings().getPreviewBlockSize()
-                    );
-                    previewCell.setFill(Color.GRAY); // 다음 나올 테트로미노의 색상
-                    previewCell.setStroke(Color.LIGHTGRAY); // 테두리 색상
-                    pane.getChildren().add(previewCell);
-                }
-            }
-        }
+        drawScore();
+        drawLevel();
+        drawNextTetromino();
 
     }
 
     // 게임오버 화면을 그리는 메서드
     private void drawGameOverScreen() {
-        System.out.println("drawGameOverScreen");
-        pane.getChildren().clear(); // 기존에 그려진 모든 Rectangle 제거
+        pane.getChildren().clear();
 
         for (int y = 0; y < Y_MAX; y++) {
             for (int x = 0; x < X_MAX; x++) {
@@ -157,16 +136,77 @@ public class GamePlayView {
             }
         }
 
+        drawScore();
+        drawLevel();
+
 
         // 'GAME OVER' 문구 생성
         Text gameOverText = new Text("GAME OVER");
-        gameOverText.setFont(Font.font("Verdana", 40));
+        gameOverText.setFont(Font.font("Arial", 40));
         gameOverText.setFill(Color.RED);
         gameOverText.setLayoutY(Y_MAX*Settings.getInstance().getScreenSizeSettings().getBlockSize()/2);
         gameOverText.setLayoutX(X_MAX*Settings.getInstance().getScreenSizeSettings().getBlockSize()/2 - 120);
 
         // 문구를 pane에 추가
         pane.getChildren().add(gameOverText);
+
+        // 깜빡임 효과를 위한 Timeline 생성
+        Timeline blinkTimeline = new Timeline(new KeyFrame(Duration.seconds(0.25), e -> {
+            if (gameOverText.isVisible()) {
+                gameOverText.setVisible(false);
+            } else {
+                gameOverText.setVisible(true);
+            }
+        }));
+
+        blinkTimeline.setCycleCount(8);
+        blinkTimeline.setOnFinished(e -> {
+            // TODO :
+            this.showGameOver.accept(gamePlayController.getScore());
+        });
+        blinkTimeline.play();
+
+    }
+
+    // 점수 표시 메서드
+    private void drawScore() {
+        Text scoreText = new Text("Score: " + gamePlayController.getScore());
+        scoreText.setFont(Font.font("Arial", 18));
+        scoreText.setFill(Color.BLACK);
+        scoreText.setLayoutX(WINDOW_WIDTH - 130);
+        scoreText.setLayoutY(25);
+        pane.getChildren().add(scoreText);
+    }
+
+    // 레벨 표시 메서드
+    private void drawLevel() {
+        Text levelText = new Text("Level: " + gamePlayController.getLevel());
+        levelText.setFont(Font.font("Arial", 18));
+        levelText.setFill(Color.BLACK);
+        levelText.setLayoutX(WINDOW_WIDTH - 130);
+        levelText.setLayoutY(50);
+        pane.getChildren().add(levelText);
+    }
+
+    // 다음 테트로미노 표시 메서드
+    private void drawNextTetromino() {
+        Tetromino nextTetromino = gamePlayController.getTetrominoGenerator().peekNextTetromino();
+        int[][] shape = nextTetromino.getShape();
+        for (int y = 0; y < nextTetromino.getShapeHeight(); y++) {
+            for (int x = 0; x < nextTetromino.getShapeWidth(); x++) {
+                if (shape[y][x] != EMPTY) {
+                    Rectangle previewCell = new Rectangle(
+                            WINDOW_WIDTH - 100 + x * PREVIEW_CELL_SIZE,
+                            100 + y * PREVIEW_CELL_SIZE,
+                            PREVIEW_CELL_SIZE,
+                            PREVIEW_CELL_SIZE
+                    );
+                    previewCell.setFill(Color.GRAY); // 다음 나올 테트로미노의 색상
+                    previewCell.setStroke(Color.LIGHTGRAY); // 테두리 색상
+                    pane.getChildren().add(previewCell);
+                }
+            }
+        }
     }
 
 }

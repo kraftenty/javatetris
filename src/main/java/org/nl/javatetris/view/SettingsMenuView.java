@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import org.nl.javatetris.controller.SettingsMenuController;
 import org.nl.javatetris.model.settings.Settings;
 
-public class SettingsMenuView {
+public class SettingsMenuView implements View {
 
     private SettingsMenuController settingsMenuController;
     private static Label[] menuItems = new Label[]{

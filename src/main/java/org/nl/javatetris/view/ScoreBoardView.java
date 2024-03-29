@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import org.nl.javatetris.controller.ScoreBoardController;
 import org.nl.javatetris.model.settings.Settings;
 
-public class ScoreBoardView {
+public class ScoreBoardView implements View {
 
     private ScoreBoardController scoreBoardController;
     private static Label[] menuItems = new Label[]{

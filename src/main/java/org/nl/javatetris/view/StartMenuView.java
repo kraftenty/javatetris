@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import org.nl.javatetris.controller.StartMenuController;
 import org.nl.javatetris.model.settings.Settings;
 
-public class StartMenuView {
+public class StartMenuView implements View {
 
     private StartMenuController startMenuController;
     private static Label[] menuItems = new Label[]{

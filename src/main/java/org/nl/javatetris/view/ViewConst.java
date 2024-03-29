@@ -16,7 +16,9 @@ public class ViewConst {
     public static final int PAUSE_MENU_SCENE = 3;
     public static final int SETTINGS_MENU_SCENE = 4;
     public static final int SCORE_BOARD_SCENE = 5;
+
     public static final int CHECKING_INIT_SET_SCENE =6;
     public static final int CHECKING_BOARD_INIT=7;
     public static final int SETTING_KEY_MENU_SCENE=8;
+    public static final int GAME_OVER_SCENE = 9;
 }
