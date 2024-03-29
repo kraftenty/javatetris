@@ -256,8 +256,6 @@ public class Settings {
                     return "BACKSPACE";
                 case 9:
                     return "TAB";
-                case 13 :
-                    return "ENTER";
                 case 16:
                     return "SHIFT";
                 case 17:

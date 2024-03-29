@@ -15,7 +15,7 @@ public class ControllerConst {
     public static final int DEFAULT_DROP_KEY = 32;
 
     public static final int[] invalidKeys = {
-            27, 91, 92, 93, 112, 113,
+            13, 27, 91, 92, 93, 112, 113,
             114, 115, 116, 117, 118, 119,
             120, 121, 122, 123, 144, 145
     };
