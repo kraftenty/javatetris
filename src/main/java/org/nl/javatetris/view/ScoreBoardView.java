@@ -43,7 +43,7 @@ public class ScoreBoardView implements View {
 
         // TODO : 스코어보드 뷰 코드를 여기에 짜면됨
         //json파일에서 읽어오기
-        List<Score> scoreboard = loadScoreboard("src/main/resources/scoreboard.json");
+        List<Score> scoreboard = Score.loadScoreboard("src/main/resources/scoreboard.json");
 
         //내림차순 정렬
         scoreboard.sort(Comparator.comparingInt(Score::getScore).reversed());
@@ -79,17 +79,6 @@ public class ScoreBoardView implements View {
         updateMenuItems(scoreBoardController.getSelectedItemIndex());
 
         return scene;
-    }
-    //json파일로부터 scoreboard 읽어오기
-    private List<Score> loadScoreboard(String filename) {
-        List<Score> scoreboard = new ArrayList<>();
-        try {
-            Gson gson = new Gson();
-            scoreboard = gson.fromJson(new FileReader(filename), new TypeToken<List<Score>>(){}.getType());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return scoreboard;
     }
     // 선택된 항목에 따라 UI 업데이트
     private void updateMenuItems(int selectedIndex) {
