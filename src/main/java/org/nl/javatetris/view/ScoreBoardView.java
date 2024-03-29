@@ -1,5 +1,7 @@
 package org.nl.javatetris.view;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -8,7 +10,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.nl.javatetris.controller.ScoreBoardController;
+
+import org.nl.javatetris.model.score.Score;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+import static org.nl.javatetris.view.ViewConst.WINDOW_HEIGHT;
+import static org.nl.javatetris.view.ViewConst.WINDOW_WIDTH;
 import org.nl.javatetris.model.settings.Settings;
+
 
 public class ScoreBoardView implements View {
 
@@ -31,7 +45,23 @@ public class ScoreBoardView implements View {
         layout.getChildren().add(title);
 
         // TODO : 스코어보드 뷰 코드를 여기에 짜면됨
+        //json파일에서 읽어오기
+        List<Score> scoreboard = Score.loadScoreboard("src/main/resources/scoreboard.json");
 
+        //내림차순 정렬
+        scoreboard.sort(Comparator.comparingInt(Score::getScore).reversed());
+
+        //스코어 10개 내림차순으로 display
+        int count = 0;
+        for (Score score : scoreboard) {
+            if (count >= 10) {
+                break;
+            }
+            Label scoreLabel = new Label(score.getName() + ": " + score.getScore());
+            scoreLabel.setFont(new Font(16));
+            layout.getChildren().add(scoreLabel);
+            count++;
+        }
 
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
@@ -53,7 +83,6 @@ public class ScoreBoardView implements View {
 
         return scene;
     }
-
     // 선택된 항목에 따라 UI 업데이트
     private void updateMenuItems(int selectedIndex) {
         for (int i = 0; i < menuItems.length; i++) {
