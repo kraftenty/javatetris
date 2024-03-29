@@ -8,8 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.nl.javatetris.controller.PauseMenuController;
-
-import static org.nl.javatetris.view.ViewConst.*;
+import org.nl.javatetris.model.settings.Settings;
 
 public class PauseMenuView implements View {
 
@@ -17,12 +16,13 @@ public class PauseMenuView implements View {
     private static Label[] menuItems = new Label[]{
             // 메뉴 항목. 추가할거면 여기에 추가해
             new Label("Resume"),
+            new Label("Setting"),
             new Label("Main Menu"),
             new Label("Quit")
     };
 
-    public PauseMenuView(Runnable onResume, Runnable onBackToMenu) {
-        this.pauseMenuController = new PauseMenuController(menuItems.length, onResume, onBackToMenu);
+    public PauseMenuView(Runnable onResume, Runnable onBackToMenu, Runnable onSettings) {
+        this.pauseMenuController = new PauseMenuController(menuItems.length, onResume, onBackToMenu, onSettings );
     }
 
     public Scene createScene() {
@@ -40,8 +40,7 @@ public class PauseMenuView implements View {
             layout.getChildren().add(menuItem);
         }
 
-        Scene scene = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT);
-
+        Scene scene = new Scene(layout, Settings.getInstance().getScreenSizeSettings().getScreenWidth(), Settings.getInstance().getScreenSizeSettings().getScreenHeight());
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {
             pauseMenuController.handleKeyPress(e);

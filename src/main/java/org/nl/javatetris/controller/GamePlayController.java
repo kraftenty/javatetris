@@ -5,6 +5,7 @@ import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import org.nl.javatetris.model.Board;
+import org.nl.javatetris.model.settings.Settings;
 import org.nl.javatetris.model.tetrominos.TetrominoGenerator;
 import org.nl.javatetris.view.SceneManager;
 import org.nl.javatetris.view.ViewConst;
@@ -128,28 +129,26 @@ public class GamePlayController {
         if (isGameOver) {
             return false;
         }
-        switch (e.getCode()) {
-            case ESCAPE:
-                onPause.run();
-                break;
-            case DOWN:
-                board.moveTetrominoDown();
-                addScoreOnDown();
-                break;
-            case LEFT:
-                board.moveTetrominoLeft();
-                break;
-            case RIGHT:
-                board.moveTetrominoRight();
-                break;
-            case UP:
-                board.rotateTetromino();
-                break;
-            case SPACE:
-                board.dropTetromino();
-                break;
-            default:
-                break;
+        int rotate_key = Settings.getInstance().getKeySetting().getRotateKeyValue();
+        int down_key = Settings.getInstance().getKeySetting().getDownKeyValue();
+        int left_key = Settings.getInstance().getKeySetting().getLeftKeyValue();
+        int right_key = Settings.getInstance().getKeySetting().getRightKeyValue();
+        int drop_key = Settings.getInstance().getKeySetting().getDropKeyValue();
+
+        int keyCode = e.getCode().getCode();
+        if (keyCode == 27) {
+            onPause.run();
+        } else if (keyCode == down_key) {
+            board.moveTetrominoDown();
+            addScoreOnDown();
+        } else if (keyCode == left_key) {
+            board.moveTetrominoLeft();
+        } else if (keyCode == right_key) {
+            board.moveTetrominoRight();
+        } else if (keyCode == rotate_key) {
+            board.rotateTetromino();
+        } else if (keyCode == drop_key) {
+            board.dropTetromino();
         }
         return true;
     }

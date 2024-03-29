@@ -1,16 +1,28 @@
 package org.nl.javatetris.controller;
 
 import javafx.scene.input.KeyEvent;
+import org.nl.javatetris.model.settings.Settings;
+
 
 public class SettingsMenuController {
 
     private int meunItemsCount;
     private Runnable onBack;
+    private Runnable onCheckingInitSet;
+    private Runnable onCheckingBoardInit;
+    private Runnable onSettingKeyMenu;
     private int selectedItemIndex = 0;
 
-    public SettingsMenuController(int menuItemsCount, Runnable onResume) {
+    private int colorBlindModeIndex=0;
+
+    public SettingsMenuController(int menuItemsCount, Runnable onResume, Runnable onCheckingInitSet, Runnable onCheckingBoardInit, Runnable onSettingKeyMenu) {
         this.meunItemsCount = menuItemsCount;
         this.onBack = onResume;
+        this.onCheckingInitSet=onCheckingInitSet;
+        this.onCheckingBoardInit=onCheckingBoardInit;
+        this.onSettingKeyMenu=onSettingKeyMenu;
+
+
     }
 
     public void handleKeyPress(KeyEvent e) {
@@ -25,14 +37,47 @@ public class SettingsMenuController {
                 switch(selectedItemIndex) {
                     // TODO : 설정 메뉴 로직들. 추가할거면 여기에 추가해
                     case 0:
-                        System.out.println("hello1");
+                        //화면 크기 조정
+                        switch(Settings.getInstance().getScreenSizeSettings().getOffset()) {
+                            case 0:
+                                System.out.println("화면 크기 커짐"); //화면 크기 커짐
+                                Settings.getInstance().getScreenSizeSettings().setScreenSizeBigger();
+                                System.out.println(Settings.getInstance().getScreenSizeSettings().getScreenWidth());
+                                break;
+                            case 1:
+                                System.out.println("화면 크기 더 커짐"); //화면 크기 더 커짐
+                                Settings.getInstance().getScreenSizeSettings().setScreenSizeBigger();
+                                System.out.println(Settings.getInstance().getScreenSizeSettings().getScreenWidth());
+                                break;
+                            case 2:
+                                System.out.println("다시 원래크기로 돌아옴"); //다시 기본화면으로 돌아옴
+                                Settings.getInstance().getScreenSizeSettings().setScreenSizeDefault();
+                                System.out.println(Settings.getInstance().getScreenSizeSettings().getScreenWidth());
+                                break;
+                        }
+                        // TODO
                         break;
                     case 1:
-                        System.out.println("hello2");
+                        //게임 조작 키 변경
+                        onSettingKeyMenu.run();
                         break;
                     case 2:
+                        Settings.getInstance().getColorSetting().roundColorSetting();
+                        break;
+
+                    case 3: //스코어 보드 초기화
+                        onCheckingBoardInit.run();
+                        break;
+
+                    case 4:  // 모든 설정 초기화
+                        onCheckingInitSet.run();
+                        break;
+                    case 5:
+                        Settings.saveSettings(); //setting 메뉴 나갈 때 저장
                         onBack.run();
                         break;
+
+
                 }
                 break;
         }

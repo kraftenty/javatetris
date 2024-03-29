@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.nl.javatetris.controller.ScoreBoardController;
+
 import org.nl.javatetris.model.score.Score;
 
 import java.io.FileReader;
@@ -20,6 +21,8 @@ import java.util.List;
 
 import static org.nl.javatetris.view.ViewConst.WINDOW_HEIGHT;
 import static org.nl.javatetris.view.ViewConst.WINDOW_WIDTH;
+import org.nl.javatetris.model.settings.Settings;
+
 
 public class ScoreBoardView implements View {
 
@@ -66,7 +69,7 @@ public class ScoreBoardView implements View {
             layout.getChildren().add(menuItem);
         }
 
-        Scene scene = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT);
+        Scene scene = new Scene(layout, Settings.getInstance().getScreenSizeSettings().getScreenWidth(), Settings.getInstance().getScreenSizeSettings().getScreenHeight());
 
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {

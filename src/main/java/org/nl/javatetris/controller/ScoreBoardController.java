@@ -1,6 +1,7 @@
 package org.nl.javatetris.controller;
 
 import javafx.scene.input.KeyEvent;
+//import org.nl.javatetris.model.settings.Settings;
 
 public class ScoreBoardController {
 
@@ -17,6 +18,7 @@ public class ScoreBoardController {
                 onBack.run();
                 break;
         }
+
     }
 
     public int getSelectedItemIndex() {
