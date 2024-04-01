@@ -87,6 +87,12 @@ public class GamePlayController {
         checkLevelUp(); // 레벨업 체크
     }
 
+    private void addScoreOnDrop(int offset) {
+        this.score += offset;
+        checkLevelUp();
+    }
+
+
     // 라인 클리어 시 점수 가산 메서드
     private void addScoreOnLineClear() {
         this.point += LINE_CLEAR_SCORE;
@@ -147,7 +153,8 @@ public class GamePlayController {
         } else if (keyCode == rotate_key) {
             board.rotateTetromino();
         } else if (keyCode == drop_key) {
-            board.dropTetromino();
+            int offset = board.dropTetromino();
+            addScoreOnDrop(offset);
         }
         return true;
     }

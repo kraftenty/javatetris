@@ -42,8 +42,13 @@ public class Settings {
             // Screen size 불러오기
             int screenSizeOffset = settings.getInt("screen_size");
             ScreenSizeSettings screenSizeSettings = singletonInstance.getScreenSizeSettings();
-            if (screenSizeOffset == 2) screenSizeSettings.setScreenSizeBigger();
-            if (screenSizeOffset == 0) screenSizeSettings.setScreenSizeBigger();
+            if (screenSizeOffset == 0) screenSizeSettings.setScreenSizeDefault();
+            else if (screenSizeOffset == 1) screenSizeSettings.setScreenSizeBigger();
+            else if (screenSizeOffset == 2) {
+                screenSizeSettings.setScreenSizeBigger();
+                screenSizeSettings.setScreenSizeBigger();
+            }
+
 
             // Key_setting 불러오기
             JSONObject keySettingFromJson = settings.getJSONObject("key_setting");
