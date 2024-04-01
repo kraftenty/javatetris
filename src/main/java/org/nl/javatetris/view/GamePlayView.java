@@ -13,6 +13,7 @@ import org.nl.javatetris.controller.GamePlayController;
 import org.nl.javatetris.model.settings.Settings;
 import org.nl.javatetris.model.tetrominos.Tetromino;
 
+import java.util.Set;
 import java.util.function.Consumer;
 
 import static org.nl.javatetris.model.ModelConst.*;
@@ -76,25 +77,25 @@ public class GamePlayView implements View {
                         cell.setFill(Color.BLACK); // 벽의 색상
                         break;
                     case I:
-                        cell.setFill(Color.LIGHTBLUE); // 활성화된 테트로미노의 색상
+                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(I-1)); // 활성화된 테트로미노의 색상
                         break;
                     case J:
-                        cell.setFill(Color.BLUE); // 활성화된 테트로미노의 색상
+                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(J-1)); // 활성화된 테트로미노의 색상
                         break;
                     case L:
-                        cell.setFill(Color.ORANGE); // 활성화된 테트로미노의 색상
+                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(L-1)); // 활성화된 테트로미노의 색상
                         break;
                     case O:
-                        cell.setFill(Color.YELLOW); // 활성화된 테트로미노의 색상
+                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(O-1)); // 활성화된 테트로미노의 색상
                         break;
                     case S:
-                        cell.setFill(Color.GREEN); // 활성화된 테트로미노의 색상
+                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(S-1)); // 활성화된 테트로미노의 색상
                         break;
                     case T:
-                        cell.setFill(Color.PURPLE); // 활성화된 테트로미노의 색상
+                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(T-1)); // 활성화된 테트로미노의 색상
                         break;
                     case Z:
-                        cell.setFill(Color.RED); // 활성화된 테트로미노의 색상
+                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(Z-1)); // 활성화된 테트로미노의 색상
                         break;
                 }
                 pane.getChildren().add(cell);
