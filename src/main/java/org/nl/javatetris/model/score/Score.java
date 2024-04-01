@@ -24,14 +24,6 @@ public class Score implements Serializable, Comparable<Score> {
     }
 
     @Override
-    public String toString() {
-        return "Score{" +
-                "name='" + name + '\'' +
-                ", score=" + point +
-                '}';
-    }
-
-    @Override
     public int compareTo(Score o) {
         return Integer.compare(o.getPoint(), this.getPoint());
     }

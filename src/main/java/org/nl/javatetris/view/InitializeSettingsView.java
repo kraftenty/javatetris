@@ -15,8 +15,8 @@ public class InitializeSettingsView {
     private InitializeSettingsController initializeSettingsController;
 
     private static Label[] menuItems = new Label[]{
-            new Label("예"),
-            new Label("아니오"),
+            new Label("Yes"),
+            new Label("No"),
     };
 
     public InitializeSettingsView(Runnable onSettings) {
@@ -31,7 +31,7 @@ public class InitializeSettingsView {
         title.setFont(new Font(20));
         layout.getChildren().add(title);
 
-        Text title2= new Text("모든 설정을 초기화 하시겠습니까?");
+        Text title2= new Text("Are you sure you want to reset the scoreboard?");
         title2.setFont(new Font(18));
         layout.getChildren().add(title2);
 

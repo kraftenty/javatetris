@@ -52,7 +52,6 @@ public class Board {
     private void clearCompletedLines() {
         for (int y = 1; y < Y_MAX - 1; y++) {
             if (isLineComplete(y)) {
-                // TODO : 점수 증가
                 removeLine(y); // 한줄 지우고
                 shiftLinesDown(y); // 하강
                 onClearCompletedLines.run();

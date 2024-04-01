@@ -2,6 +2,7 @@ package org.nl.javatetris.controller;
 
 import javafx.scene.input.KeyEvent;
 import org.nl.javatetris.model.settings.Settings;
+import org.nl.javatetris.model.settings.SettingsUtil;
 
 
 public class SettingsMenuController {
@@ -35,7 +36,6 @@ public class SettingsMenuController {
                 break;
             case ENTER:
                 switch(selectedItemIndex) {
-                    // TODO : 설정 메뉴 로직들. 추가할거면 여기에 추가해
                     case 0:
                         //화면 크기 조정
                         switch(Settings.getInstance().getScreenSizeSettings().getOffset()) {
@@ -55,7 +55,6 @@ public class SettingsMenuController {
                                 System.out.println(Settings.getInstance().getScreenSizeSettings().getScreenWidth());
                                 break;
                         }
-                        // TODO
                         break;
                     case 1:
                         //게임 조작 키 변경
@@ -73,7 +72,8 @@ public class SettingsMenuController {
                         onCheckingInitSet.run();
                         break;
                     case 5:
-                        Settings.saveSettings(); //setting 메뉴 나갈 때 저장
+//                        Settings.saveSettings(); //setting 메뉴 나갈 때 저장
+                        SettingsUtil.saveSettings(); //TODO
                         onBack.run();
                         break;
 

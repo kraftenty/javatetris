@@ -27,7 +27,6 @@ public class InitializeSettingsController {
                     case 0:
                         //예 -> 초기화 진행
                         Settings.initSettings();
-                        System.out.println("설정 초기화");
                         onSettings.run();
                         break;
                     case 1:

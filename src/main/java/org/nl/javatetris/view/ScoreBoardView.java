@@ -40,16 +40,11 @@ public class ScoreBoardView implements View {
 
         // ScoreBoard 인스턴스에서 scores를 가져옴
         List<Score> scoreboard = ScoreBoard.getInstance().getScores();
-        for (Score score : scoreboard) {
-            System.out.println(score.getName() + ": " + score.getPoint());
-        }
 
         // 스코어 10개 내림차순으로 display
         scoreboard.stream()
-                .sorted((s1, s2) -> Integer.compare(s2.getPoint(), s1.getPoint())) // 내림차순 정렬
-                .limit(10) // 상위 10개만 선택
                 .forEach(score -> {
-                    Label scoreLabel = new Label(score.getName() + ": " + score.getPoint());
+                    Label scoreLabel = new Label(score.getName() + " : " + score.getPoint());
                     scoreLabel.setTextFill(Color.WHITE); // 점수의 글자색 설정
                     scoreLabel.setFont(new Font(16));
                     layout.getChildren().add(scoreLabel);

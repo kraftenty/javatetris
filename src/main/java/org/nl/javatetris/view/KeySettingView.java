@@ -19,15 +19,15 @@ public class KeySettingView {
             new Label(Settings.getInstance().getKeySetting().getRightKeyString()),
             new Label(Settings.getInstance().getKeySetting().getDowntKeyString()),
             new Label(Settings.getInstance().getKeySetting().getDropKeyString()),
-            new Label("Back to settings")
+            new Label("Back")
     };
 
     private static Label[] explainItems = new Label[]{
-            new Label("회전"),
-            new Label("왼쪽으로 이동"),
-            new Label("오른쪽으로 이동"),
-            new Label("한칸 아래로 이동"),
-            new Label("한번에 끝까지 내리기"),
+            new Label("Rotate"),
+            new Label("Move Left"),
+            new Label("Move Right"),
+            new Label("Move Down"),
+            new Label("Drop"),
             //new Label("설정으로 돌아가기")
     };
 
@@ -39,13 +39,9 @@ public class KeySettingView {
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
 
-        Text title = new Text("Settings");
+        Text title = new Text("Key Binding Settings");
         title.setFont(new Font(20));
         layout.getChildren().add(title);
-
-        Text title2 = new Text("조작 키 설정");
-        title2.setFont(new Font(18));
-        layout.getChildren().add(title2);
 
         for (int i = 0; i < menuItems.length - 1; i++) {
             HBox row = new HBox(10);

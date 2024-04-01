@@ -14,31 +14,30 @@ public class SettingsMenuView implements View {
 
     private SettingsMenuController settingsMenuController;
     private static Label[] menuItems = new Label[]{
-            // TODO : 설정 메뉴 항목. 추가할거면 여기에 추가해
             new Label(getLabelOfScreenSizeSetting()),
-            new Label("게임 조작 키 설정"),
+            new Label("Key Binding Settings"),
             new Label(getLabelOfColorBlindModeSetting()),
-            new Label("스코어 보드 초기화"),
-            new Label("모든 설정 초기화"),
-            new Label("Main Menu"),
+            new Label("Initialize ScoreBoard"),
+            new Label("Initialize All Settings"),
+            new Label("Back"),
     };
 
     private static String getLabelOfColorBlindModeSetting() {
         if (Settings.getInstance().getColorSetting().getColorOffset() == 0) {
-            return "색맹모드 : OFF";
+            return "Color Mode : Normal";
         } else if (Settings.getInstance().getColorSetting().getColorOffset() == 1) {
-            return "색맹모드 : 적록";
+            return "Color Mode : Red-Green Color Blindness";
         } else {
-            return "색맹모드 : 청";
+            return "Color Mode : Blue Blindness";
         }
     }
     private static String getLabelOfScreenSizeSetting() {
         if (Settings.getInstance().getScreenSizeSettings().getOffset() == 0) {
-            return "화면 크기 : 작음";
+            return "Window Size : Small";
         } else if (Settings.getInstance().getScreenSizeSettings().getOffset() == 1) {
-            return "화면 크기 : 중간";
+            return "Window Size : Medium";
         } else {
-            return "화면 크기 : 큼";
+            return "Window Size : Big";
         }
     }
     public SettingsMenuView(Runnable onBackToMenu, Runnable onCheckingInitSet, Runnable onChekingBoardInit, Runnable onSettingKeyMenu) {
@@ -98,6 +97,5 @@ public class SettingsMenuView implements View {
         menuItems[0].setText(getLabelOfScreenSizeSetting());
         menuItems[2].setText(getLabelOfColorBlindModeSetting());
     }
-
 
 }

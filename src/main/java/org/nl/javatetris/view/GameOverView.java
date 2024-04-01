@@ -49,11 +49,10 @@ public class GameOverView implements View {
             Optional<String> result = dialog.showAndWait();
             result.ifPresent(name -> {
                 // 사용자가 입력한 이름을 처리하는 로직
-                System.out.println("User name: " + name); // 예시로 콘솔에 출력
                 Text a = new Text("Your Score : ");
                 a.setFont(Font.font("ScoreBoard", 26));
                 a.setFill(Color.BLACK);
-                a.setLayoutX(Settings.getInstance().getScreenSizeSettings().getScreenWidth()/2/2);
+                a.setLayoutX(Settings.getInstance().getScreenSizeSettings().getScreenWidth()/2);
                 a.setLayoutY(200);
                 pane.getChildren().add(a);
                 ScoreBoard.getInstance().addScore(name, point); // 스코어보드에 추가!!

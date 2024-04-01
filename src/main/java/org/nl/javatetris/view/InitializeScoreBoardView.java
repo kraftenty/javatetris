@@ -14,8 +14,8 @@ public class InitializeScoreBoardView {
     private InitializeScoreBoardController initializeScoreBoardController;
 
     private static Label[] menuItems = new Label[]{
-            new Label("예"),
-            new Label("아니오"),
+            new Label("Yes"),
+            new Label("No"),
     };
 
     public InitializeScoreBoardView(Runnable onSettings) {
@@ -30,7 +30,7 @@ public class InitializeScoreBoardView {
         title.setFont(new Font(20));
         layout.getChildren().add(title);
 
-        Text title2= new Text("스코어 보드를 초기화 하시겠습니까?");
+        Text title2= new Text("Are you sure you want to initialize the scoreboard?");
         title2.setFont(new Font(18));
         layout.getChildren().add(title2);
 

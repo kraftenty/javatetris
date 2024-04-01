@@ -21,4 +21,5 @@ public class ModelConst {
     public static final int MAX_SCOREBOARD_SIZE = 10; // 최대
 
     public static final String SCOREBOARD_FILE_NAME = "scoreboard.dat"; // 점수판 파일 이름
+    public static final String SETTINGS_FILE_NAME = "settings.dat"; // 설정 파일 이름
 }

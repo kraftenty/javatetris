@@ -1,10 +1,6 @@
 package org.nl.javatetris.model.settings;
 
 import javafx.scene.paint.Color;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.Serializable;
 
 import static org.nl.javatetris.controller.ControllerConst.*;
@@ -30,7 +26,6 @@ public class Settings implements Serializable {
     public static void ready() {
         if (instance == null) {
             instance = new Settings();
-            loadSettings();
         }
     }
 
@@ -39,70 +34,14 @@ public class Settings implements Serializable {
         return instance;
     }
 
-    private static void loadSettings() {
-        try (FileReader reader = new FileReader("src/main/java/org/nl/javatetris/model/settings/settings.json")) {
-            JSONTokener tokener = new JSONTokener(reader);
-            JSONObject jsonObject = new JSONObject(tokener);
-            JSONObject settings = jsonObject.getJSONObject("settings");
-
-            // Screen size 불러오기
-            int screenSizeOffset = settings.getInt("screen_size");
-            ScreenSizeSettings screenSizeSettings = instance.getScreenSizeSettings();
-            if (screenSizeOffset == 0) screenSizeSettings.setScreenSizeDefault();
-            else if (screenSizeOffset == 1) screenSizeSettings.setScreenSizeBigger();
-            else if (screenSizeOffset == 2) {
-                screenSizeSettings.setScreenSizeBigger();
-                screenSizeSettings.setScreenSizeBigger();
-            }
-
-
-            // Key_setting 불러오기
-            JSONObject keySettingFromJson = settings.getJSONObject("key_setting");
-            KeySetting keySetting = instance.getKeySetting();
-            keySetting.setLeftKeyValue(keySettingFromJson.getInt("left_key"));
-            keySetting.setRightKeyValue(keySettingFromJson.getInt("right_key"));
-            keySetting.setRotateKeyValue(keySettingFromJson.getInt("rotate_key"));
-            keySetting.setDownKeyValue(keySettingFromJson.getInt("down_key"));
-            keySetting.setDropKeyValue(keySettingFromJson.getInt("drop_key"));
-
-            int colorSettingValue = settings.getInt("color_setting");
-            ColorSetting colorSetting = instance.getColorSetting();
-            for (int i = 0; i < colorSettingValue; i++) {
-                colorSetting.roundColorSetting();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public static void saveSettings() {
-        JSONObject settings = new JSONObject();
-        settings.put("screen_size", instance.getScreenSizeSettings().getOffset());
-        settings.put("key_setting", new JSONObject()
-                .put("left_key", instance.getKeySetting().getLeftKeyValue())
-                .put("right_key", instance.getKeySetting().getRightKeyValue())
-                .put("rotate_key", instance.getKeySetting().getRotateKeyValue())
-                .put("down_key", instance.getKeySetting().getDownKeyValue())
-                .put("drop_key", instance.getKeySetting().getDropKeyValue()));
-        settings.put("color_setting", instance.getColorSetting().offset);
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("settings", settings);
-
-        try {
-            java.io.FileWriter file = new java.io.FileWriter("src/main/java/org/nl/javatetris/model/settings/settings.json");
-            file.write(jsonObject.toString());
-            file.flush();
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void setInstance (Settings settings) {
+        instance = settings;
     }
 
     //세팅 초기화
     public static void initSettings() {
         instance = new Settings();
-        saveSettings();
+        SettingsUtil.saveSettings();
     }
 
     public ScreenSizeSettings getScreenSizeSettings() {
@@ -167,8 +106,6 @@ public class Settings implements Serializable {
         }
 
     }
-
-
 
 
     public class KeySetting implements Serializable {
@@ -346,32 +283,32 @@ public class Settings implements Serializable {
         }
     }
 
-
-    public class ColorSetting implements Serializable{
-
-        private Color[][] colorArray;
+    public class ColorSetting implements Serializable {
+        private String[][] colorArray; // Color 대신 String 사용
         private int offset = 0;
 
         public ColorSetting() {
-            colorArray = new Color[][] {
-                    {Color.SKYBLUE, Color.BLUE, Color.ORANGE, Color.YELLOW, Color.LIGHTGREEN, Color.PURPLE, Color.RED},
-                    {Color.GRAY, Color.BLUE, Color.ORANGE, Color.YELLOW, Color.TURQUOISE, Color.PURPLE, Color.PINK},
-                    {Color.GRAY, Color.PINK, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.PURPLE, Color.RED}
+//            {SKYBLUE, BLUE, ORANGE, YELLOW, LIGHTGREEN, PURPLE, RED},
+//            {GRAY, BLUE, ORANGE, YELLOW, TURQUOISE, PURPLE, PINK},
+//            {GRAY, PINK, ORANGE, YELLOW, GREEN, PURPLE, RED}
+            colorArray = new String[][]{
+                    {"#87CEEB", "#0000FF", "#FFA500", "#FFFF00", "#90EE90", "#800080", "#FF0000"},
+                    {"#808080", "#0000FF", "#FFA500", "#FFFF00", "#40E0D0", "#800080", "#FFC0CB"},
+                    {"#808080", "#FFC0CB", "#FFA500", "#FFFF00", "#008000", "#800080", "#FF0000"}
             };
-            offset = 0;
         }
 
         public int getColorOffset() {
             return offset;
         }
 
+        // 타입에 따른 Color 객체 반환
         public Color getColorOfTetrominoType(Integer type) {
-            return colorArray[offset][type];
+            return Color.web(colorArray[offset][type]);
         }
 
         public void roundColorSetting() {
             offset = (offset + 1) % 3;
         }
-
     }
 }

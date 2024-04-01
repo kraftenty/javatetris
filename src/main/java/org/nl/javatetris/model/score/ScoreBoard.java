@@ -96,11 +96,9 @@ public class ScoreBoard implements Serializable {
     // 파일에서 점수판을 불러오는 메서드
     public void loadScoreBoard() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(SCOREBOARD_FILE_NAME))) {
-            System.out.println("기존 scoreboard.dat가 있어서 불러옵니다.");
             scores = (List<Score>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
             // 파일이 없거나 읽어오는 데 실패한 경우, 새 리스트로 초기화
-            System.out.println("기존 scoreboard.dat가 없어서 새로 생성합니다.");
             scores = new ArrayList<>();
         }
     }
