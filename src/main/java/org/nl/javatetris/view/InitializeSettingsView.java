@@ -7,20 +7,20 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.nl.javatetris.controller.CheckingInitSetController;
+import org.nl.javatetris.controller.InitializeSettingsController;
 import org.nl.javatetris.model.settings.Settings;
 
-public class CheckingInitSetView {
+public class InitializeSettingsView {
 
-    private CheckingInitSetController checkingInitSetController;
+    private InitializeSettingsController initializeSettingsController;
 
     private static Label[] menuItems = new Label[]{
             new Label("예"),
             new Label("아니오"),
     };
 
-    public CheckingInitSetView(Runnable onSettings) {
-        this.checkingInitSetController = new CheckingInitSetController(menuItems.length,onSettings);
+    public InitializeSettingsView(Runnable onSettings) {
+        this.initializeSettingsController = new InitializeSettingsController(menuItems.length,onSettings);
     }
 
     public Scene createScene(){
@@ -45,13 +45,13 @@ public class CheckingInitSetView {
         Scene scene = new Scene(layout, Settings.getInstance().getScreenSizeSettings().getScreenWidth(), Settings.getInstance().getScreenSizeSettings().getScreenHeight());
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {
-            checkingInitSetController.handleKeyPress(e);
+            initializeSettingsController.handleKeyPress(e);
             // 현재 선택된 항목을 기반으로 UI를 업데이트합니다.
-            updateMenuItems(checkingInitSetController.getSelectedItemIndex());
+            updateMenuItems(initializeSettingsController.getSelectedItemIndex());
         });
 
         // 초기 선택 상태 업데이트
-        updateMenuItems(checkingInitSetController.getSelectedItemIndex());
+        updateMenuItems(initializeSettingsController.getSelectedItemIndex());
 
         return scene;
 

@@ -16,13 +16,12 @@ public class PauseMenuView implements View {
     private static Label[] menuItems = new Label[]{
             // 메뉴 항목. 추가할거면 여기에 추가해
             new Label("Resume"),
-            new Label("Setting"),
             new Label("Main Menu"),
             new Label("Quit")
     };
 
-    public PauseMenuView(Runnable onResume, Runnable onBackToMenu, Runnable onSettings) {
-        this.pauseMenuController = new PauseMenuController(menuItems.length, onResume, onBackToMenu, onSettings );
+    public PauseMenuView(Runnable onResume, Runnable onBackToMenu) {
+        this.pauseMenuController = new PauseMenuController(menuItems.length, onResume, onBackToMenu);
     }
 
     public Scene createScene() {

@@ -5,7 +5,6 @@ import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import org.nl.javatetris.model.Board;
-import org.nl.javatetris.model.score.ScoreBoard;
 import org.nl.javatetris.model.settings.Settings;
 import org.nl.javatetris.model.tetrominos.TetrominoGenerator;
 import org.nl.javatetris.view.SceneManager;
@@ -23,19 +22,19 @@ public class GamePlayController {
     private Timeline timeline;                      // 타임라인
 
     private Runnable onPause;                       // 일시정지 콜백
-    private Runnable onBoardUpdate;                 // 보드 업데이트 콜백
-    private Runnable onGameOver;                    // 게임오버 콜백
+    private Runnable onDrawBoardUpdate;                 // 보드 업데이트 콜백
+    private Runnable onDrawGameOver;                    // 게임오버 콜백
 
     private int level = 0;                          // 게임 레벨
     private int point = 0;                          // 게임 점수
     private boolean isGameOver = false;             // 게임오버 여부
 
     // 생성자
-    public GamePlayController(Runnable onPause, Runnable onBoardUpdate, Runnable onGameOver) {
+    public GamePlayController(Runnable onPause, Runnable onDrawBoardUpdate, Runnable onDrawGameOver) {
         this.tetrominoGenerator = new TetrominoGenerator();
         this.onPause = onPause;
-        this.onBoardUpdate = onBoardUpdate;
-        this.onGameOver = onGameOver;
+        this.onDrawBoardUpdate = onDrawBoardUpdate;
+        this.onDrawGameOver = onDrawGameOver;
         board = new Board(this::addScoreOnLineClear, tetrominoGenerator); // 보드 생성
         board.spawnTetromino();
         startTimeline();
@@ -56,10 +55,10 @@ public class GamePlayController {
                 if (!isProperlyDowned) {
                     timeline.stop(); // 타임라인 중지 하고
                     isGameOver = true; // 게임오버 상태로 변경
-                    onGameOver.run();
+                    onDrawGameOver.run();
                 } else {
                     addScoreOnDown();
-                    onBoardUpdate.run();
+                    onDrawBoardUpdate.run();
                 }
             }
 
@@ -88,7 +87,7 @@ public class GamePlayController {
     }
 
     private void addScoreOnDrop(int offset) {
-        this.score += offset;
+        this.point += offset;
         checkLevelUp();
     }
 
@@ -134,25 +133,20 @@ public class GamePlayController {
         if (isGameOver) {
             return false;
         }
-        int rotate_key = Settings.getInstance().getKeySetting().getRotateKeyValue();
-        int down_key = Settings.getInstance().getKeySetting().getDownKeyValue();
-        int left_key = Settings.getInstance().getKeySetting().getLeftKeyValue();
-        int right_key = Settings.getInstance().getKeySetting().getRightKeyValue();
-        int drop_key = Settings.getInstance().getKeySetting().getDropKeyValue();
 
         int keyCode = e.getCode().getCode();
         if (keyCode == 27) {
             onPause.run();
-        } else if (keyCode == down_key) {
+        } else if (keyCode == Settings.getInstance().getKeySetting().getDownKeyValue()) {
             board.moveTetrominoDown();
             addScoreOnDown();
-        } else if (keyCode == left_key) {
+        } else if (keyCode == Settings.getInstance().getKeySetting().getLeftKeyValue()) {
             board.moveTetrominoLeft();
-        } else if (keyCode == right_key) {
+        } else if (keyCode == Settings.getInstance().getKeySetting().getRightKeyValue()) {
             board.moveTetrominoRight();
-        } else if (keyCode == rotate_key) {
+        } else if (keyCode == Settings.getInstance().getKeySetting().getRotateKeyValue()) {
             board.rotateTetromino();
-        } else if (keyCode == drop_key) {
+        } else if (keyCode == Settings.getInstance().getKeySetting().getDropKeyValue()) {
             int offset = board.dropTetromino();
             addScoreOnDrop(offset);
         }

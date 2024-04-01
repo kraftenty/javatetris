@@ -8,11 +8,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.nl.javatetris.controller.SettingKeyController;
+import org.nl.javatetris.controller.KeySettingController;
 import org.nl.javatetris.model.settings.Settings;
 
-public class SettingsKeyMenuView {
-    private SettingKeyController settingKeyController;
+public class KeySettingView {
+    private KeySettingController keySettingController;
     private static Label[] menuItems = new Label[]{
             new Label(Settings.getInstance().getKeySetting().getRotateKeyString()),
             new Label(Settings.getInstance().getKeySetting().getLeftKeyString()),
@@ -31,8 +31,8 @@ public class SettingsKeyMenuView {
             //new Label("설정으로 돌아가기")
     };
 
-    public SettingsKeyMenuView(Runnable onSettings) {
-        this.settingKeyController = new SettingKeyController(menuItems.length, onSettings);
+    public KeySettingView(Runnable onSettings) {
+        this.keySettingController = new KeySettingController(menuItems.length, onSettings);
     }
     //키 정렬, 간격 수정하기
     public Scene createScene() {
@@ -74,14 +74,14 @@ public class SettingsKeyMenuView {
 
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {
-            settingKeyController.handleKeyPress(e);
+            keySettingController.handleKeyPress(e);
             // 현재 선택된 항목을 기반으로 UI를 업데이트합니다.
             updateSetting();
-            updateMenuItems(settingKeyController.getSelectedItemIndex());
+            updateMenuItems(keySettingController.getSelectedItemIndex());
         });
 
         // 초기 선택 상태 업데이트
-        updateMenuItems(settingKeyController.getSelectedItemIndex());
+        updateMenuItems(keySettingController.getSelectedItemIndex());
 
         return scene;
     }

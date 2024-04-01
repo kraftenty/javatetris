@@ -75,7 +75,7 @@ public class ScoreBoardTest {
 
         instance.saveScoreboard();
         instance.clearScoreboard();
-        instance.loadScoreboard();
+        instance.loadScoreBoard();
 
         Assertions.assertEquals(3, instance.getScores().size());
     }

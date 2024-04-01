@@ -1,23 +1,25 @@
 package org.nl.javatetris.model.settings;
+
 import javafx.scene.paint.Color;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 
 import static org.nl.javatetris.controller.ControllerConst.*;
 import static org.nl.javatetris.model.ModelConst.*;
 import static org.nl.javatetris.view.ViewConst.*;
 
-public class Settings {
+public class Settings implements Serializable {
+
+    private static final long serialVersionUID = 3L;
+
+    private static Settings instance;
 
     private ScreenSizeSettings screenSizeSettings;
-
     private KeySetting keySetting;
-
     private ColorSetting colorSetting;
-
-    private static Settings singletonInstance;
 
     private Settings() {
         screenSizeSettings = new ScreenSizeSettings();
@@ -25,12 +27,16 @@ public class Settings {
         colorSetting = new ColorSetting();
     }
 
-    public static Settings getInstance() {
-        if (singletonInstance == null) {
-            singletonInstance = new Settings();
+    public static void ready() {
+        if (instance == null) {
+            instance = new Settings();
             loadSettings();
         }
-        return singletonInstance;
+    }
+
+    public static Settings getInstance() {
+        ready();
+        return instance;
     }
 
     private static void loadSettings() {
@@ -41,7 +47,7 @@ public class Settings {
 
             // Screen size 불러오기
             int screenSizeOffset = settings.getInt("screen_size");
-            ScreenSizeSettings screenSizeSettings = singletonInstance.getScreenSizeSettings();
+            ScreenSizeSettings screenSizeSettings = instance.getScreenSizeSettings();
             if (screenSizeOffset == 0) screenSizeSettings.setScreenSizeDefault();
             else if (screenSizeOffset == 1) screenSizeSettings.setScreenSizeBigger();
             else if (screenSizeOffset == 2) {
@@ -52,7 +58,7 @@ public class Settings {
 
             // Key_setting 불러오기
             JSONObject keySettingFromJson = settings.getJSONObject("key_setting");
-            KeySetting keySetting = singletonInstance.getKeySetting();
+            KeySetting keySetting = instance.getKeySetting();
             keySetting.setLeftKeyValue(keySettingFromJson.getInt("left_key"));
             keySetting.setRightKeyValue(keySettingFromJson.getInt("right_key"));
             keySetting.setRotateKeyValue(keySettingFromJson.getInt("rotate_key"));
@@ -60,7 +66,7 @@ public class Settings {
             keySetting.setDropKeyValue(keySettingFromJson.getInt("drop_key"));
 
             int colorSettingValue = settings.getInt("color_setting");
-            ColorSetting colorSetting = singletonInstance.getColorSetting();
+            ColorSetting colorSetting = instance.getColorSetting();
             for (int i = 0; i < colorSettingValue; i++) {
                 colorSetting.roundColorSetting();
             }
@@ -71,14 +77,14 @@ public class Settings {
     }
     public static void saveSettings() {
         JSONObject settings = new JSONObject();
-        settings.put("screen_size", singletonInstance.getScreenSizeSettings().getOffset());
+        settings.put("screen_size", instance.getScreenSizeSettings().getOffset());
         settings.put("key_setting", new JSONObject()
-                .put("left_key", singletonInstance.getKeySetting().getLeftKeyValue())
-                .put("right_key", singletonInstance.getKeySetting().getRightKeyValue())
-                .put("rotate_key", singletonInstance.getKeySetting().getRotateKeyValue())
-                .put("down_key", singletonInstance.getKeySetting().getDownKeyValue())
-                .put("drop_key", singletonInstance.getKeySetting().getDropKeyValue()));
-        settings.put("color_setting", singletonInstance.getColorSetting().offset);
+                .put("left_key", instance.getKeySetting().getLeftKeyValue())
+                .put("right_key", instance.getKeySetting().getRightKeyValue())
+                .put("rotate_key", instance.getKeySetting().getRotateKeyValue())
+                .put("down_key", instance.getKeySetting().getDownKeyValue())
+                .put("drop_key", instance.getKeySetting().getDropKeyValue()));
+        settings.put("color_setting", instance.getColorSetting().offset);
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("settings", settings);
@@ -95,7 +101,7 @@ public class Settings {
 
     //세팅 초기화
     public static void initSettings() {
-        singletonInstance = new Settings();
+        instance = new Settings();
         saveSettings();
     }
 
@@ -111,16 +117,12 @@ public class Settings {
         return colorSetting;
     }
 
-    public class ScreenSizeSettings {
+    public class ScreenSizeSettings implements Serializable {
 
         private int blockSize;
-
         private int previewBlockSize;
-
         private int screenWidth;
-
         private int screenHeight;
-
         private int offset = 0;
 
         public ScreenSizeSettings() {
@@ -134,9 +136,6 @@ public class Settings {
             return blockSize;
         }
 
-        public int getPreviewBlockSize() {
-            return previewBlockSize;
-        }
         public int getOffset(){
             return offset;
         }
@@ -172,16 +171,12 @@ public class Settings {
 
 
 
-    public class KeySetting {
+    public class KeySetting implements Serializable {
 
         private int leftKeyValue;
-
         private int rightKeyValue;
-
         private int downKeyValue;
-
         private int rotateKeyValue;
-
         private int dropKeyValue;
 
         public KeySetting() {
@@ -352,10 +347,9 @@ public class Settings {
     }
 
 
-    public class ColorSetting {
+    public class ColorSetting implements Serializable{
 
         private Color[][] colorArray;
-
         private int offset = 0;
 
         public ColorSetting() {
@@ -366,6 +360,7 @@ public class Settings {
             };
             offset = 0;
         }
+
         public int getColorOffset() {
             return offset;
         }

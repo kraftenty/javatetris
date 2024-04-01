@@ -8,5 +8,4 @@ public class GameOverController {
         this.onBackToScoreBoard = onBackToScoreBoard;
     }
 
-
 }

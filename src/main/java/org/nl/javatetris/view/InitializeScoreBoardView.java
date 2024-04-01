@@ -7,19 +7,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.nl.javatetris.controller.CheckingBoardInitController;
+import org.nl.javatetris.controller.InitializeScoreBoardController;
 import org.nl.javatetris.model.settings.Settings;
 
-public class CheckingBoardInitView {
-    private CheckingBoardInitController checkingBoardInitController;
+public class InitializeScoreBoardView {
+    private InitializeScoreBoardController initializeScoreBoardController;
 
     private static Label[] menuItems = new Label[]{
             new Label("예"),
             new Label("아니오"),
     };
 
-    public CheckingBoardInitView(Runnable onSettings) {
-        this.checkingBoardInitController = new CheckingBoardInitController(menuItems.length,onSettings);
+    public InitializeScoreBoardView(Runnable onSettings) {
+        this.initializeScoreBoardController = new InitializeScoreBoardController(menuItems.length,onSettings);
     }
 
     public Scene createScene(){
@@ -45,13 +45,13 @@ public class CheckingBoardInitView {
 
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {
-            checkingBoardInitController.handleKeyPress(e);
+            initializeScoreBoardController.handleKeyPress(e);
             // 현재 선택된 항목을 기반으로 UI를 업데이트합니다.
-            updateMenuItems(checkingBoardInitController.getSelectedItemIndex());
+            updateMenuItems(initializeScoreBoardController.getSelectedItemIndex());
         });
 
         // 초기 선택 상태 업데이트
-        updateMenuItems(checkingBoardInitController.getSelectedItemIndex());
+        updateMenuItems(initializeScoreBoardController.getSelectedItemIndex());
 
         return scene;
 

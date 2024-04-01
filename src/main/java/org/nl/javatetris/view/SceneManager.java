@@ -88,8 +88,8 @@ public class SceneManager {
     public void showPauseMenu() {
         PauseMenuView pauseMenuView = new PauseMenuView(
                 this::resumeGame,
-                this::endGame,
-                this::showSettingsMenu);
+                this::endGame
+        );
         this.pauseMenuScene = pauseMenuView.createScene();
 
         setScene(pauseMenuScene);
@@ -110,23 +110,23 @@ public class SceneManager {
     }
 
     public void showCheckingInitSet() {
-        CheckingInitSetView checkingInitSetView = new CheckingInitSetView(this::showSettingsMenu);
-        this.CheckingInitSetScene = checkingInitSetView.createScene();
+        InitializeSettingsView initializeSettingsView = new InitializeSettingsView(this::showSettingsMenu);
+        this.CheckingInitSetScene = initializeSettingsView.createScene();
 
         setScene(CheckingInitSetScene);
         currentSceneNumber = CHECKING_INIT_SET_SCENE;
     }
 
     public void showCheckingBoardInit() {
-        CheckingBoardInitView checkingBoardInitView = new CheckingBoardInitView(this::showSettingsMenu);
-        this.CheckingBoardInitScene = checkingBoardInitView.createScene();
+        InitializeScoreBoardView initializeScoreBoardView = new InitializeScoreBoardView(this::showSettingsMenu);
+        this.CheckingBoardInitScene = initializeScoreBoardView.createScene();
 
         setScene(CheckingBoardInitScene);
         currentSceneNumber = CHECKING_BOARD_INIT;
     }
     public void showSettingKeyScene() {
-        SettingsKeyMenuView settingsKeyMenuView = new SettingsKeyMenuView(this::showSettingsMenu);
-        this.SettingKeyScene = settingsKeyMenuView.createScene();
+        KeySettingView keySettingView = new KeySettingView(this::showSettingsMenu);
+        this.SettingKeyScene = keySettingView.createScene();
 
         setScene(SettingKeyScene);
         currentSceneNumber = SETTING_KEY_MENU_SCENE;

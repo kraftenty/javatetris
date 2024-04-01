@@ -57,6 +57,7 @@ public class GameOverView implements View {
                 a.setLayoutY(200);
                 pane.getChildren().add(a);
                 ScoreBoard.getInstance().addScore(name, point); // 스코어보드에 추가!!
+                ScoreBoard.getInstance().saveScoreboard(); // 스코어보드 저장!!
             });
 
             onBackToScoreBoard.run();

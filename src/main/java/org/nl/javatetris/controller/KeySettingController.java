@@ -3,19 +3,17 @@ package org.nl.javatetris.controller;
 import javafx.scene.input.KeyEvent;
 import org.nl.javatetris.model.settings.Settings;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.IntStream;
-import java.util.stream.Collectors;
 
 import static org.nl.javatetris.controller.ControllerConst.invalidKeys;
 
-public class SettingKeyController {
+public class KeySettingController {
+
     private int menuItemsCount;
     private Runnable onSettings;
     private int selectedItemIndex = 0;
     private boolean isWaitingForKey = false; //키 입력대기 여부를 나타내는 변수
 
-    public SettingKeyController(int menuItemsCount, Runnable onSettings) {
+    public KeySettingController(int menuItemsCount, Runnable onSettings) {
         this.menuItemsCount = menuItemsCount;
         this.onSettings = onSettings;
     }

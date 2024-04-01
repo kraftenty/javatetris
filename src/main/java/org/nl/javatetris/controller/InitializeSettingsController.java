@@ -1,15 +1,14 @@
 package org.nl.javatetris.controller;
 
 import javafx.scene.input.KeyEvent;
-import javafx.application.Platform;
 import org.nl.javatetris.model.settings.Settings;
 
-public class CheckingInitSetController {
+public class InitializeSettingsController {
     private int meunItemsCount;
     private Runnable onSettings;
     private int selectedItemIndex = 0;
 
-    public CheckingInitSetController(int menuItemsCount, Runnable onSettings) {
+    public InitializeSettingsController(int menuItemsCount, Runnable onSettings) {
         this.meunItemsCount = menuItemsCount;
         this.onSettings = onSettings;
     }

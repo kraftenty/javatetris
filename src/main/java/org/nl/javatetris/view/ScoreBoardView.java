@@ -40,9 +40,9 @@ public class ScoreBoardView implements View {
 
         // ScoreBoard 인스턴스에서 scores를 가져옴
         List<Score> scoreboard = ScoreBoard.getInstance().getScores();
-
-        // 내림차순 정렬
-        scoreboard.sort(Comparator.comparingInt(Score::getPoint).reversed());
+        for (Score score : scoreboard) {
+            System.out.println(score.getName() + ": " + score.getPoint());
+        }
 
         // 스코어 10개 내림차순으로 display
         scoreboard.stream()
@@ -56,7 +56,6 @@ public class ScoreBoardView implements View {
                 });
 
         for (Label menuItem : menuItems) {
-//            menuItem.setOnMouseClicked(e -> onBackToMenu.run()); // 메뉴 아이템 클릭 시 이벤트 처리
             menuItem.setTextFill(Color.WHITE);
             menuItem.setFont(new Font(16));
             layout.getChildren().add(menuItem);

@@ -11,11 +11,10 @@ public class PauseMenuController {
     private int selectedItemIndex = 0;
     private int menuItemsCount;
 
-    public PauseMenuController(int menuItemsCount, Runnable onResume, Runnable onBackToMenu, Runnable onSettings) {
+    public PauseMenuController(int menuItemsCount, Runnable onResume, Runnable onBackToMenu) {
         this.menuItemsCount = menuItemsCount;
         this.onResume = onResume;
         this.onBackToMenu = onBackToMenu;
-        this.onSettings= onSettings;
     }
 
     public void handleKeyPress(KeyEvent e) {
@@ -31,17 +30,10 @@ public class PauseMenuController {
                     case 0:
                         onResume.run();
                         break;
-
                     case 1:
-                        onSettings.run();
-                        break;
-                    case 2:
-                        // TODO : 메인 메뉴로 돌아갈 때 게임을 초기화하는 코드를 추가하세요.
-
                         onBackToMenu.run();
                         break;
-
-                    case 3:
+                    case 2:
                         Platform.exit();
                         break;
                 }
