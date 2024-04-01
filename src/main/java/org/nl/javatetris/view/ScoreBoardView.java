@@ -12,10 +12,10 @@ import org.nl.javatetris.controller.ScoreBoardController;
 
 import org.nl.javatetris.model.score.Score;
 
-import java.io.*;
 import java.util.Comparator;
 import java.util.List;
 
+import org.nl.javatetris.model.score.ScoreBoard;
 import org.nl.javatetris.model.settings.Settings;
 
 
@@ -38,25 +38,25 @@ public class ScoreBoardView implements View {
         title.setFont(new Font(20));
         layout.getChildren().add(title);
 
-        //json파일에서 읽어오기
-        List<Score> scoreboard = scoreBoardController.loadScoreboard("scoreboard.dat");
+        // ScoreBoard 인스턴스에서 scores를 가져옴
+        List<Score> scoreboard = ScoreBoard.getInstance().getScores();
 
-        //내림차순 정렬
-        scoreboard.sort(Comparator.comparingInt(Score::getScore).reversed());
+        // 내림차순 정렬
+        scoreboard.sort(Comparator.comparingInt(Score::getPoint).reversed());
 
-        //스코어 10개 내림차순으로 display
-        int count = 0;
-        for (Score score : scoreboard) {
-            if (count >= 10) {
-                break;
-            }
-            Label scoreLabel = new Label(score.getName() + ": " + score.getScore());
-            scoreLabel.setFont(new Font(16));
-            layout.getChildren().add(scoreLabel);
-            count++;
-        }
+        // 스코어 10개 내림차순으로 display
+        scoreboard.stream()
+                .sorted((s1, s2) -> Integer.compare(s2.getPoint(), s1.getPoint())) // 내림차순 정렬
+                .limit(10) // 상위 10개만 선택
+                .forEach(score -> {
+                    Label scoreLabel = new Label(score.getName() + ": " + score.getPoint());
+                    scoreLabel.setTextFill(Color.WHITE); // 점수의 글자색 설정
+                    scoreLabel.setFont(new Font(16));
+                    layout.getChildren().add(scoreLabel);
+                });
 
         for (Label menuItem : menuItems) {
+//            menuItem.setOnMouseClicked(e -> onBackToMenu.run()); // 메뉴 아이템 클릭 시 이벤트 처리
             menuItem.setTextFill(Color.WHITE);
             menuItem.setFont(new Font(16));
             layout.getChildren().add(menuItem);

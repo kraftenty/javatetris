@@ -1,37 +1,38 @@
 package org.nl.javatetris.model.score;
 
-
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-public class Score implements Serializable {
+
+public class Score implements Serializable, Comparable<Score> {
 
     private static final long serialVersionUID = 1L;
 
     private String name;
-    private int score;
+    private int point;
 
     public Score(String name, int score) {
         this.name = name;
-        this.score = score;
+        this.point = score;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getScore() {
-        return score;
+    public int getPoint() {
+        return point;
     }
 
     @Override
     public String toString() {
         return "Score{" +
                 "name='" + name + '\'' +
-                ", score=" + score +
+                ", score=" + point +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Score o) {
+        return Integer.compare(o.getPoint(), this.getPoint());
     }
 }

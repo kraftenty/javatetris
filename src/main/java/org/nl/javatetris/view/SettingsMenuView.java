@@ -15,7 +15,7 @@ public class SettingsMenuView implements View {
     private SettingsMenuController settingsMenuController;
     private static Label[] menuItems = new Label[]{
             // TODO : 설정 메뉴 항목. 추가할거면 여기에 추가해
-            new Label(getLabelOfColorBlindModeSetting()),
+            new Label(getLabelOfScreenSizeSetting()),
             new Label("게임 조작 키 설정"),
             new Label(getLabelOfColorBlindModeSetting()),
             new Label("스코어 보드 초기화"),
