@@ -28,6 +28,15 @@ public class ScoreBoard implements Serializable {
         return scores;
     }
 
+    public boolean canUpdateScoreboard(int point) {
+        // 스코어보드가 아직 꽉 차지 않았거나, 주어진 점수가 스코어보드의 마지막 점수보다 높은 경우 갱신 가능
+        if (scores.size() < MAX_SCOREBOARD_SIZE || point > scores.get(scores.size() - 1).getPoint()) {
+            return true;
+        }
+        return false;
+    }
+
+
     // 점수판에 점수를 추가하는 메서드
     public boolean addScore(String name, int point) {
         // 점수판에 동일한 이름이 있을 때
@@ -86,6 +95,13 @@ public class ScoreBoard implements Serializable {
         } catch (IOException | ClassNotFoundException e) {
             // 파일이 없거나 읽어오는 데 실패한 경우, 새 리스트로 초기화
            scores = new ArrayList<>();
+        }
+    }
+
+    // 디버그용
+    public void printScoreboard() {
+        for (Score s : scores) {
+            System.out.println(s);
         }
     }
 

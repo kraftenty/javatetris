@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import org.nl.javatetris.controller.GamePlayController;
+import org.nl.javatetris.model.score.ScoreBoard;
 import org.nl.javatetris.model.settings.Settings;
 import org.nl.javatetris.model.tetrominos.Tetromino;
 
@@ -23,14 +24,16 @@ public class GamePlayView implements View {
     private GamePlayController gamePlayController;
     private Pane pane;
     private Consumer<Integer> showGameOver; // Runnable 대신 Consumer<> 사용
+    private Runnable onBackToMenu;
 
-    public GamePlayView(Runnable onPause, Consumer<Integer> showGameOver) {
+    public GamePlayView(Runnable onPause, Consumer<Integer> showGameOver, Runnable onBackToMenu) {
         this.gamePlayController = new GamePlayController(
                 onPause,
                 this::drawGamePlayScreen,
                 this::drawGameOverScreen
         );
         this.showGameOver = showGameOver;
+        this.onBackToMenu = onBackToMenu;
     }
 
     public Scene createScene() {
@@ -161,8 +164,12 @@ public class GamePlayView implements View {
 
         blinkTimeline.setCycleCount(8);
         blinkTimeline.setOnFinished(e -> {
-            // TODO :
-            this.showGameOver.accept(gamePlayController.getScore());
+            // 10위 안에 들었을 경우 게임오버로, 그렇지 않을 경우 메인메뉴로 이동
+            if (ScoreBoard.getInstance().canUpdateScoreboard(gamePlayController.getPoint())) {
+                this.showGameOver.accept(gamePlayController.getPoint());
+            } else {
+                onBackToMenu.run();
+            }
         });
         blinkTimeline.play();
 
@@ -170,7 +177,7 @@ public class GamePlayView implements View {
 
     // 점수 표시 메서드
     private void drawScore() {
-        Text scoreText = new Text("Score: " + gamePlayController.getScore());
+        Text scoreText = new Text("Score: " + gamePlayController.getPoint());
         scoreText.setFont(Font.font("Arial", 18));
         scoreText.setFill(Color.BLACK);
         scoreText.setLayoutX(Settings.getInstance().getScreenSizeSettings().getScreenWidth() - 130);

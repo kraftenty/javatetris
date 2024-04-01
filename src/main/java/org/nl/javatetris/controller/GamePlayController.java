@@ -5,6 +5,7 @@ import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import org.nl.javatetris.model.Board;
+import org.nl.javatetris.model.score.ScoreBoard;
 import org.nl.javatetris.model.settings.Settings;
 import org.nl.javatetris.model.tetrominos.TetrominoGenerator;
 import org.nl.javatetris.view.SceneManager;
@@ -26,7 +27,7 @@ public class GamePlayController {
     private Runnable onGameOver;                    // 게임오버 콜백
 
     private int level = 0;                          // 게임 레벨
-    private int score = 0;                          // 게임 점수
+    private int point = 0;                          // 게임 점수
     private boolean isGameOver = false;             // 게임오버 여부
 
     // 생성자
@@ -55,10 +56,8 @@ public class GamePlayController {
                 if (!isProperlyDowned) {
                     timeline.stop(); // 타임라인 중지 하고
                     isGameOver = true; // 게임오버 상태로 변경
-                    onGameOver.run(); // 게임오버 콜백 호출
+                    onGameOver.run();
                 } else {
-                    // 디버그용
-                    // board.drawBoard();
                     addScoreOnDown();
                     onBoardUpdate.run();
                 }
@@ -84,18 +83,18 @@ public class GamePlayController {
 
     // 한칸 내려갈 때 점수 가산 메서드
     private void addScoreOnDown() {
-        this.score += DOWN_SCORE;
+        this.point += DOWN_SCORE;
         checkLevelUp(); // 레벨업 체크
     }
 
     // 라인 클리어 시 점수 가산 메서드
     private void addScoreOnLineClear() {
-        this.score += LINE_CLEAR_SCORE;
+        this.point += LINE_CLEAR_SCORE;
     }
 
     // 점수 반환 메서드
-    public int getScore() {
-        return score;
+    public int getPoint() {
+        return point;
     }
 
     /**
@@ -114,8 +113,8 @@ public class GamePlayController {
 
     // 레벨업 메서드
     private void checkLevelUp() {
-        if ((score/LEVEL_UP_SCORE) > level) {
-            level = score/LEVEL_UP_SCORE;
+        if ((point /LEVEL_UP_SCORE) > level) {
+            level = point /LEVEL_UP_SCORE;
             startTimeline(); // 새로운 속도로 타임라인 재시작
         }
     }

@@ -42,15 +42,12 @@ public class SceneManager {
     }
 
     public void showStartMenu() {
-        // scene생성 null체크를 주석처리한 이유: 화면 크기 변경 때문.
-//        if (startMenuScene == null) {
-            StartMenuView startMenuView = new StartMenuView(
-                    this::showGamePlay,
-                    this::showSettingsMenu,
-                    this::showScoreBoard
-            );
-            this.startMenuScene = startMenuView.createScene();
-//        }
+        StartMenuView startMenuView = new StartMenuView(
+                this::showGamePlay,
+                this::showSettingsMenu,
+                this::showScoreBoard
+        );
+        this.startMenuScene = startMenuView.createScene();
 
         setScene(startMenuScene);
         currentSceneNumber = START_MENU_SCENE;
@@ -59,7 +56,8 @@ public class SceneManager {
     public void showGamePlay() {
         GamePlayView gamePlayView = new GamePlayView(
                 this::showPauseMenu,
-                score -> showGameOver(score)
+                score -> showGameOver(score),
+                this::showStartMenu
         );
         this.gamePlayScene = gamePlayView.createScene();
 
@@ -79,7 +77,7 @@ public class SceneManager {
     public void showGameOver(Integer score) {
         GameOverView gameOverView = new GameOverView(
                 score,
-                this::showStartMenu
+                this::showScoreBoard
         );
         Scene gameOverScene = gameOverView.createScene();
 
@@ -88,67 +86,55 @@ public class SceneManager {
     }
 
     public void showPauseMenu() {
-//        if (pauseMenuScene == null) {
-            PauseMenuView pauseMenuView = new PauseMenuView(
-                    this::resumeGame,
-                    this::endGame,
-                    this::showSettingsMenu);
-            this.pauseMenuScene = pauseMenuView.createScene();
-//        }
+        PauseMenuView pauseMenuView = new PauseMenuView(
+                this::resumeGame,
+                this::endGame,
+                this::showSettingsMenu);
+        this.pauseMenuScene = pauseMenuView.createScene();
 
         setScene(pauseMenuScene);
         currentSceneNumber = PAUSE_MENU_SCENE;
     }
 
     public void showSettingsMenu() {
-//        if (settingsMenuScene == null) {
-            SettingsMenuView settingsMenuView = new SettingsMenuView(
-                    this::showStartMenu,
-                    this::showCheckingInitSet,
-                    this::showCheckingBoardInit,
-                    this::showSettingKeyScene
-            );
-            this.settingsMenuScene = settingsMenuView.createScene();
-//        }
+        SettingsMenuView settingsMenuView = new SettingsMenuView(
+                this::showStartMenu,
+                this::showCheckingInitSet,
+                this::showCheckingBoardInit,
+                this::showSettingKeyScene
+        );
+        this.settingsMenuScene = settingsMenuView.createScene();
 
         setScene(settingsMenuScene);
         currentSceneNumber = SETTINGS_MENU_SCENE;
     }
 
     public void showCheckingInitSet() {
-//        if (CheckingInitSetScene == null) {
-            CheckingInitSetView checkingInitSetView = new CheckingInitSetView(this::showSettingsMenu);
-            this.CheckingInitSetScene = checkingInitSetView.createScene();
-//        }
+        CheckingInitSetView checkingInitSetView = new CheckingInitSetView(this::showSettingsMenu);
+        this.CheckingInitSetScene = checkingInitSetView.createScene();
 
         setScene(CheckingInitSetScene);
         currentSceneNumber = CHECKING_INIT_SET_SCENE;
     }
 
     public void showCheckingBoardInit() {
-//        if (CheckingBoardInitScene == null) {
-            CheckingBoardInitView checkingBoardInitView = new CheckingBoardInitView(this::showSettingsMenu);
-            this.CheckingBoardInitScene = checkingBoardInitView.createScene();
-//        }
+        CheckingBoardInitView checkingBoardInitView = new CheckingBoardInitView(this::showSettingsMenu);
+        this.CheckingBoardInitScene = checkingBoardInitView.createScene();
 
         setScene(CheckingBoardInitScene);
         currentSceneNumber = CHECKING_BOARD_INIT;
     }
     public void showSettingKeyScene() {
-//        if (SettingKeyScene == null) {
-            SettingsKeyMenuView settingsKeyMenuView = new SettingsKeyMenuView(this::showSettingsMenu);
-            this.SettingKeyScene = settingsKeyMenuView.createScene();
-//        }
+        SettingsKeyMenuView settingsKeyMenuView = new SettingsKeyMenuView(this::showSettingsMenu);
+        this.SettingKeyScene = settingsKeyMenuView.createScene();
 
         setScene(SettingKeyScene);
         currentSceneNumber = SETTING_KEY_MENU_SCENE;
     }
 
     public void showScoreBoard() {
-//        if (scoreBoardScene == null) {
-            ScoreBoardView scoreBoardView = new ScoreBoardView(this::showStartMenu);
-            this.scoreBoardScene = scoreBoardView.createScene();
-//        }
+        ScoreBoardView scoreBoardView = new ScoreBoardView(this::showStartMenu);
+        this.scoreBoardScene = scoreBoardView.createScene();
 
         setScene(scoreBoardScene);
         currentSceneNumber = SCORE_BOARD_SCENE;

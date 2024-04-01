@@ -2,10 +2,10 @@ package org.nl.javatetris.controller;
 
 public class GameOverController {
 
-    private Runnable onBackToMenu;
+    private Runnable onBackToScoreBoard;
 
-    public GameOverController(Runnable onBackToMenu) {
-        this.onBackToMenu = onBackToMenu;
+    public GameOverController(Runnable onBackToScoreBoard) {
+        this.onBackToScoreBoard = onBackToScoreBoard;
     }
 
 
