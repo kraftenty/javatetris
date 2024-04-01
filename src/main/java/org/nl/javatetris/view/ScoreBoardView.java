@@ -1,7 +1,6 @@
 package org.nl.javatetris.view;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -13,14 +12,10 @@ import org.nl.javatetris.controller.ScoreBoardController;
 
 import org.nl.javatetris.model.score.Score;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.nl.javatetris.view.ViewConst.WINDOW_HEIGHT;
-import static org.nl.javatetris.view.ViewConst.WINDOW_WIDTH;
 import org.nl.javatetris.model.settings.Settings;
 
 
@@ -28,7 +23,6 @@ public class ScoreBoardView implements View {
 
     private ScoreBoardController scoreBoardController;
     private static Label[] menuItems = new Label[]{
-            // 메뉴 항목. 추가할거면 여기에 추가해
             new Label("Main Menu"),
     };
 
@@ -44,9 +38,8 @@ public class ScoreBoardView implements View {
         title.setFont(new Font(20));
         layout.getChildren().add(title);
 
-        // TODO : 스코어보드 뷰 코드를 여기에 짜면됨
         //json파일에서 읽어오기
-        List<Score> scoreboard = Score.loadScoreboard("src/main/resources/scoreboard.json");
+        List<Score> scoreboard = scoreBoardController.loadScoreboard("scoreboard.dat");
 
         //내림차순 정렬
         scoreboard.sort(Comparator.comparingInt(Score::getScore).reversed());

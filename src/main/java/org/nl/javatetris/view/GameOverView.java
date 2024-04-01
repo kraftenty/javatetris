@@ -8,10 +8,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.nl.javatetris.controller.GameOverController;
+import org.nl.javatetris.model.settings.Settings;
 
 import java.util.Optional;
 
-import static org.nl.javatetris.view.ViewConst.*;
 public class GameOverView implements View {
 
     private GameOverController gameOverController;
@@ -26,12 +26,12 @@ public class GameOverView implements View {
 
     public Scene createScene() {
         Pane pane = new Pane();
-        Scene scene = new Scene(pane, WINDOW_WIDTH, WINDOW_HEIGHT);
+        Scene scene = new Scene(pane, Settings.getInstance().getScreenSizeSettings().getScreenWidth(), Settings.getInstance().getScreenSizeSettings().getScreenHeight());
 
         Text levelText = new Text("Your Score : " + score);
         levelText.setFont(Font.font("Arial", 26));
         levelText.setFill(Color.BLACK);
-        levelText.setLayoutX(WINDOW_WIDTH/2);
+        levelText.setLayoutX(Settings.getInstance().getScreenSizeSettings().getScreenWidth()/2);
         levelText.setLayoutY(100);
         pane.getChildren().add(levelText);
 
@@ -53,7 +53,7 @@ public class GameOverView implements View {
                     Text a = new Text("Your Score : ");
                     a.setFont(Font.font("ScoreBoard", 26));
                     a.setFill(Color.BLACK);
-                    a.setLayoutX(WINDOW_WIDTH/2);
+                    a.setLayoutX(Settings.getInstance().getScreenSizeSettings().getScreenWidth()/2/2);
                     a.setLayoutY(200);
                     pane.getChildren().add(a);
                 });

@@ -173,7 +173,7 @@ public class GamePlayView implements View {
         Text scoreText = new Text("Score: " + gamePlayController.getScore());
         scoreText.setFont(Font.font("Arial", 18));
         scoreText.setFill(Color.BLACK);
-        scoreText.setLayoutX(WINDOW_WIDTH - 130);
+        scoreText.setLayoutX(Settings.getInstance().getScreenSizeSettings().getScreenWidth() - 130);
         scoreText.setLayoutY(25);
         pane.getChildren().add(scoreText);
     }
@@ -183,7 +183,7 @@ public class GamePlayView implements View {
         Text levelText = new Text("Level: " + gamePlayController.getLevel());
         levelText.setFont(Font.font("Arial", 18));
         levelText.setFill(Color.BLACK);
-        levelText.setLayoutX(WINDOW_WIDTH - 130);
+        levelText.setLayoutX(Settings.getInstance().getScreenSizeSettings().getScreenWidth() - 130);
         levelText.setLayoutY(50);
         pane.getChildren().add(levelText);
     }
@@ -196,7 +196,7 @@ public class GamePlayView implements View {
             for (int x = 0; x < nextTetromino.getShapeWidth(); x++) {
                 if (shape[y][x] != EMPTY) {
                     Rectangle previewCell = new Rectangle(
-                            WINDOW_WIDTH - 100 + x * PREVIEW_CELL_SIZE,
+                            Settings.getInstance().getScreenSizeSettings().getScreenWidth() - 100 + x * PREVIEW_CELL_SIZE,
                             100 + y * PREVIEW_CELL_SIZE,
                             PREVIEW_CELL_SIZE,
                             PREVIEW_CELL_SIZE
