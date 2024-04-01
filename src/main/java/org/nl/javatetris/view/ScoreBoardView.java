@@ -4,15 +4,14 @@ package org.nl.javatetris.view;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import org.nl.javatetris.controller.ScoreBoardController;
 
 import org.nl.javatetris.model.score.Score;
 
-import java.util.Comparator;
 import java.util.List;
 
 import org.nl.javatetris.model.score.ScoreBoard;
@@ -34,8 +33,12 @@ public class ScoreBoardView implements View {
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
 
-        Text title = new Text("ScoreBoard");
-        title.setFont(new Font(20));
+        // 배경 설정
+        layout.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+
+        Label title = new Label("ScoreBoard");
+        title.setTextFill(Color.WHITE);
+        title.setFont(FontManager.getTopshowFont(ViewConst.FONT_SIZE_TITLE));
         layout.getChildren().add(title);
 
         // ScoreBoard 인스턴스에서 scores를 가져옴
@@ -46,13 +49,13 @@ public class ScoreBoardView implements View {
                 .forEach(score -> {
                     Label scoreLabel = new Label(score.getName() + " : " + score.getPoint());
                     scoreLabel.setTextFill(Color.WHITE); // 점수의 글자색 설정
-                    scoreLabel.setFont(new Font(16));
+                    scoreLabel.setFont(FontManager.getSquareFont(ViewConst.FONT_SIZE_SMALL));
                     layout.getChildren().add(scoreLabel);
                 });
 
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
-            menuItem.setFont(new Font(16));
+            menuItem.setFont(FontManager.getSquareFont(ViewConst.FONT_SIZE_MEDIUM));
             layout.getChildren().add(menuItem);
         }
 

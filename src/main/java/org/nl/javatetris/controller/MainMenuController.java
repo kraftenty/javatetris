@@ -3,7 +3,7 @@ package org.nl.javatetris.controller;
 import javafx.application.Platform;
 import javafx.scene.input.KeyEvent;
 
-public class StartMenuController {
+public class MainMenuController {
 
     private int selectedItemIndex = 0;
     private int menuItemsCount;
@@ -11,7 +11,7 @@ public class StartMenuController {
     private Runnable onSettings;
     private Runnable onScoreBoard;
 
-    public StartMenuController(int menuItemsCount, Runnable onStartGame, Runnable onSettings, Runnable onScoreBoard) {
+    public MainMenuController(int menuItemsCount, Runnable onStartGame, Runnable onSettings, Runnable onScoreBoard) {
         this.menuItemsCount = menuItemsCount;
         this.onStartGame = onStartGame;
         this.onSettings = onSettings;

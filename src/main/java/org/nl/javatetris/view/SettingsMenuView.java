@@ -3,64 +3,78 @@ package org.nl.javatetris.view;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import org.nl.javatetris.controller.SettingsMenuController;
 import org.nl.javatetris.model.settings.Settings;
 
 public class SettingsMenuView implements View {
 
     private SettingsMenuController settingsMenuController;
+
+    public SettingsMenuView(
+            Runnable onBackToMenu,
+            Runnable onCheckingInitSet,
+            Runnable onChekingBoardInit,
+            Runnable onSettingKeyMenu,
+            Runnable onHandleScreenSizeSettings
+            ) {
+        this.settingsMenuController = new SettingsMenuController(menuItems.length,
+                onBackToMenu,
+                onCheckingInitSet,
+                onChekingBoardInit,
+                onSettingKeyMenu,
+                onHandleScreenSizeSettings
+        );
+    }
     private static Label[] menuItems = new Label[]{
             new Label(getLabelOfScreenSizeSetting()),
-            new Label("Key Binding Settings"),
+            new Label("Key Binding"),
             new Label(getLabelOfColorBlindModeSetting()),
-            new Label("Initialize ScoreBoard"),
-            new Label("Initialize All Settings"),
+            new Label("Reset ScoreBoard"),
+            new Label("Reset All Settings"),
             new Label("Back"),
     };
 
     private static String getLabelOfColorBlindModeSetting() {
         if (Settings.getInstance().getColorSetting().getColorOffset() == 0) {
-            return "Color Mode : Normal";
+            return "Color - Normal";
         } else if (Settings.getInstance().getColorSetting().getColorOffset() == 1) {
-            return "Color Mode : Red-Green Color Blindness";
+            return "Color - Red-Green Blindness";
         } else {
-            return "Color Mode : Blue Blindness";
+            return "Color - Blue Blindness";
         }
     }
+
     private static String getLabelOfScreenSizeSetting() {
         if (Settings.getInstance().getScreenSizeSettings().getOffset() == 0) {
-            return "Window Size : Small";
+            return "Window Size - Small";
         } else if (Settings.getInstance().getScreenSizeSettings().getOffset() == 1) {
-            return "Window Size : Medium";
+            return "Window Size - Medium";
         } else {
-            return "Window Size : Big";
+            return "Window Size - Big";
         }
     }
-    public SettingsMenuView(Runnable onBackToMenu, Runnable onCheckingInitSet, Runnable onChekingBoardInit, Runnable onSettingKeyMenu) {
-        this.settingsMenuController = new SettingsMenuController(menuItems.length,
-                onBackToMenu,
-                onCheckingInitSet,
-                onChekingBoardInit,
-                onSettingKeyMenu
-                );
-    }
+
+
 
     public Scene createScene(){
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
 
-        Text title = new Text("Settings");
-        title.setFont(new Font(20));
+        // 배경 설정
+        layout.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+
+
+        Label title = new Label("Settings");
+        title.setTextFill(Color.WHITE);
+        title.setFont(FontManager.getTopshowFont(ViewConst.FONT_SIZE_TITLE));
         layout.getChildren().add(title);
 
         updateSetting();
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
-            menuItem.setFont(new Font(16));
+            menuItem.setFont(FontManager.getSquareFont(ViewConst.FONT_SIZE_MEDIUM));
             layout.getChildren().add(menuItem);
         }
 

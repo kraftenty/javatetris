@@ -21,4 +21,9 @@ public class ViewConst {
     public static final int CHECKING_BOARD_INIT=7;
     public static final int SETTING_KEY_MENU_SCENE=8;
     public static final int GAME_OVER_SCENE = 9;
+
+
+    public static final int FONT_SIZE_TITLE = 50;
+    public static final int FONT_SIZE_MEDIUM = 24;
+    public static final int FONT_SIZE_SMALL = 12;
 }

@@ -1,6 +1,7 @@
 package org.nl.javatetris;
 
 import javafx.application.Application;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.nl.javatetris.model.score.ScoreBoard;
 

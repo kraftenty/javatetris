@@ -12,17 +12,25 @@ public class SettingsMenuController {
     private Runnable onCheckingInitSet;
     private Runnable onCheckingBoardInit;
     private Runnable onSettingKeyMenu;
+    private Runnable onHandleScreenSizeSettings;
     private int selectedItemIndex = 0;
 
     private int colorBlindModeIndex=0;
 
-    public SettingsMenuController(int menuItemsCount, Runnable onResume, Runnable onCheckingInitSet, Runnable onCheckingBoardInit, Runnable onSettingKeyMenu) {
+    public SettingsMenuController(
+            int menuItemsCount,
+            Runnable onResume,
+            Runnable onCheckingInitSet,
+            Runnable onCheckingBoardInit,
+            Runnable onSettingKeyMenu,
+            Runnable onHandleScreenSizeSettings
+    ) {
         this.meunItemsCount = menuItemsCount;
         this.onBack = onResume;
         this.onCheckingInitSet=onCheckingInitSet;
         this.onCheckingBoardInit=onCheckingBoardInit;
         this.onSettingKeyMenu=onSettingKeyMenu;
-
+        this.onHandleScreenSizeSettings = onHandleScreenSizeSettings;
 
     }
 
@@ -40,19 +48,19 @@ public class SettingsMenuController {
                         //화면 크기 조정
                         switch(Settings.getInstance().getScreenSizeSettings().getOffset()) {
                             case 0:
-                                System.out.println("화면 크기 커짐"); //화면 크기 커짐
+                                //화면 크기 커짐
                                 Settings.getInstance().getScreenSizeSettings().setScreenSizeBigger();
-                                System.out.println(Settings.getInstance().getScreenSizeSettings().getScreenWidth());
+                                onHandleScreenSizeSettings.run();
                                 break;
                             case 1:
-                                System.out.println("화면 크기 더 커짐"); //화면 크기 더 커짐
+                                //화면 크기 더 커짐
                                 Settings.getInstance().getScreenSizeSettings().setScreenSizeBigger();
-                                System.out.println(Settings.getInstance().getScreenSizeSettings().getScreenWidth());
+                                onHandleScreenSizeSettings.run();
                                 break;
                             case 2:
-                                System.out.println("다시 원래크기로 돌아옴"); //다시 기본화면으로 돌아옴
+                                //다시 기본화면으로 돌아옴
                                 Settings.getInstance().getScreenSizeSettings().setScreenSizeDefault();
-                                System.out.println(Settings.getInstance().getScreenSizeSettings().getScreenWidth());
+                                onHandleScreenSizeSettings.run();
                                 break;
                         }
                         break;
@@ -72,12 +80,9 @@ public class SettingsMenuController {
                         onCheckingInitSet.run();
                         break;
                     case 5:
-//                        Settings.saveSettings(); //setting 메뉴 나갈 때 저장
-                        SettingsUtil.saveSettings(); //TODO
+                        SettingsUtil.saveSettings();
                         onBack.run();
                         break;
-
-
                 }
                 break;
         }

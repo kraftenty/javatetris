@@ -2,6 +2,7 @@ package org.nl.javatetris.view;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.nl.javatetris.model.settings.Settings;
 
 import static org.nl.javatetris.view.ViewConst.*;
 
@@ -41,13 +42,18 @@ public class SceneManager {
         primaryStage.setScene(scene);
     }
 
+    private void handleScreenSizeChange() {
+        primaryStage.setWidth(Settings.getInstance().getScreenSizeSettings().getScreenWidth());
+        primaryStage.setHeight(Settings.getInstance().getScreenSizeSettings().getScreenHeight());
+    }
+
     public void showStartMenu() {
-        StartMenuView startMenuView = new StartMenuView(
+        MainMenuView mainMenuView = new MainMenuView(
                 this::showGamePlay,
                 this::showSettingsMenu,
                 this::showScoreBoard
         );
-        this.startMenuScene = startMenuView.createScene();
+        this.startMenuScene = mainMenuView.createScene();
 
         setScene(startMenuScene);
         currentSceneNumber = START_MENU_SCENE;
@@ -101,7 +107,8 @@ public class SceneManager {
                 this::showStartMenu,
                 this::showCheckingInitSet,
                 this::showCheckingBoardInit,
-                this::showSettingKeyScene
+                this::showSettingKeyScene,
+                this::handleScreenSizeChange
         );
         this.settingsMenuScene = settingsMenuView.createScene();
 
