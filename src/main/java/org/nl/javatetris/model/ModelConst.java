@@ -18,5 +18,7 @@ public class ModelConst {
     public static final int X_MAX = 12;          // 가로 크기 (10 + 테두리 2칸)
 
 
-    public static final int MAX_SCORE_STORE_SIZE = 10; // 최대
+    public static final int MAX_SCOREBOARD_SIZE = 10; // 최대
+
+    public static final String SCOREBOARD_FILE_NAME = "scoreboard.dat"; // 점수판 파일 이름
 }
