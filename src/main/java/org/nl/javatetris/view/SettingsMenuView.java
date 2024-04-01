@@ -58,7 +58,7 @@ public class SettingsMenuView implements View {
         title.setFont(new Font(20));
         layout.getChildren().add(title);
 
-
+        updateSetting();
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
             menuItem.setFont(new Font(16));
