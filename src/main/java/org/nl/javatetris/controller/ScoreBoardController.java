@@ -4,17 +4,18 @@ import javafx.scene.input.KeyEvent;
 
 public class ScoreBoardController {
 
-    private Runnable onBack;
+    private Runnable onBackToMenu;
     private int selectedItemIndex = 0;
 
-    public ScoreBoardController(Runnable onResume) {
-        this.onBack = onResume;
+    public ScoreBoardController(Runnable onBackToMenu) {
+        this.onBackToMenu = onBackToMenu;
     }
 
     public void handleKeyPress(KeyEvent e) {
         switch (e.getCode()) {
+            case ESCAPE:
             case ENTER:
-                onBack.run();
+                onBackToMenu.run();
                 break;
         }
 

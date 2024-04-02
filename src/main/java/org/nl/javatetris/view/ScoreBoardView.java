@@ -38,7 +38,7 @@ public class ScoreBoardView implements View {
 
         Label title = new Label("ScoreBoard");
         title.setTextFill(Color.YELLOW);
-        title.setFont(FontManager.getTopshowFont(Settings.getInstance().getScreenSizeSettings().getTitleFontSize()));
+        title.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getTitleFontSize()));
         layout.getChildren().add(title);
 
         // ScoreBoard 인스턴스에서 scores를 가져옴
@@ -49,17 +49,21 @@ public class ScoreBoardView implements View {
                 .forEach(score -> {
                     Label scoreLabel = new Label(score.getName() + " : " + score.getPoint());
                     scoreLabel.setTextFill(Color.WHITE); // 점수의 글자색 설정
-                    scoreLabel.setFont(FontManager.getSquareFont(Settings.getInstance().getScreenSizeSettings().getDefaultFontSize()));
+                    scoreLabel.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
                     layout.getChildren().add(scoreLabel);
                 });
 
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
-            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getScreenSizeSettings().getDefaultFontSize()));
+            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
             layout.getChildren().add(menuItem);
         }
 
-        Scene scene = new Scene(layout, Settings.getInstance().getScreenSizeSettings().getScreenWidth(), Settings.getInstance().getScreenSizeSettings().getScreenHeight());
+        Scene scene = new Scene(
+                layout,
+                Settings.getInstance().getSizeSetting().getScreenWidth(),
+                Settings.getInstance().getSizeSetting().getScreenHeight()
+        );
 
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {

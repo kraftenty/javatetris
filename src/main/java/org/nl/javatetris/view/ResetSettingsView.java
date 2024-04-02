@@ -3,6 +3,8 @@ package org.nl.javatetris.view;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -27,22 +29,26 @@ public class ResetSettingsView {
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
 
-        Text title = new Text("Settings");
-        title.setFont(new Font(20));
-        layout.getChildren().add(title);
+        // 배경 설정
+        layout.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
-        Text title2= new Text("Are you sure you want to reset the scoreboard?");
-        title2.setFont(new Font(18));
-        layout.getChildren().add(title2);
+        Label title= new Label("Are you sure\nto reset\nall settings?");
+        title.setTextFill(Color.YELLOW);
+        title.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getTitleFontSize()));
+        layout.getChildren().add(title);
 
 
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
-            menuItem.setFont(new Font(16));
+            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
             layout.getChildren().add(menuItem);
         }
 
-        Scene scene = new Scene(layout, Settings.getInstance().getScreenSizeSettings().getScreenWidth(), Settings.getInstance().getScreenSizeSettings().getScreenHeight());
+        Scene scene = new Scene(
+                layout,
+                Settings.getInstance().getSizeSetting().getScreenWidth(),
+                Settings.getInstance().getSizeSetting().getScreenHeight()
+        );
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {
             resetSettingsController.handleKeyPress(e);

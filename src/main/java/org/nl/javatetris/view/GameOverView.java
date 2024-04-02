@@ -27,12 +27,16 @@ public class GameOverView implements View {
 
     public Scene createScene() {
         Pane pane = new Pane();
-        Scene scene = new Scene(pane, Settings.getInstance().getScreenSizeSettings().getScreenWidth(), Settings.getInstance().getScreenSizeSettings().getScreenHeight());
+        Scene scene = new Scene(
+                pane,
+                Settings.getInstance().getSizeSetting().getScreenWidth(),
+                Settings.getInstance().getSizeSetting().getScreenHeight()
+        );
 
         Text levelText = new Text("Your Score : " + point);
         levelText.setFont(Font.font("Arial", 26));
         levelText.setFill(Color.BLACK);
-        levelText.setLayoutX(Settings.getInstance().getScreenSizeSettings().getScreenWidth()/2);
+        levelText.setLayoutX(Settings.getInstance().getSizeSetting().getScreenWidth()/2);
         levelText.setLayoutY(100);
         pane.getChildren().add(levelText);
 
@@ -52,7 +56,7 @@ public class GameOverView implements View {
                 Text a = new Text("Your Score : ");
                 a.setFont(Font.font("ScoreBoard", 26));
                 a.setFill(Color.BLACK);
-                a.setLayoutX(Settings.getInstance().getScreenSizeSettings().getScreenWidth()/2);
+                a.setLayoutX(Settings.getInstance().getSizeSetting().getScreenWidth()/2);
                 a.setLayoutY(200);
                 pane.getChildren().add(a);
                 ScoreBoard.getInstance().addScore(name, point); // 스코어보드에 추가!!

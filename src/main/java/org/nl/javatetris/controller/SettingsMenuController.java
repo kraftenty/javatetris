@@ -8,7 +8,7 @@ import org.nl.javatetris.model.settings.SettingsUtil;
 public class SettingsMenuController {
 
     private int meunItemsCount;
-    private Runnable onBack;
+    private Runnable onBackToMenu;
     private Runnable onCheckingInitSet;
     private Runnable onCheckingBoardInit;
     private Runnable onSettingKeyMenu;
@@ -18,14 +18,14 @@ public class SettingsMenuController {
 
     public SettingsMenuController(
             int menuItemsCount,
-            Runnable onResume,
+            Runnable onBackToMenu,
             Runnable onCheckingInitSet,
             Runnable onCheckingBoardInit,
             Runnable onSettingKeyMenu,
             Runnable onHandleScreenSizeSettings
     ) {
         this.meunItemsCount = menuItemsCount;
-        this.onBack = onResume;
+        this.onBackToMenu = onBackToMenu;
         this.onCheckingInitSet=onCheckingInitSet;
         this.onCheckingBoardInit=onCheckingBoardInit;
         this.onSettingKeyMenu=onSettingKeyMenu;
@@ -35,6 +35,10 @@ public class SettingsMenuController {
 
     public void handleKeyPress(KeyEvent e) {
         switch (e.getCode()) {
+            case ESCAPE:
+                SettingsUtil.saveSettings();
+                onBackToMenu.run();
+                break;
             case UP:
                 selectedItemIndex = Math.max(0, selectedItemIndex - 1);
                 break;
@@ -45,20 +49,20 @@ public class SettingsMenuController {
                 switch(selectedItemIndex) {
                     case 0:
                         //화면 크기 조정
-                        switch(Settings.getInstance().getScreenSizeSettings().getOffset()) {
+                        switch(Settings.getInstance().getSizeSetting().getOffset()) {
                             case 0:
                                 //화면 크기 커짐
-                                Settings.getInstance().getScreenSizeSettings().setScreenSizeBigger();
+                                Settings.getInstance().getSizeSetting().setScreenSizeBigger();
                                 onHandleScreenSizeSettings.run();
                                 break;
                             case 1:
                                 //화면 크기 더 커짐
-                                Settings.getInstance().getScreenSizeSettings().setScreenSizeBigger();
+                                Settings.getInstance().getSizeSetting().setScreenSizeBigger();
                                 onHandleScreenSizeSettings.run();
                                 break;
                             case 2:
                                 //다시 기본화면으로 돌아옴
-                                Settings.getInstance().getScreenSizeSettings().setScreenSizeDefault();
+                                Settings.getInstance().getSizeSetting().setScreenSizeDefault();
                                 onHandleScreenSizeSettings.run();
                                 break;
                         }
@@ -68,19 +72,21 @@ public class SettingsMenuController {
                         onSettingKeyMenu.run();
                         break;
                     case 2:
+                        // 색깔 모드 변경
                         Settings.getInstance().getColorSetting().roundColorSetting();
                         break;
-
-                    case 3: //스코어 보드 초기화
+                    case 3:
+                        // 스코어 보드 초기화
                         onCheckingBoardInit.run();
                         break;
-
-                    case 4:  // 모든 설정 초기화
+                    case 4:
+                        // 모든 설정 초기화
                         onCheckingInitSet.run();
                         break;
                     case 5:
+                        // 메뉴로
                         SettingsUtil.saveSettings();
-                        onBack.run();
+                        onBackToMenu.run();
                         break;
                 }
                 break;

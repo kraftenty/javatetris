@@ -19,6 +19,9 @@ public class PauseMenuController {
 
     public void handleKeyPress(KeyEvent e) {
         switch (e.getCode()) {
+            case ESCAPE:
+                onResume.run();
+                break;
             case UP:
                 selectedItemIndex = Math.max(0, selectedItemIndex - 1);
                 break;

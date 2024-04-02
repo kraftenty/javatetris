@@ -1,7 +1,6 @@
 package org.nl.javatetris.model.settings;
 
 import javafx.scene.paint.Color;
-import org.nl.javatetris.view.ViewConst;
 
 import java.io.Serializable;
 
@@ -15,12 +14,12 @@ public class Settings implements Serializable {
 
     private static Settings instance;
 
-    private ScreenSizeSettings screenSizeSettings;
+    private SizeSetting sizeSetting;
     private KeySetting keySetting;
     private ColorSetting colorSetting;
 
     private Settings() {
-        screenSizeSettings = new ScreenSizeSettings();
+        sizeSetting = new SizeSetting();
         keySetting = new KeySetting();
         colorSetting = new ColorSetting();
     }
@@ -46,8 +45,8 @@ public class Settings implements Serializable {
         SettingsUtil.saveSettings();
     }
 
-    public ScreenSizeSettings getScreenSizeSettings() {
-        return screenSizeSettings;
+    public SizeSetting getSizeSetting() {
+        return sizeSetting;
     }
 
     public KeySetting getKeySetting() {
@@ -58,19 +57,21 @@ public class Settings implements Serializable {
         return colorSetting;
     }
 
-    public class ScreenSizeSettings implements Serializable {
+    public class SizeSetting implements Serializable {
 
         private int blockSize;
         private int previewBlockSize;
+        private int sidebarSize;
         private int screenWidth;
         private int screenHeight;
         private int defaultFontSize;
         private int titleFontSize;
         private int offset = 0;
 
-        public ScreenSizeSettings() {
+        public SizeSetting() {
             this.blockSize = CELL_SIZE;
             this.previewBlockSize = PREVIEW_CELL_SIZE;
+            this.sidebarSize = DEFAULT_SIDEBAR_SIZE;
             this.screenWidth = DEFAULT_WINDOW_WIDTH;
             this.screenHeight = DEFAULT_WINDOW_HEIGHT;
             this.defaultFontSize = BASE_DEFAULT_FONT_SIZE;
@@ -79,6 +80,14 @@ public class Settings implements Serializable {
 
         public int getBlockSize() {
             return blockSize;
+        }
+
+        public int getPreviewBlockSize() {
+            return previewBlockSize;
+        }
+
+        public int getSidebarSize() {
+            return sidebarSize;
         }
 
         public int getOffset(){
@@ -104,8 +113,9 @@ public class Settings implements Serializable {
         public void setScreenSizeBigger() {
             if (offset < 2) {
                 blockSize = (int) (blockSize * 1.5);
+                sidebarSize = (int) (sidebarSize * 1.5);
                 previewBlockSize = (int) (previewBlockSize * 1.5);
-                screenWidth = blockSize * X_MAX + DEFAULT_SIDEBAR_SIZE;
+                screenWidth = blockSize * X_MAX + sidebarSize;
                 screenHeight = blockSize * Y_MAX;
                 defaultFontSize = (int) (defaultFontSize * 1.5);
                 titleFontSize = (int) (titleFontSize * 1.5);
@@ -116,6 +126,7 @@ public class Settings implements Serializable {
         public void setScreenSizeDefault() {
             blockSize = CELL_SIZE;
             previewBlockSize = PREVIEW_CELL_SIZE;
+            sidebarSize = DEFAULT_SIDEBAR_SIZE;
             screenWidth = DEFAULT_WINDOW_WIDTH;
             screenHeight = DEFAULT_WINDOW_HEIGHT;
             defaultFontSize = BASE_DEFAULT_FONT_SIZE;
@@ -322,7 +333,7 @@ public class Settings implements Serializable {
 
         // 타입에 따른 Color 객체 반환
         public Color getColorOfTetrominoType(Integer type) {
-            return Color.web(colorArray[offset][type]);
+            return Color.web(colorArray[offset][type-1]);
         }
 
         public void roundColorSetting() {

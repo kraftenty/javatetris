@@ -28,31 +28,33 @@ public class SettingsMenuView implements View {
         );
     }
     private static Label[] menuItems = new Label[]{
-            new Label(getLabelOfScreenSizeSetting()),
-            new Label("Key Binding"),
+            new Label(getLabelOfWindowSizeSetting()),
+            new Label("Key Setting"),
             new Label(getLabelOfColorBlindModeSetting()),
             new Label("Reset ScoreBoard"),
             new Label("Reset All Settings"),
             new Label("Back"),
     };
 
-    private static String getLabelOfColorBlindModeSetting() {
-        if (Settings.getInstance().getColorSetting().getColorOffset() == 0) {
-            return "Color - Normal";
-        } else if (Settings.getInstance().getColorSetting().getColorOffset() == 1) {
-            return "Color - Red-Green Blindness";
+
+
+    private static String getLabelOfWindowSizeSetting() {
+        if (Settings.getInstance().getSizeSetting().getOffset() == 0) {
+            return "Small";
+        } else if (Settings.getInstance().getSizeSetting().getOffset() == 1) {
+            return "Medium";
         } else {
-            return "Color - Blue Blindness";
+            return "Big";
         }
     }
 
-    private static String getLabelOfScreenSizeSetting() {
-        if (Settings.getInstance().getScreenSizeSettings().getOffset() == 0) {
-            return "Window Size - Small";
-        } else if (Settings.getInstance().getScreenSizeSettings().getOffset() == 1) {
-            return "Window Size - Medium";
+    private static String getLabelOfColorBlindModeSetting() {
+        if (Settings.getInstance().getColorSetting().getColorOffset() == 0) {
+            return "Normal";
+        } else if (Settings.getInstance().getColorSetting().getColorOffset() == 1) {
+            return "Red-Green Blindness";
         } else {
-            return "Window Size - Big";
+            return "Blue Blindness";
         }
     }
 
@@ -66,21 +68,21 @@ public class SettingsMenuView implements View {
         layout.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
         Label title = new Label("Settings");
-        title.setTextFill(Color.WHITE);
-        title.setFont(FontManager.getTopshowFont(Settings.getInstance().getScreenSizeSettings().getTitleFontSize()));
+        title.setTextFill(Color.YELLOW);
+        title.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getTitleFontSize()));
         layout.getChildren().add(title);
 
         updateSetting();
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
-            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getScreenSizeSettings().getDefaultFontSize()));
+            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
             layout.getChildren().add(menuItem);
         }
 
         Scene scene = new Scene(
                 layout,
-                Settings.getInstance().getScreenSizeSettings().getScreenWidth(),
-                Settings.getInstance().getScreenSizeSettings().getScreenHeight()
+                Settings.getInstance().getSizeSetting().getScreenWidth(),
+                Settings.getInstance().getSizeSetting().getScreenHeight()
         );
 
         // 키 입력에 따른 액션을 처리합니다.
@@ -107,8 +109,8 @@ public class SettingsMenuView implements View {
 
     // 화면에 나타나는 설정을 업데이트
     private void updateSetting(){
-        menuItems[0].setText(getLabelOfScreenSizeSetting());
-        menuItems[2].setText(getLabelOfColorBlindModeSetting());
+        menuItems[0].setText("window size - " + getLabelOfWindowSizeSetting());
+        menuItems[2].setText("color - " + getLabelOfColorBlindModeSetting());
     }
 
 }

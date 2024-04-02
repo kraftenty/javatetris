@@ -15,6 +15,9 @@ public class ResetSettingsController {
 
     public void handleKeyPress(KeyEvent e) {
         switch (e.getCode()) {
+            case ESCAPE:
+                onSettings.run();
+                break;
             case UP:
                 selectedItemIndex = Math.max(0, selectedItemIndex - 1);
                 break;

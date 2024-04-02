@@ -31,19 +31,23 @@ public class ResetScoreBoardView {
         // 배경 설정
         layout.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
-        Label title= new Label("Are you sure you want to reset the scoreboard?");
+        Label title= new Label("Are you sure\nto reset\nthe scoreboard?");
         title.setTextFill(Color.YELLOW);
-        title.setFont(FontManager.getSquareFont(Settings.getInstance().getScreenSizeSettings().getTitleFontSize()));
+        title.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getTitleFontSize()));
         layout.getChildren().add(title);
 
 
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
-            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getScreenSizeSettings().getDefaultFontSize()));
+            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
             layout.getChildren().add(menuItem);
         }
 
-        Scene scene = new Scene(layout, Settings.getInstance().getScreenSizeSettings().getScreenWidth(), Settings.getInstance().getScreenSizeSettings().getScreenHeight());
+        Scene scene = new Scene(
+                layout,
+                Settings.getInstance().getSizeSetting().getScreenWidth(),
+                Settings.getInstance().getSizeSetting().getScreenHeight()
+        );
 
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {

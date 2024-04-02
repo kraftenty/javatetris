@@ -38,7 +38,11 @@ public class MainMenuView implements View {
         configureLogo(layout);
         configureMenuItems(layout);
 
-        Scene scene = new Scene(layout, Settings.getInstance().getScreenSizeSettings().getScreenWidth(), Settings.getInstance().getScreenSizeSettings().getScreenHeight());
+        Scene scene = new Scene(
+                layout,
+                Settings.getInstance().getSizeSetting().getScreenWidth(),
+                Settings.getInstance().getSizeSetting().getScreenHeight()
+        );
 
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {
@@ -79,7 +83,7 @@ public class MainMenuView implements View {
     private void configureMenuItems(VBox layout) {
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
-            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getScreenSizeSettings().getDefaultFontSize()));
+            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
             menuItem.setEffect(DROP_SHADOW);
             layout.getChildren().add(menuItem);
         }
