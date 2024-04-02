@@ -1,19 +1,18 @@
 package org.nl.javatetris;
 
 import javafx.application.Application;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.nl.javatetris.model.score.ScoreBoard;
+import org.nl.javatetris.scoreboard.ScoreBoard;
 
-import org.nl.javatetris.model.settings.SettingsUtil;
-import org.nl.javatetris.view.SceneManager;
+import org.nl.javatetris.settings.SettingsManager;
+import org.nl.javatetris.config.SceneManager;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
         ScoreBoard.ready();
-        SettingsUtil.loadSettings();
+        SettingsManager.loadSettings();
         new SceneManager(primaryStage).showStartMenu();
     }
 

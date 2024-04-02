@@ -1,8 +1,6 @@
 package org.nl.javatetris.controller;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.nl.javatetris.model.Board;
 
 public class DropTest {
 

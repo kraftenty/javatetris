@@ -2,7 +2,7 @@ package org.nl.javatetris.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.nl.javatetris.model.score.ScoreBoard;
+import org.nl.javatetris.scoreboard.ScoreBoard;
 
 public class ScoreBoardTest {
 
