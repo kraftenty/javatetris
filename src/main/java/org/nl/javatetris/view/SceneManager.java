@@ -29,7 +29,8 @@ public class SceneManager {
     }
 
     private void initialize() {
-        primaryStage.setTitle("JavaTetris - TEAM 4");
+
+        primaryStage.setTitle("Tetris - TEAM 4");
         primaryStage.setResizable(false);
         primaryStage.show();
         currentSceneNumber = NO_SCENE;

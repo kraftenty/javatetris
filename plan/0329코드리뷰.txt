@@ -1,0 +1,6 @@
+강현 - json으로 scoreboard 구현 했으나 미완성.
+     ->추후 수정 예정
+서영,준표 - json으로 setting 구현 완료.
+
+
+둘다 리뷰 후 merge

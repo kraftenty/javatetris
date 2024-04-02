@@ -2,7 +2,8 @@ package org.nl.javatetris.view;
 
 import javafx.animation.KeyFrame;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -36,6 +37,10 @@ public class GamePlayView implements View {
 
     public Scene createScene() {
         pane = new Pane();
+        Image backgroundImage = new Image("file:src/main/resources/images/play.jpg");
+        BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+        pane.setBackground(new Background(background));
+
         Scene scene = new Scene(
                 pane,
                 Settings.getInstance().getSizeSetting().getScreenWidth(),
@@ -70,12 +75,12 @@ public class GamePlayView implements View {
                         Settings.getInstance().getSizeSetting().getBlockSize(),
                         Settings.getInstance().getSizeSetting().getBlockSize()
                 );
-                cell.setStroke(Color.LIGHTGRAY); // 셀의 테두리 색상
+                cell.setStroke(Color.rgb(128,128,128,0.5)); // 셀의 테두리 색상
 
                 int cellValue = gamePlayController.getBoard().getValueAt(y, x);
                 switch(cellValue) {
                     case EMPTY:
-                        cell.setFill(Color.WHITE); // 비어있는 셀의 색상
+                        cell.setFill(Color.rgb(255,255,255,0.3)); // 비어있는 셀의 색상
                         break;
                     case BORDER:
                         cell.setFill(Color.BLACK); // 벽의 색상
@@ -123,18 +128,18 @@ public class GamePlayView implements View {
                         y * Settings.getInstance().getSizeSetting().getBlockSize(),
                         Settings.getInstance().getSizeSetting().getBlockSize(),
                         Settings.getInstance().getSizeSetting().getBlockSize());
-                cell.setStroke(Color.LIGHTGRAY); // 셀의 테두리 색상
+                cell.setStroke(Color.rgb(128,128,128,0.5)); // 셀의 테두리 색상
 
                 int cellValue = gamePlayController.getBoard().getValueAt(y, x);
                 switch(cellValue) {
                     case EMPTY:
-                        cell.setFill(Color.WHITE); // 비어있는 셀의 색상
+                        cell.setFill(Color.rgb(255,255,255,0.3)); // 비어있는 셀의 색상
                         break;
                     case BORDER:
                         cell.setFill(Color.BLACK); // 벽의 색상
                         break;
                     default:
-                        cell.setFill(Color.GREY); // 활성화된 테트로미노의 색상
+                        cell.setFill(Color.BLACK); // 활성화된 테트로미노의 색상
                         break;
                 }
                 pane.getChildren().add(cell);
@@ -181,7 +186,7 @@ public class GamePlayView implements View {
     private void drawScore() {
         Text scoreText = new Text("score\n" + gamePlayController.getPoint());
         scoreText.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
-        scoreText.setFill(Color.BLACK);
+        scoreText.setFill(Color.WHITE);
         scoreText.setLayoutX(Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10);
         scoreText.setLayoutY(Settings.getInstance().getSizeSetting().getBlockSize());
         pane.getChildren().add(scoreText);
@@ -191,7 +196,7 @@ public class GamePlayView implements View {
     private void drawLevel() {
         Text levelText = new Text("level\n" + gamePlayController.getLevel());
         levelText.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
-        levelText.setFill(Color.BLACK);
+        levelText.setFill(Color.WHITE);
         levelText.setLayoutX(Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10);
         levelText.setLayoutY(Settings.getInstance().getSizeSetting().getBlockSize() * 4);
         pane.getChildren().add(levelText);
@@ -202,7 +207,7 @@ public class GamePlayView implements View {
         // NEXT
         Text nextText = new Text("next");
         nextText.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
-        nextText.setFill(Color.GRAY);
+        nextText.setFill(Color.CYAN);
         nextText.setLayoutX(Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10);
         nextText.setLayoutY(Settings.getInstance().getSizeSetting().getBlockSize() * 8);
         pane.getChildren().add(nextText);
@@ -218,7 +223,7 @@ public class GamePlayView implements View {
                             Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
                             Settings.getInstance().getSizeSetting().getPreviewBlockSize()
                     );
-                    previewCell.setFill(Color.GRAY); // 다음 나올 테트로미노의 색상
+                    previewCell.setFill(Color.CYAN); // 다음 나올 테트로미노의 색상
                     previewCell.setStroke(Color.LIGHTGRAY); // 테두리 색상
                     pane.getChildren().add(previewCell);
                 }

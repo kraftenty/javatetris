@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.nl.javatetris.controller.ScoreBoardController;
@@ -43,15 +44,26 @@ public class ScoreBoardView implements View {
 
         // ScoreBoard 인스턴스에서 scores를 가져옴
         List<Score> scoreboard = ScoreBoard.getInstance().getScores();
+        // 최근 점수를 본 적이 없다면 recentScoreIndex를 가져옴
+        Integer recentScoreIndex = null;
+        if (!ScoreBoard.isRecentScoreViewedFlag()) {
+            ScoreBoard.setRecentScoreViewedFlag(true);
+            recentScoreIndex = ScoreBoard.getRecentScoreIndex();
+        }
 
         // 스코어 10개 내림차순으로 display
-        scoreboard.stream()
-                .forEach(score -> {
-                    Label scoreLabel = new Label(score.getName() + " : " + score.getPoint());
-                    scoreLabel.setTextFill(Color.WHITE); // 점수의 글자색 설정
-                    scoreLabel.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
-                    layout.getChildren().add(scoreLabel);
-                });
+        for (int i = 0; i < scoreboard.size(); i++) {
+            Score score = scoreboard.get(i);
+            String formattedText = String.format("%-2d.   %-10s   %-8d", i + 1, score.getName(), score.getPoint());
+            Label scoreLabel = new Label(formattedText);
+            if (recentScoreIndex != null && recentScoreIndex == i) {
+                scoreLabel.setTextFill(Color.CYAN);
+            } else {
+                scoreLabel.setTextFill(Color.WHITE);
+            }
+            scoreLabel.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
+            layout.getChildren().add(scoreLabel);
+        }
 
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);

@@ -50,7 +50,7 @@ public class GamePlayController {
             timeline.stop(); // 기존 타임라인이 존재한다면 중지
         }
         timeline = new Timeline(new KeyFrame(Duration.seconds(getSpeedByLevel()), e -> {
-            if(SceneManager.getCurrentSceneNumber() == ViewConst.GAME_PLAY_SCENE) {
+            if (SceneManager.getCurrentSceneNumber() == ViewConst.GAME_PLAY_SCENE) {
                 boolean isProperlyDowned = board.moveTetrominoDown();
                 if (!isProperlyDowned) {
                     timeline.stop(); // 타임라인 중지 하고
@@ -118,8 +118,8 @@ public class GamePlayController {
 
     // 레벨업 메서드
     private void checkLevelUp() {
-        if ((point /LEVEL_UP_SCORE) > level) {
-            level = point /LEVEL_UP_SCORE;
+        if ((point / LEVEL_UP_SCORE) > level) {
+            level = point / LEVEL_UP_SCORE;
             startTimeline(); // 새로운 속도로 타임라인 재시작
         }
     }
@@ -138,7 +138,10 @@ public class GamePlayController {
         if (keyCode == 27) {
             onPause.run();
         } else if (keyCode == Settings.getInstance().getKeySetting().getDownKeyValue()) {
-            board.moveTetrominoDown();
+            boolean isProperlyDowned = board.moveTetrominoDown();
+            if (!isProperlyDowned) {
+                isGameOver = true;
+            }
             addScoreOnDown();
         } else if (keyCode == Settings.getInstance().getKeySetting().getLeftKeyValue()) {
             board.moveTetrominoLeft();
@@ -148,6 +151,9 @@ public class GamePlayController {
             board.rotateTetromino();
         } else if (keyCode == Settings.getInstance().getKeySetting().getDropKeyValue()) {
             int offset = board.dropTetromino();
+            if (offset == 0) {
+                isGameOver = true;
+            }
             addScoreOnDrop(offset);
         }
         return true;

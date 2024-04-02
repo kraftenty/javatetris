@@ -2,8 +2,10 @@ package org.nl.javatetris.view;
 
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -27,6 +29,10 @@ public class GameOverView implements View {
 
     public Scene createScene() {
         Pane pane = new Pane();
+        Image backgroundImage = new Image("file:src/main/resources/images/play.jpg");
+        BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
+        pane.setBackground(new Background(background));
+
         Scene scene = new Scene(
                 pane,
                 Settings.getInstance().getSizeSetting().getScreenWidth(),
@@ -34,37 +40,45 @@ public class GameOverView implements View {
         );
 
         Text levelText = new Text("Your Score : " + point);
-        levelText.setFont(Font.font("Arial", 26));
-        levelText.setFill(Color.BLACK);
-        levelText.setLayoutX(Settings.getInstance().getSizeSetting().getScreenWidth()/2);
+        levelText.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
+        levelText.setFill(Color.WHITE);
+        levelText.setLayoutX(Settings.getInstance().getSizeSetting().getScreenWidth() / 2 - Settings.getInstance().getSizeSetting().getSidebarSize() - 60);
         levelText.setLayoutY(100);
         pane.getChildren().add(levelText);
 
         Platform.runLater(() -> {
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Name Entry");
-            dialog.setHeaderText("Enter Your Name");
-            dialog.setContentText("Name:");
+            boolean isValidInput = false;
+            String name = "";
+            while (!isValidInput) {
+                TextInputDialog dialog = new TextInputDialog(name);
+                dialog.setTitle("Enroll into Scoreboard");
+                dialog.setHeaderText("Enter Your Name (10 characters max)");
+                dialog.setContentText("Name:");
 
-            // 'Cancel' 버튼 제거
-            dialog.getDialogPane().getButtonTypes().removeAll(dialog.getDialogPane().getButtonTypes().get(1));
+                // 'Cancel' 버튼 제거
+                dialog.getDialogPane().getButtonTypes().removeAll(dialog.getDialogPane().getButtonTypes().get(1));
 
-            // Dialog를 표시하고 사용자 입력값을 받음
-            Optional<String> result = dialog.showAndWait();
-            result.ifPresent(name -> {
-                // 사용자가 입력한 이름을 처리하는 로직
-                Text a = new Text("Your Score : ");
-                a.setFont(Font.font("ScoreBoard", 26));
-                a.setFill(Color.BLACK);
-                a.setLayoutX(Settings.getInstance().getSizeSetting().getScreenWidth()/2);
-                a.setLayoutY(200);
-                pane.getChildren().add(a);
-                ScoreBoard.getInstance().addScore(name, point); // 스코어보드에 추가!!
-                ScoreBoard.getInstance().saveScoreboard(); // 스코어보드 저장!!
-            });
+                // Dialog를 표시하고 사용자 입력값을 받음
+                Optional<String> result = dialog.showAndWait();
 
+                if (result.isPresent() && result.get().length() <= 10) {
+                    name = result.get();
+                    isValidInput = true;
+                } else {
+                    // 사용자에게 경고 메시지를 표시합니다.
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Enroll into Scoreboard");
+                    alert.setHeaderText(null);
+                    alert.setContentText("The name must be 10 characters or less.");
+                    alert.showAndWait();
+                }
+            }
+            if (name.isEmpty()) {
+                name = "Anonymous";
+            }
+            ScoreBoard.getInstance().addScore(name, point); // 스코어보드에 추가!!
+            ScoreBoard.getInstance().saveScoreboard(); // 스코어보드 저장!!
             onBackToScoreBoard.run();
-
         });
 
         return scene;

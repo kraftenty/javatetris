@@ -14,6 +14,10 @@ public class ScoreBoard implements Serializable {
     private static ScoreBoard instance;
     private List<Score> scores;
 
+    // 최근 점수 관련 필드
+    private static int recentScoreIndex = 0;
+    private static boolean recentScoreViewedFlag = true;
+
     private ScoreBoard() {
         loadScoreBoard(); // 인스턴스 생성 시 점수판을 자동으로 불러옴
     }
@@ -33,6 +37,18 @@ public class ScoreBoard implements Serializable {
         return scores;
     }
 
+    public static int getRecentScoreIndex() {
+        return recentScoreIndex;
+    }
+
+    public static boolean isRecentScoreViewedFlag() {
+        return recentScoreViewedFlag;
+    }
+
+    public static void setRecentScoreViewedFlag(boolean recentScoreViewedFlag) {
+        ScoreBoard.recentScoreViewedFlag = recentScoreViewedFlag;
+    }
+
     public boolean canUpdateScoreboard(int point) {
         // 스코어보드가 아직 꽉 차지 않았거나, 주어진 점수가 스코어보드의 마지막 점수보다 높은 경우 갱신 가능
         if (scores.size() < MAX_SCOREBOARD_SIZE || point > scores.get(scores.size() - 1).getPoint()) {
@@ -45,39 +61,44 @@ public class ScoreBoard implements Serializable {
     // 점수판에 점수를 추가하는 메서드
     public boolean addScore(String name, int point) {
         // 점수판에 동일한 이름이 있을 때
-        for (Score s : scores) {
+        for (int i = 0; i < scores.size(); i++) {
+            Score s = scores.get(i);
             if (s.getName().equals(name)) {
                 if (s.getPoint() < point) {
-                    scores.remove(s);
-                    scores.add(new Score(name, point));
+                    scores.remove(i);
+                    Score newScore = new Score(name, point);
+                    scores.add(newScore);
                     scores.sort(Score::compareTo);
+                    recentScoreIndex = scores.indexOf(newScore);
+                    recentScoreViewedFlag = false;
                     return true;
                 } else {
+                    // 기존 점수보다 낮거나 같은 경우 순위 변경 없음
                     return false;
                 }
             }
         }
 
         // 점수판에 동일한 이름이 없을 때
-        if (scores.size() < MAX_SCOREBOARD_SIZE) {
-            // 점수판이 꽉 차지 않은 경우
-            scores.add(new Score(name, point));
+        if (scores.size() < MAX_SCOREBOARD_SIZE || point > scores.get(scores.size() - 1).getPoint()) {
+            // 점수판에 여유가 있거나, 새로운 점수가 최소 점수보다 높은 경우
+            Score newScore = new Score(name, point);
+            scores.add(newScore);
             scores.sort(Score::compareTo);
-            return true;
-        } else {
-            // 점수판이 꽉 찬 경우
-            if (point > scores.get(scores.size() - 1).getPoint()) {
-                // 새로운 점수가 최소 점수보다 높은 경우
+            if (scores.size() > MAX_SCOREBOARD_SIZE) {
+                // 점수판이 꽉 찬 경우, 가장 낮은 점수 제거
                 scores.remove(scores.size() - 1);
-                scores.add(new Score(name, point));
-                scores.sort(Score::compareTo);
-                return true;
-            } else {
-                // 새로운 점수가 최소 점수보다 낮은 경우
-                return false;
             }
+            // 새로운 점수의 순위를 찾아서 반환
+            recentScoreIndex = scores.indexOf(newScore);
+            recentScoreViewedFlag = false;
+            return true;
         }
+
+        // 새로운 점수가 점수판에 들어갈 수 없는 경우
+        return false;
     }
+
 
     // 점수판을 초기화하는 메서드
     public void clearScoreboard() {
