@@ -15,7 +15,6 @@ public class SettingsMenuController {
     private Runnable onHandleScreenSizeSettings;
     private int selectedItemIndex = 0;
 
-    private int colorBlindModeIndex=0;
 
     public SettingsMenuController(
             int menuItemsCount,

@@ -23,7 +23,6 @@ public class ViewConst {
     public static final int GAME_OVER_SCENE = 9;
 
 
-    public static final int FONT_SIZE_TITLE = 50;
-    public static final int FONT_SIZE_MEDIUM = 24;
-    public static final int FONT_SIZE_SMALL = 12;
+    public static final int BASE_DEFAULT_FONT_SIZE = 18;
+    public static final int BASE_TITLE_FONT_SIZE = 35;
 }

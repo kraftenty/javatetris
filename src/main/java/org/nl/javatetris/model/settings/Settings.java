@@ -1,6 +1,8 @@
 package org.nl.javatetris.model.settings;
 
 import javafx.scene.paint.Color;
+import org.nl.javatetris.view.ViewConst;
+
 import java.io.Serializable;
 
 import static org.nl.javatetris.controller.ControllerConst.*;
@@ -62,6 +64,8 @@ public class Settings implements Serializable {
         private int previewBlockSize;
         private int screenWidth;
         private int screenHeight;
+        private int defaultFontSize;
+        private int titleFontSize;
         private int offset = 0;
 
         public ScreenSizeSettings() {
@@ -69,6 +73,8 @@ public class Settings implements Serializable {
             this.previewBlockSize = PREVIEW_CELL_SIZE;
             this.screenWidth = DEFAULT_WINDOW_WIDTH;
             this.screenHeight = DEFAULT_WINDOW_HEIGHT;
+            this.defaultFontSize = BASE_DEFAULT_FONT_SIZE;
+            this.titleFontSize = BASE_TITLE_FONT_SIZE;
         }
 
         public int getBlockSize() {
@@ -87,12 +93,22 @@ public class Settings implements Serializable {
             return screenHeight;
         }
 
+        public int getDefaultFontSize() {
+            return defaultFontSize;
+        }
+
+        public int getTitleFontSize() {
+            return titleFontSize;
+        }
+
         public void setScreenSizeBigger() {
             if (offset < 2) {
                 blockSize = (int) (blockSize * 1.5);
                 previewBlockSize = (int) (previewBlockSize * 1.5);
                 screenWidth = blockSize * X_MAX + DEFAULT_SIDEBAR_SIZE;
                 screenHeight = blockSize * Y_MAX;
+                defaultFontSize = (int) (defaultFontSize * 1.5);
+                titleFontSize = (int) (titleFontSize * 1.5);
                 offset++;
             }
         }
@@ -102,6 +118,8 @@ public class Settings implements Serializable {
             previewBlockSize = PREVIEW_CELL_SIZE;
             screenWidth = DEFAULT_WINDOW_WIDTH;
             screenHeight = DEFAULT_WINDOW_HEIGHT;
+            defaultFontSize = BASE_DEFAULT_FONT_SIZE;
+            titleFontSize = BASE_TITLE_FONT_SIZE;
             offset = 0 ;
         }
 

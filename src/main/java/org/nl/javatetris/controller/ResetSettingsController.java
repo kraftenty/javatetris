@@ -1,14 +1,14 @@
 package org.nl.javatetris.controller;
 
 import javafx.scene.input.KeyEvent;
-import org.nl.javatetris.model.score.ScoreBoard;
+import org.nl.javatetris.model.settings.Settings;
 
-public class InitializeScoreBoardController {
+public class ResetSettingsController {
     private int meunItemsCount;
     private Runnable onSettings;
     private int selectedItemIndex = 0;
 
-    public InitializeScoreBoardController(int menuItemsCount, Runnable onSettings) {
+    public ResetSettingsController(int menuItemsCount, Runnable onSettings) {
         this.meunItemsCount = menuItemsCount;
         this.onSettings = onSettings;
     }
@@ -26,8 +26,7 @@ public class InitializeScoreBoardController {
                     //로직 추가예정
                     case 0:
                         //예 -> 초기화 진행
-                        ScoreBoard.getInstance().clearScoreboard();
-                        ScoreBoard.getInstance().saveScoreboard();
+                        Settings.initSettings();
                         onSettings.run();
                         break;
                     case 1:

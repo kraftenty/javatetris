@@ -7,19 +7,20 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import org.nl.javatetris.controller.InitializeScoreBoardController;
+import org.nl.javatetris.controller.ResetSettingsController;
 import org.nl.javatetris.model.settings.Settings;
 
-public class InitializeScoreBoardView {
-    private InitializeScoreBoardController initializeScoreBoardController;
+public class ResetSettingsView {
+
+    private ResetSettingsController resetSettingsController;
 
     private static Label[] menuItems = new Label[]{
             new Label("Yes"),
             new Label("No"),
     };
 
-    public InitializeScoreBoardView(Runnable onSettings) {
-        this.initializeScoreBoardController = new InitializeScoreBoardController(menuItems.length,onSettings);
+    public ResetSettingsView(Runnable onSettings) {
+        this.resetSettingsController = new ResetSettingsController(menuItems.length,onSettings);
     }
 
     public Scene createScene(){
@@ -30,7 +31,7 @@ public class InitializeScoreBoardView {
         title.setFont(new Font(20));
         layout.getChildren().add(title);
 
-        Text title2= new Text("Are you sure you want to initialize the scoreboard?");
+        Text title2= new Text("Are you sure you want to reset the scoreboard?");
         title2.setFont(new Font(18));
         layout.getChildren().add(title2);
 
@@ -42,16 +43,15 @@ public class InitializeScoreBoardView {
         }
 
         Scene scene = new Scene(layout, Settings.getInstance().getScreenSizeSettings().getScreenWidth(), Settings.getInstance().getScreenSizeSettings().getScreenHeight());
-
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {
-            initializeScoreBoardController.handleKeyPress(e);
+            resetSettingsController.handleKeyPress(e);
             // 현재 선택된 항목을 기반으로 UI를 업데이트합니다.
-            updateMenuItems(initializeScoreBoardController.getSelectedItemIndex());
+            updateMenuItems(resetSettingsController.getSelectedItemIndex());
         });
 
         // 초기 선택 상태 업데이트
-        updateMenuItems(initializeScoreBoardController.getSelectedItemIndex());
+        updateMenuItems(resetSettingsController.getSelectedItemIndex());
 
         return scene;
 

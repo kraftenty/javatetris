@@ -79,7 +79,7 @@ public class MainMenuView implements View {
     private void configureMenuItems(VBox layout) {
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
-            menuItem.setFont(FontManager.getSquareFont(ViewConst.FONT_SIZE_MEDIUM));
+            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getScreenSizeSettings().getDefaultFontSize()));
             menuItem.setEffect(DROP_SHADOW);
             layout.getChildren().add(menuItem);
         }

@@ -30,6 +30,7 @@ public class SceneManager {
 
     private void initialize() {
         primaryStage.setTitle("JavaTetris - TEAM 4");
+        primaryStage.setResizable(false);
         primaryStage.show();
         currentSceneNumber = NO_SCENE;
     }
@@ -43,8 +44,7 @@ public class SceneManager {
     }
 
     private void handleScreenSizeChange() {
-        primaryStage.setWidth(Settings.getInstance().getScreenSizeSettings().getScreenWidth());
-        primaryStage.setHeight(Settings.getInstance().getScreenSizeSettings().getScreenHeight());
+        showSettingsMenu();
     }
 
     public void showStartMenu() {
@@ -117,16 +117,16 @@ public class SceneManager {
     }
 
     public void showCheckingInitSet() {
-        InitializeSettingsView initializeSettingsView = new InitializeSettingsView(this::showSettingsMenu);
-        this.CheckingInitSetScene = initializeSettingsView.createScene();
+        ResetSettingsView resetSettingsView = new ResetSettingsView(this::showSettingsMenu);
+        this.CheckingInitSetScene = resetSettingsView.createScene();
 
         setScene(CheckingInitSetScene);
         currentSceneNumber = CHECKING_INIT_SET_SCENE;
     }
 
     public void showCheckingBoardInit() {
-        InitializeScoreBoardView initializeScoreBoardView = new InitializeScoreBoardView(this::showSettingsMenu);
-        this.CheckingBoardInitScene = initializeScoreBoardView.createScene();
+        ResetScoreBoardView resetScoreBoardView = new ResetScoreBoardView(this::showSettingsMenu);
+        this.CheckingBoardInitScene = resetScoreBoardView.createScene();
 
         setScene(CheckingBoardInitScene);
         currentSceneNumber = CHECKING_BOARD_INIT;

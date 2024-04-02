@@ -39,7 +39,11 @@ public class GamePlayView implements View {
 
     public Scene createScene() {
         pane = new Pane();
-        Scene scene = new Scene(pane, Settings.getInstance().getScreenSizeSettings().getScreenWidth() ,Settings.getInstance().getScreenSizeSettings().getScreenHeight());
+        Scene scene = new Scene(
+                pane,
+                Settings.getInstance().getScreenSizeSettings().getScreenWidth(),
+                Settings.getInstance().getScreenSizeSettings().getScreenHeight()
+        );
 
         drawGamePlayScreen();
 

@@ -37,8 +37,8 @@ public class ScoreBoardView implements View {
         layout.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
         Label title = new Label("ScoreBoard");
-        title.setTextFill(Color.WHITE);
-        title.setFont(FontManager.getTopshowFont(ViewConst.FONT_SIZE_TITLE));
+        title.setTextFill(Color.YELLOW);
+        title.setFont(FontManager.getTopshowFont(Settings.getInstance().getScreenSizeSettings().getTitleFontSize()));
         layout.getChildren().add(title);
 
         // ScoreBoard 인스턴스에서 scores를 가져옴
@@ -49,13 +49,13 @@ public class ScoreBoardView implements View {
                 .forEach(score -> {
                     Label scoreLabel = new Label(score.getName() + " : " + score.getPoint());
                     scoreLabel.setTextFill(Color.WHITE); // 점수의 글자색 설정
-                    scoreLabel.setFont(FontManager.getSquareFont(ViewConst.FONT_SIZE_SMALL));
+                    scoreLabel.setFont(FontManager.getSquareFont(Settings.getInstance().getScreenSizeSettings().getDefaultFontSize()));
                     layout.getChildren().add(scoreLabel);
                 });
 
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
-            menuItem.setFont(FontManager.getSquareFont(ViewConst.FONT_SIZE_MEDIUM));
+            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getScreenSizeSettings().getDefaultFontSize()));
             layout.getChildren().add(menuItem);
         }
 

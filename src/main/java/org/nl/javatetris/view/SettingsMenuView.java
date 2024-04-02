@@ -65,16 +65,15 @@ public class SettingsMenuView implements View {
         // 배경 설정
         layout.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
-
         Label title = new Label("Settings");
         title.setTextFill(Color.WHITE);
-        title.setFont(FontManager.getTopshowFont(ViewConst.FONT_SIZE_TITLE));
+        title.setFont(FontManager.getTopshowFont(Settings.getInstance().getScreenSizeSettings().getTitleFontSize()));
         layout.getChildren().add(title);
 
         updateSetting();
         for (Label menuItem : menuItems) {
             menuItem.setTextFill(Color.WHITE);
-            menuItem.setFont(FontManager.getSquareFont(ViewConst.FONT_SIZE_MEDIUM));
+            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getScreenSizeSettings().getDefaultFontSize()));
             layout.getChildren().add(menuItem);
         }
 
