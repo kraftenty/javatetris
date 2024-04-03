@@ -50,16 +50,16 @@ public class ItemModeTetrominoGenerator implements TetrominoGenerator {
 
     private void addItem() {
         int randomInt = random.nextInt(100);
-        if (randomInt < 1) { // 1% 확률로 핵, 아래 변경 필요
+        if (randomInt < 96) { // 1% 확률로 핵, 아래 변경 필요
+            tetrominoQueue.add(createTetrominoItemNuclear());
+        }
+        else if (randomInt < 97) { //27% 확률로 폭탄, 아래 변경 필요
             tetrominoQueue.add(createTetrominoWithErase());
         }
-        else if (randomInt < 28) { //27% 확률로 폭탄, 아래 변경 필요
+        else if (randomInt < 98) { //24% 확률로 한줄 제거 블록
             tetrominoQueue.add(createTetrominoWithErase());
         }
-        else if (randomInt < 52) { //24% 확률로 한줄 제거 블록
-            tetrominoQueue.add(createTetrominoWithErase());
-        }
-        else if (randomInt < 76) { //24% 확률로 무게 추, 아래 변경 필요
+        else if (randomInt < 99) { //24% 확률로 무게 추, 아래 변경 필요
             tetrominoQueue.add(createTetrominoWithErase());
         }
         else { //24% 확률로 기타 아이템
@@ -126,5 +126,9 @@ public class ItemModeTetrominoGenerator implements TetrominoGenerator {
 
         return tetromino;
     }
-
+    private Tetromino createTetrominoItemNuclear() {
+        Tetromino tetromino;
+        tetromino = new TetrominoItemNuclear();
+        return tetromino;
+    }
 }

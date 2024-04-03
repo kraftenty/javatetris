@@ -90,7 +90,12 @@ public class GamePlayView {
                             (x + 0.1) * Settings.getInstance().getSizeSetting().getBlockSize(),
                             1.5);
                 }
-
+                if (cellValue == N){
+                    drawNonBlock(
+                            (y + 1) * Settings.getInstance().getSizeSetting().getBlockSize(),
+                            (x + 0.1) * Settings.getInstance().getSizeSetting().getBlockSize(),
+                            1.5);
+                }
             }
         }
 
@@ -228,6 +233,13 @@ public class GamePlayView {
                                 1.1
                         );
                     }
+                    if (shape[y][x] == N) {
+                        drawNonBlock(
+                                Settings.getInstance().getSizeSetting().getBlockSize() * 9 + (y + 1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
+                                Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10 + (x + 0.1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
+                                1.1
+                        );
+                    }
                 }
             }
         }
@@ -253,6 +265,8 @@ public class GamePlayView {
                 return Settings.getInstance().getColorSetting().getColorOfTetrominoType(Z);
             case E:
                 return Color.WHITE;
+            case N:
+                return Color.TRANSPARENT;
             default:
                 return Color.rgb(255,255,255,0.3);
         }
@@ -266,5 +280,13 @@ public class GamePlayView {
         pane.getChildren().add(eraseBlockL);
     }
 
+    private void drawNonBlock(double y, double x, double fontScale){
+        Text NuclearBlockN = new Text("N");
+        NuclearBlockN.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()*fontScale));
+        NuclearBlockN.setFill(Color.RED);
+        NuclearBlockN.setLayoutY(y);
+        NuclearBlockN.setLayoutX(x);
+        pane.getChildren().add(NuclearBlockN);
+    }
 }
 

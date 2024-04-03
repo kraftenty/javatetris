@@ -21,7 +21,9 @@ public class ModelConst {
     public static final int ES = 15;
     public static final int ET = 16;
     public static final int EZ = 17;
+    public static final int N = 18;
     public static final int E = 100;          // 줄을 지우는 블록
+
 
     public static final int Y_MAX = 22;          // 세로 크기 (20 + 테두리 2칸)
     public static final int X_MAX = 12;          // 가로 크기 (10 + 테두리 2칸)

@@ -77,7 +77,12 @@ public class Board {
         lineCount++;
         onClearCompletedLines.run();
     }
-
+    // 아이템모드에서 Nuclear 아이템으로 모두 지우는 메서드
+    private void clearAllLine() {
+        for (int i=1; i<21; i++){
+            removeLine(i);
+        }
+    }
     // 특정 줄을 제거하는 메서드
     private void removeLine(int lineIndex) {
         for (int x = 1; x < X_MAX - 1; x++) {
@@ -195,6 +200,7 @@ public class Board {
             boolean isItItem = false;
             if (currentTetromino.getShapeNumber() >= 11 && currentTetromino.getShapeNumber() <= 17) clearItemLine();
             clearCompletedLines();
+            if (currentTetromino.getShapeNumber() == 18) clearAllLine();
             if(lineCount / 10 > lineBeforeClear / 10) isItItem = true;
             return spawnTetromino(isItItem);
         }
