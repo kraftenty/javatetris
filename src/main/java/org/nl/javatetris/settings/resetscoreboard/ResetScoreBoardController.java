@@ -29,7 +29,7 @@ public class ResetScoreBoardController {
                     //로직 추가예정
                     case 0:
                         //예 -> 초기화 진행
-                        ScoreBoard.getInstance().clearScoreboard();
+                        ScoreBoard.getInstance().clear();
                         ScoreBoard.getInstance().saveScoreboard();
                         onSettings.run();
                         break;

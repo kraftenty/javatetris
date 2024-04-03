@@ -9,6 +9,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.nl.javatetris.config.FontManager;
+import org.nl.javatetris.gameplay.GameParam;
 import org.nl.javatetris.scoreboard.ScoreBoard;
 import org.nl.javatetris.settings.Settings;
 
@@ -18,10 +19,10 @@ public class GameOverView {
 
     private GameOverController gameOverController;
     private Runnable onBackToScoreBoard;
-    private Integer point;
+    private GameOverParam gameOverParam;
 
-    public GameOverView(Integer point, Runnable onBackToScoreBoard) {
-        this.point = point;
+    public GameOverView(GameOverParam gameOverParam, Runnable onBackToScoreBoard) {
+        this.gameOverParam = gameOverParam;
         this.gameOverController = new GameOverController(onBackToScoreBoard);
         this.onBackToScoreBoard = onBackToScoreBoard;
     }
@@ -38,7 +39,7 @@ public class GameOverView {
                 Settings.getInstance().getSizeSetting().getScreenHeight()
         );
 
-        Text levelText = new Text("Your Score : " + point);
+        Text levelText = new Text("Your Score : " + gameOverParam.getPoint());
         levelText.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
         levelText.setFill(Color.WHITE);
         levelText.setLayoutX(Settings.getInstance().getSizeSetting().getScreenWidth() / 2 - Settings.getInstance().getSizeSetting().getSidebarSize() - 60);
@@ -75,7 +76,7 @@ public class GameOverView {
             if (name.isEmpty()) {
                 name = "Anonymous";
             }
-            ScoreBoard.getInstance().addScore(name, point); // 스코어보드에 추가!!
+            ScoreBoard.getInstance().addScoreByMode(name, gameOverParam.getPoint(), gameOverParam.getGameParam());
             ScoreBoard.getInstance().saveScoreboard(); // 스코어보드 저장!!
             onBackToScoreBoard.run();
         });

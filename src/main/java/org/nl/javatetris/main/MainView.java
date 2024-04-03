@@ -19,7 +19,6 @@ public class MainView {
 
 
     private static Label[] menuItems = new Label[]{
-            // 메뉴 항목. 추가할거면 여기에 추가해
             new Label("Classic Mode"),
             new Label("Item Mode"),
             new Label("Settings"),

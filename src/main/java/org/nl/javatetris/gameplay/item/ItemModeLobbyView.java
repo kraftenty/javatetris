@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.nl.javatetris.config.FontManager;
+import org.nl.javatetris.gameplay.GameParam;
 import org.nl.javatetris.settings.Settings;
 
 import java.util.function.Consumer;
@@ -21,7 +22,7 @@ public class ItemModeLobbyView {
             new Label("Back")
     };
 
-    public ItemModeLobbyView(Runnable onBackToMenu, Consumer<Integer> onStartGame) {
+    public ItemModeLobbyView(Runnable onBackToMenu, Consumer<GameParam> onStartGame) {
         this.itemModeLobbyController = new ItemModeLobbyController(
                 menuItems.length,
                 onBackToMenu,

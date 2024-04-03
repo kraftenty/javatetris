@@ -9,10 +9,12 @@ public class Score implements Serializable, Comparable<Score> {
 
     private String name;
     private int point;
+    private int difficulty;
 
-    public Score(String name, int score) {
+    public Score(String name, int score, int difficulty) {
         this.name = name;
         this.point = score;
+        this.difficulty = difficulty;
     }
 
     public String getName() {
@@ -21,6 +23,10 @@ public class Score implements Serializable, Comparable<Score> {
 
     public int getPoint() {
         return point;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
     }
 
     @Override

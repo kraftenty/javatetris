@@ -2,8 +2,10 @@ package org.nl.javatetris.config;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.nl.javatetris.gameplay.GameParam;
 import org.nl.javatetris.gameplay.GamePlayView;
 import org.nl.javatetris.gameplay.classic.ClassicModeLobbyView;
+import org.nl.javatetris.gameplay.gameover.GameOverParam;
 import org.nl.javatetris.gameplay.gameover.GameOverView;
 import org.nl.javatetris.gameplay.item.ItemModeLobbyView;
 import org.nl.javatetris.main.MainView;
@@ -76,7 +78,7 @@ public class SceneManager {
     public void showClassicModeLobby() {
         ClassicModeLobbyView classicModeLobbyView = new ClassicModeLobbyView(
                 this::showStartMenu,
-                modeParam -> showGamePlay(modeParam)
+                gameParam -> showGamePlay(gameParam)
         );
         this.classicModeLobbyScene = classicModeLobbyView.createScene();
 
@@ -87,7 +89,7 @@ public class SceneManager {
     public void showItemModeLobby() {
         ItemModeLobbyView itemModeLobbyView = new ItemModeLobbyView(
                 this::showStartMenu,
-                modeParam -> showGamePlay(modeParam)
+                gameParam -> showGamePlay(gameParam)
         );
         this.itemModeLobbyScene = itemModeLobbyView.createScene();
 
@@ -95,11 +97,11 @@ public class SceneManager {
         currentSceneNumber = ITEM_MODE_LOBBY_SCENE;
     }
 
-    public void showGamePlay(Integer modeParam) {
+    public void showGamePlay(GameParam gameParam) {
         GamePlayView gamePlayView = new GamePlayView(
-                modeParam,
+                gameParam,
                 this::showPauseMenu,
-                score -> showGameOver(score),
+                o -> showGameOver(o),
                 this::showStartMenu
         );
         this.gamePlayScene = gamePlayView.createScene();
@@ -117,9 +119,9 @@ public class SceneManager {
         showStartMenu();
     }
 
-    public void showGameOver(Integer score) {
+    public void showGameOver(GameOverParam gameOverParam) {
         GameOverView gameOverView = new GameOverView(
-                score,
+                gameOverParam,
                 this::showScoreBoard
         );
         Scene gameOverScene = gameOverView.createScene();
@@ -127,6 +129,7 @@ public class SceneManager {
         setScene(gameOverScene);
         currentSceneNumber = GAME_OVER_SCENE;
     }
+
 
     public void showPauseMenu() {
         PauseMenuView pauseMenuView = new PauseMenuView(
@@ -168,6 +171,7 @@ public class SceneManager {
         setScene(CheckingBoardInitScene);
         currentSceneNumber = CHECKING_BOARD_INIT;
     }
+
     public void showSettingKeyScene() {
         KeySettingView keySettingView = new KeySettingView(this::showSettingsMenu);
         this.SettingKeyScene = keySettingView.createScene();

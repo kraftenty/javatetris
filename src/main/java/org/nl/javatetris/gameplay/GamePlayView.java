@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import org.nl.javatetris.config.FontManager;
+import org.nl.javatetris.gameplay.gameover.GameOverParam;
 import org.nl.javatetris.scoreboard.ScoreBoard;
 import org.nl.javatetris.settings.Settings;
 import org.nl.javatetris.gameplay.tetromino.Tetromino;
@@ -22,12 +23,12 @@ public class GamePlayView {
 
     private GamePlayController gamePlayController;
     private Pane pane;
-    private Consumer<Integer> showGameOver; // Runnable 대신 Consumer<> 사용
+    private Consumer<GameOverParam> showGameOver; // Runnable 대신 Consumer<> 사용
     private Runnable onBackToMenu;
 
-    public GamePlayView(Integer modeParam, Runnable onPause, Consumer<Integer> showGameOver, Runnable onBackToMenu) {
+    public GamePlayView(GameParam gameParam, Runnable onPause, Consumer<GameOverParam> showGameOver, Runnable onBackToMenu) {
         this.gamePlayController = new GamePlayController(
-                modeParam,
+                gameParam,
                 onPause,
                 this::drawGamePlayScreen,
                 this::drawGameOverScreen
@@ -173,11 +174,20 @@ public class GamePlayView {
         blinkTimeline.setCycleCount(8);
         blinkTimeline.setOnFinished(e -> {
             // 10위 안에 들었을 경우 게임오버로, 그렇지 않을 경우 메인메뉴로 이동
-            if (ScoreBoard.getInstance().canUpdateScoreboard(gamePlayController.getPoint())) {
-                this.showGameOver.accept(gamePlayController.getPoint());
-            } else {
-                onBackToMenu.run();
+            if (gamePlayController.getGameParam().getMode() == 0) { // classic mode
+                if (ScoreBoard.getInstance().canUpdateClassicModeScores(gamePlayController.getPoint())) {
+                    this.showGameOver.accept(new GameOverParam(gamePlayController.getPoint(), gamePlayController.getGameParam()));
+                } else {
+                    onBackToMenu.run();
+                }
+            } else if (gamePlayController.getGameParam().getMode() == 1) { // item mode
+                if (ScoreBoard.getInstance().canUpdateItemModeScores(gamePlayController.getPoint())) {
+                    this.showGameOver.accept(new GameOverParam(gamePlayController.getPoint(), gamePlayController.getGameParam()));
+                } else {
+                    onBackToMenu.run();
+                }
             }
+
         });
         blinkTimeline.play();
 

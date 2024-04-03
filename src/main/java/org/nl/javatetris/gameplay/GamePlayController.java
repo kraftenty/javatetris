@@ -4,8 +4,10 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
-import org.nl.javatetris.settings.Settings;
+import org.nl.javatetris.gameplay.tetromino.generator.ItemModeTetrominoGenerator;
 import org.nl.javatetris.gameplay.tetromino.generator.TetrominoGenerator;
+import org.nl.javatetris.settings.Settings;
+import org.nl.javatetris.gameplay.tetromino.generator.ClassicModeTetrominoGenerator;
 import org.nl.javatetris.config.SceneManager;
 import org.nl.javatetris.config.constant.ViewConst;
 
@@ -21,7 +23,7 @@ public class GamePlayController {
     private static Timeline timeline;                      // 타임라인
 
 
-    private Integer modeParam;                      // 게임 모드
+    private GameParam gameParam;                    // 게임 파라미터
     private Runnable onPause;                       // 일시정지 콜백
     private Runnable onDrawBoardUpdate;                 // 보드 업데이트 콜백
     private Runnable onDrawGameOver;                    // 게임오버 콜백
@@ -31,13 +33,18 @@ public class GamePlayController {
     private boolean isGameOver = false;             // 게임오버 여부
 
     // 생성자
-    public GamePlayController(Integer modeParam, Runnable onPause, Runnable onDrawBoardUpdate, Runnable onDrawGameOver) {
-        this.modeParam = modeParam;
-        this.tetrominoGenerator = new TetrominoGenerator();
+    public GamePlayController(GameParam gameParam, Runnable onPause, Runnable onDrawBoardUpdate, Runnable onDrawGameOver) {
+        this.gameParam = gameParam;
+        // tetrominoGenerator 주입
+        if (gameParam.getMode() == 0) { // classic mode
+            this.tetrominoGenerator = new ClassicModeTetrominoGenerator();
+        } else if (gameParam.getMode() == 1) { // item mode
+            this.tetrominoGenerator = new ItemModeTetrominoGenerator();
+        }
         this.onPause = onPause;
         this.onDrawBoardUpdate = onDrawBoardUpdate;
         this.onDrawGameOver = onDrawGameOver;
-        board = new Board(this::addScoreOnLineClear, tetrominoGenerator); // 보드 생성
+        this.board = new Board(this::addScoreOnLineClear, tetrominoGenerator); // 보드 생성
         board.spawnTetromino();
         startTimeline();
     }
@@ -53,7 +60,8 @@ public class GamePlayController {
         }
         timeline = new Timeline(new KeyFrame(Duration.seconds(getSpeedByLevel()), e -> {
             if (SceneManager.getCurrentSceneNumber() == ViewConst.GAME_PLAY_SCENE) {
-                System.out.println("modeParam = " + modeParam);
+                System.out.println("[DEBUG] mode = " + gameParam.getMode());
+                System.out.println("[DEBUG] difficulty = " + gameParam.getDifficulty());
                 boolean isProperlyDowned = board.moveTetrominoDown();
                 if (!isProperlyDowned) {
                     timeline.stop(); // 타임라인 중지 하고
@@ -77,6 +85,10 @@ public class GamePlayController {
 
     public TetrominoGenerator getTetrominoGenerator() {
         return tetrominoGenerator;
+    }
+
+    public GameParam getGameParam() {
+        return gameParam;
     }
 
     /**

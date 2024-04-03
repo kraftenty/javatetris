@@ -72,11 +72,7 @@ public class SettingsMenuView {
         layout.getChildren().add(title);
 
         updateSetting();
-        for (Label menuItem : menuItems) {
-            menuItem.setTextFill(Color.WHITE);
-            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
-            layout.getChildren().add(menuItem);
-        }
+        configureMenuItems(layout);
 
         Scene scene = new Scene(
                 layout,
@@ -97,6 +93,14 @@ public class SettingsMenuView {
 
         return scene;
 
+    }
+
+    private void configureMenuItems(VBox layout) {
+        for (Label menuItem : menuItems) {
+            menuItem.setTextFill(Color.WHITE);
+            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
+            layout.getChildren().add(menuItem);
+        }
     }
 
     // 선택된 항목에 따라 UI 업데이트
