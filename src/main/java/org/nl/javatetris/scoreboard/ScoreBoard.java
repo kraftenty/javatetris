@@ -2,6 +2,7 @@ package org.nl.javatetris.scoreboard;
 
 
 import org.nl.javatetris.config.constant.ControllerConst;
+import org.nl.javatetris.config.constant.ModelConst;
 import org.nl.javatetris.gameplay.GameParam;
 
 import java.io.*;
@@ -91,31 +92,20 @@ public class ScoreBoard implements Serializable {
         return false;
     }
 
-
-
-    // 점수판에 점수를 추가하는 메서드
-    public boolean addScoreByMode(String name, int point, GameParam gameParam) {
+    // classic mode 점수판에 점수를 추가하는 메서드
+    public boolean addScoreInClassicModeScores(String name, int point, int difficulty) {
         // 점수판에 동일한 이름이 있을 때
         for (int i = 0; i < classicModeScores.size(); i++) {
             Score s = classicModeScores.get(i);
             if (s.getName().equals(name)) {
                 if (s.getPoint() < point) {
                     classicModeScores.remove(i);
-                    if (gameParam.getMode() == 0) { // Classic Mode
-                        Score newScore = new Score(name, point, gameParam.getDifficulty());
-                        classicModeScores.add(newScore);
-                        classicModeScores.sort(Score::compareTo);
-                        classicModeRecentScoreIndex = classicModeScores.indexOf(newScore);
-                        classicModeRecentScoreViewedFlag = false;
-                        return true;
-                    } else if (gameParam.getMode() ==  1) { // Item Mode
-                        Score newScore = new Score(name, point, ControllerConst.DIFFICULTY_NORMAL);
-                        itemModeScores.add(newScore);
-                        itemModeScores.sort(Score::compareTo);
-                        itemModeRecentScoreIndex = itemModeScores.indexOf(newScore);
-                        itemModeRecentScoreViewedFlag = false;
-                        return true;
-                    }
+                    Score newScore = new Score(name, point, difficulty);
+                    classicModeScores.add(newScore);
+                    classicModeScores.sort(Score::compareTo);
+                    classicModeRecentScoreIndex = classicModeScores.indexOf(newScore);
+                    classicModeRecentScoreViewedFlag = false;
+                    return true;
                 } else {
                     // 기존 점수보다 낮거나 같은 경우 순위 변경 없음
                     return false;
@@ -126,36 +116,66 @@ public class ScoreBoard implements Serializable {
         // 점수판에 동일한 이름이 없을 때
         if (classicModeScores.size() < MAX_SCOREBOARD_SIZE || point > classicModeScores.get(classicModeScores.size() - 1).getPoint()) {
             // 점수판에 여유가 있거나, 새로운 점수가 최소 점수보다 높은 경우
-            if (gameParam.getMode() == 0) { // Classic Mode
-                Score newScore = new Score(name, point, gameParam.getDifficulty());
-                classicModeScores.add(newScore);
-                classicModeScores.sort(Score::compareTo);
-                if (classicModeScores.size() > MAX_SCOREBOARD_SIZE) {
-                    // 점수판이 꽉 찬 경우, 가장 낮은 점수 제거
-                    classicModeScores.remove(classicModeScores.size() - 1);
-                }
-                // 새로운 점수의 순위를 찾아서 반환
-                classicModeRecentScoreIndex = classicModeScores.indexOf(newScore);
-                classicModeRecentScoreViewedFlag = false;
-                return true;
-            } else if (gameParam.getMode() == 1) { // Item Mode
-                Score newScore = new Score(name, point, ControllerConst.DIFFICULTY_NORMAL);
-                itemModeScores.add(newScore);
-                itemModeScores.sort(Score::compareTo);
-                if (itemModeScores.size() > MAX_SCOREBOARD_SIZE) {
-                    // 점수판이 꽉 찬 경우, 가장 낮은 점수 제거
-                    itemModeScores.remove(itemModeScores.size() - 1);
-                }
-                // 새로운 점수의 순위를 찾아서 반환
-                itemModeRecentScoreIndex = itemModeScores.indexOf(newScore);
-                itemModeRecentScoreViewedFlag = false;
-                return true;
+            Score newScore = new Score(name, point, difficulty);
+            classicModeScores.add(newScore);
+            classicModeScores.sort(Score::compareTo);
+            if (classicModeScores.size() > MAX_SCOREBOARD_SIZE) {
+                // 점수판이 꽉 찬 경우, 가장 낮은 점수 제거
+                classicModeScores.remove(classicModeScores.size() - 1);
             }
+            // 새로운 점수의 순위를 찾아서 반환
+            classicModeRecentScoreIndex = classicModeScores.indexOf(newScore);
+            classicModeRecentScoreViewedFlag = false;
+            return true;
         }
 
         // 새로운 점수가 점수판에 들어갈 수 없는 경우
         return false;
     }
+
+    // item mode 점수판에 점수를 추가하는 메서드
+    public boolean addScoreInItemModeScores(String name, int point) {
+        // 점수판에 동일한 이름이 있을 때
+        for (int i = 0; i < itemModeScores.size(); i++) {
+            Score s = itemModeScores.get(i);
+            if (s.getName().equals(name)) {
+                if (s.getPoint() < point) {
+                    itemModeScores.remove(i);
+                    Score newScore = new Score(name, point, ControllerConst.DIFFICULTY_NORMAL);
+                    itemModeScores.add(newScore);
+                    itemModeScores.sort(Score::compareTo);
+                    itemModeRecentScoreIndex = itemModeScores.indexOf(newScore);
+                    itemModeRecentScoreViewedFlag = false;
+                    return true;
+                } else {
+                    // 기존 점수보다 낮거나 같은 경우 순위 변경 없음
+                    return false;
+                }
+            }
+        }
+
+        // 점수판에 동일한 이름이 없을 때
+        if (itemModeScores.size() < MAX_SCOREBOARD_SIZE || point > itemModeScores.get(itemModeScores.size() - 1).getPoint()) {
+            // 점수판에 여유가 있거나, 새로운 점수가 최소 점수보다 높은 경우
+            Score newScore = new Score(name, point, ControllerConst.DIFFICULTY_NORMAL);
+            itemModeScores.add(newScore);
+            itemModeScores.sort(Score::compareTo);
+            if (itemModeScores.size() > MAX_SCOREBOARD_SIZE) {
+                // 점수판이 꽉 찬 경우, 가장 낮은 점수 제거
+                itemModeScores.remove(itemModeScores.size() - 1);
+            }
+            // 새로운 점수의 순위를 찾아서 반환
+            itemModeRecentScoreIndex = itemModeScores.indexOf(newScore);
+            itemModeRecentScoreViewedFlag = false;
+            return true;
+        }
+
+        // 새로운 점수가 점수판에 들어갈 수 없는 경우
+        return false;
+    }
+
+
+
 
     // 점수판을 초기화하는 메서드
     public void clear() {

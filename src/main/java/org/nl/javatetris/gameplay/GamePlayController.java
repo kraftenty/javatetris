@@ -60,8 +60,6 @@ public class GamePlayController {
         }
         timeline = new Timeline(new KeyFrame(Duration.seconds(getSpeedByLevel()), e -> {
             if (SceneManager.getCurrentSceneNumber() == ViewConst.GAME_PLAY_SCENE) {
-                System.out.println("[DEBUG] mode = " + gameParam.getMode());
-                System.out.println("[DEBUG] difficulty = " + gameParam.getDifficulty());
                 boolean isProperlyDowned = board.moveTetrominoDown();
                 if (!isProperlyDowned) {
                     timeline.stop(); // 타임라인 중지 하고
