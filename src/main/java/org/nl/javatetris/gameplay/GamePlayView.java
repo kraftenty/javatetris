@@ -225,7 +225,7 @@ public class GamePlayView {
                         drawLonBlock(
                                 Settings.getInstance().getSizeSetting().getBlockSize() * 9 + (y + 1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
                                 Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10 + (x + 0.1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
-                                1.15
+                                1.1
                         );
                     }
                 }
