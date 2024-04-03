@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -80,36 +81,16 @@ public class GamePlayView {
                 cell.setStroke(Color.rgb(128,128,128,0.5)); // 셀의 테두리 색상
 
                 int cellValue = gamePlayController.getBoard().getValueAt(y, x);
-                switch(cellValue) {
-                    case EMPTY:
-                        cell.setFill(Color.rgb(255,255,255,0.3)); // 비어있는 셀의 색상
-                        break;
-                    case BORDER:
-                        cell.setFill(Color.BLACK); // 벽의 색상
-                        break;
-                    case I:
-                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(I)); // 활성화된 테트로미노의 색상
-                        break;
-                    case J:
-                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(J)); // 활성화된 테트로미노의 색상
-                        break;
-                    case L:
-                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(L)); // 활성화된 테트로미노의 색상
-                        break;
-                    case O:
-                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(O)); // 활성화된 테트로미노의 색상
-                        break;
-                    case S:
-                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(S)); // 활성화된 테트로미노의 색상
-                        break;
-                    case T:
-                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(T)); // 활성화된 테트로미노의 색상
-                        break;
-                    case Z:
-                        cell.setFill(Settings.getInstance().getColorSetting().getColorOfTetrominoType(Z)); // 활성화된 테트로미노의 색상
-                        break;
-                }
+                cell.setFill(getColorOfCell(cellValue));
                 pane.getChildren().add(cell);
+
+                if (cellValue == E) {
+                    drawLonBlock(
+                            (y + 1) * Settings.getInstance().getSizeSetting().getBlockSize(),
+                            (x + 0.1) * Settings.getInstance().getSizeSetting().getBlockSize(),
+                            1.5);
+                }
+
             }
         }
 
@@ -234,12 +215,55 @@ public class GamePlayView {
                             Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
                             Settings.getInstance().getSizeSetting().getPreviewBlockSize()
                     );
-                    previewCell.setFill(Color.CYAN); // 다음 나올 테트로미노의 색상
+
+
+                    previewCell.setFill(getColorOfCell(shape[y][x])); // 다음 나올 테트로미노의 색상
                     previewCell.setStroke(Color.LIGHTGRAY); // 테두리 색상
                     pane.getChildren().add(previewCell);
+
+                    if (shape[y][x] == E) {
+                        drawLonBlock(
+                                Settings.getInstance().getSizeSetting().getBlockSize() * 9 + (y + 1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
+                                Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10 + (x + 0.1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
+                                1.15
+                        );
+                    }
                 }
             }
         }
+    }
+
+    private Color getColorOfCell(int cellValue) {
+        switch (cellValue) {
+            case BORDER:
+                return Color.BLACK;
+            case I:
+                return Settings.getInstance().getColorSetting().getColorOfTetrominoType(I);
+            case J:
+                return Settings.getInstance().getColorSetting().getColorOfTetrominoType(J);
+            case L:
+                return Settings.getInstance().getColorSetting().getColorOfTetrominoType(L);
+            case O:
+                return Settings.getInstance().getColorSetting().getColorOfTetrominoType(O);
+            case S:
+                return Settings.getInstance().getColorSetting().getColorOfTetrominoType(S);
+            case T:
+                return Settings.getInstance().getColorSetting().getColorOfTetrominoType(T);
+            case Z:
+                return Settings.getInstance().getColorSetting().getColorOfTetrominoType(Z);
+            case E:
+                return Color.WHITE;
+            default:
+                return Color.rgb(255,255,255,0.3);
+        }
+    }
+    private void drawLonBlock(double y, double x, double fontScale) {
+        Text eraseBlockL = new Text("L");
+        eraseBlockL.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()*fontScale));
+        eraseBlockL.setFill(Color.RED);
+        eraseBlockL.setLayoutY(y);
+        eraseBlockL.setLayoutX(x);
+        pane.getChildren().add(eraseBlockL);
     }
 
 }

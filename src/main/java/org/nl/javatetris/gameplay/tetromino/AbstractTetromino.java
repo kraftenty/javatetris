@@ -16,6 +16,10 @@ public abstract class AbstractTetromino implements Tetromino {
     }
 
     @Override
+    public int getTetrominoBlock(int y, int x) {
+        return shapes[this.getShapeIndex()][y][x];
+    }
+    @Override
     public int getShapeIndex() {
         return shapeIndex;
     }
