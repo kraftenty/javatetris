@@ -96,6 +96,12 @@ public class GamePlayView {
                             (x + 0.1) * Settings.getInstance().getSizeSetting().getBlockSize(),
                             1.5);
                 }
+                if (cellValue == B){
+                    drawBonBlock(
+                            (y + 1) * Settings.getInstance().getSizeSetting().getBlockSize(),
+                            (x + 0.1) * Settings.getInstance().getSizeSetting().getBlockSize(),
+                            1.5);
+                }
             }
         }
 
@@ -240,6 +246,13 @@ public class GamePlayView {
                                 1.1
                         );
                     }
+                    if (shape[y][x] == B) {
+                        drawBonBlock(
+                                Settings.getInstance().getSizeSetting().getBlockSize() * 9 + (y + 1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
+                                Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10 + (x + 0.1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
+                                1.1
+                        );
+                    }
                 }
             }
         }
@@ -265,7 +278,7 @@ public class GamePlayView {
                 return Settings.getInstance().getColorSetting().getColorOfTetrominoType(Z);
             case E:
                 return Color.WHITE;
-            case N:
+            case N, B:
                 return Color.TRANSPARENT;
             default:
                 return Color.rgb(255,255,255,0.3);
@@ -287,6 +300,15 @@ public class GamePlayView {
         NuclearBlockN.setLayoutY(y);
         NuclearBlockN.setLayoutX(x);
         pane.getChildren().add(NuclearBlockN);
+    }
+
+    private void drawBonBlock(double y, double x, double fontScale){
+        Text BombBlockB = new Text("B");
+        BombBlockB.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()*fontScale));
+        BombBlockB.setFill(Color.RED);
+        BombBlockB.setLayoutY(y);
+        BombBlockB.setLayoutX(x);
+        pane.getChildren().add(BombBlockB);
     }
 }
 

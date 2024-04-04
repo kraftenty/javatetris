@@ -22,6 +22,7 @@ public class ModelConst {
     public static final int ET = 16;
     public static final int EZ = 17;
     public static final int N = 18;
+    public static final int B = 19;
     public static final int E = 100;          // 줄을 지우는 블록
 
 

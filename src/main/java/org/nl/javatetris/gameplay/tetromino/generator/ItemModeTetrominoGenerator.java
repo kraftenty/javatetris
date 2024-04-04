@@ -2,7 +2,6 @@ package org.nl.javatetris.gameplay.tetromino.generator;
 
 import org.nl.javatetris.gameplay.tetromino.*;
 
-import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -50,11 +49,11 @@ public class ItemModeTetrominoGenerator implements TetrominoGenerator {
 
     private void addItem() {
         int randomInt = random.nextInt(100);
-        if (randomInt < 96) { // 1% 확률로 핵, 아래 변경 필요
-            tetrominoQueue.add(createTetrominoItemNuclear());
+        if (randomInt < 1) { // 1% 확률로 핵, 아래 변경 필요
+            tetrominoQueue.add(createItemNuclear());
         }
         else if (randomInt < 97) { //27% 확률로 폭탄, 아래 변경 필요
-            tetrominoQueue.add(createTetrominoWithErase());
+            tetrominoQueue.add(createItemBomb());
         }
         else if (randomInt < 98) { //24% 확률로 한줄 제거 블록
             tetrominoQueue.add(createTetrominoWithErase());
@@ -126,9 +125,15 @@ public class ItemModeTetrominoGenerator implements TetrominoGenerator {
 
         return tetromino;
     }
-    private Tetromino createTetrominoItemNuclear() {
+    private Tetromino createItemNuclear() {
         Tetromino tetromino;
-        tetromino = new TetrominoItemNuclear();
+        tetromino = new ItemNuclear();
+        return tetromino;
+    }
+
+    private Tetromino createItemBomb(){
+        Tetromino tetromino;
+        tetromino = new ItemBomb();
         return tetromino;
     }
 }

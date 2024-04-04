@@ -1,10 +1,8 @@
 package org.nl.javatetris.gameplay.tetromino;
 
 import static org.nl.javatetris.config.constant.ModelConst.*;
-public class TetrominoItemNuclear extends AbstractTetromino {
-
-    public static final int SHAPE_NUMBER = 0;
-    public TetrominoItemNuclear() { setShapes();}
+public class ItemNuclear extends AbstractTetromino {
+    public ItemNuclear() { setShapes();}
 
     @Override
     protected void setShapes() {
