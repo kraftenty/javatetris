@@ -131,6 +131,7 @@ public class GamePlayController {
         double baseSpeed = 1.0 - level * 0.1;
 
         // 난이도에 따라 속도 조정하기
+        //초반 속도는 그대로이고 줄 삭제에 대한 속도만 바꿔야 하는건지? 수정예정
         int difficulty = gameParam.getDifficulty();
         switch (difficulty) {
             case 0:

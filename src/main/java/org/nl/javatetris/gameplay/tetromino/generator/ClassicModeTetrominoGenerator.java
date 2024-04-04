@@ -48,16 +48,16 @@ public class ClassicModeTetrominoGenerator implements TetrominoGenerator {
         //int difficulty = gameParam.getDifficulty();
         int totalWeight = TETROMINO_TYPES * 10; // 각 블록의 가중치를 모두 합침
         int selectedWeight = random.nextInt(totalWeight); // 랜덤으로 선택된 가중치
-
         int currentWeight = 0;
+
         for (int i = 0; i < TETROMINO_TYPES; i++) {
-            int blockWeight = (i == 1) ? calculateIWeight() : 10; // I 블록의 가중치를 난이도별로 설정, 나머지 블록은 10
+            int blockWeight = (i == 0) ? calculateIWeight() : 10; // I 블록의 가중치를 난이도별로 설정, 나머지 블록은 10
             currentWeight += blockWeight;
             if (selectedWeight < currentWeight) {
                 return i;
             }
         }
-        return TETROMINO_TYPES - 1; // 마지막 블록이 선택될 경우
+        return rouletteWheelSelection(); //모든 테트로미노가 선택되지 않았을 경우 다시 수행
     }
 
     //난이도에 따른 가중치 계산
