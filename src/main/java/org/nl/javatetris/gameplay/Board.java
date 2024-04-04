@@ -77,9 +77,10 @@ public class Board {
         lineCount++;
         onClearCompletedLines.run();
     }
+
     // 아이템모드에서 Nuclear 아이템으로 모두 지우는 메서드
     private void clearAllLine() {
-        for (int i=1; i<22; i++){
+        for (int i=1; i< Y_MAX - 1; i++){
             removeLine(i);
         }
     }
@@ -89,6 +90,15 @@ public class Board {
         int x=0, y =0;
 
     }
+
+    private void clearVerticalLine(){
+        int x= 0, y = 0;
+        currentTetromino.getTetrominoBlock(y, x);
+        x = tetrominoX;
+        removeVerticalLine(x);
+
+    }
+
     // 특정 줄을 제거하는 메서드
     private void removeLine(int lineIndex) {
         for (int x = 1; x < X_MAX - 1; x++) {
@@ -96,6 +106,12 @@ public class Board {
         }
     }
 
+    // 세로 줄을 제거하는 메서드
+    private void removeVerticalLine(int lineIndex){
+        for (int y = 1; y < Y_MAX - 1; y++){
+            board[y][lineIndex] = EMPTY;
+        }
+    }
     // 제거된 줄 위의 모든 줄을 아래로 한 칸씩 이동시키는 메서드
     private void shiftLinesDown(int fromLineIndex) {
         // 실제 게임 내용이 있는 줄만 이동
@@ -205,9 +221,11 @@ public class Board {
             int lineBeforeClear = lineCount;
             boolean isItItem = false;
             if (currentTetromino.getShapeNumber() >= 11 && currentTetromino.getShapeNumber() <= 17) clearItemLine();
-            clearCompletedLines();
-            if (currentTetromino.getShapeNumber() == 18) clearAllLine();
-            if (currentTetromino.getShapeNumber() == 19) clearArea();
+            clearCompletedLines(); // TetrominoEraser 실행
+            if (currentTetromino.getShapeNumber() == 18) clearAllLine(); // ItemNuclear 실행
+            if (currentTetromino.getShapeNumber() == 19) clearArea(); // ItemBomb 실행
+            if (currentTetromino.getShapeNumber() == 20) clearArea(); // ItemWeight 실행
+            if (currentTetromino.getShapeNumber() == 21) clearVerticalLine(); // ItemVerticalBomb 실행
             if (lineCount / 10 > lineBeforeClear / 10) isItItem = true;
             return spawnTetromino(isItItem);
         }

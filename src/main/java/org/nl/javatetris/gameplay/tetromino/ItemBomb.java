@@ -1,6 +1,6 @@
 package org.nl.javatetris.gameplay.tetromino;
 
-import static org.nl.javatetris.config.constant.ModelConst.*;
+import static org.nl.javatetris.config.constant.ModelConst.B;
 public class ItemBomb extends AbstractTetromino{
     public ItemBomb() { setShapes(); }
 

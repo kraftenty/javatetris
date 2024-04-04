@@ -102,6 +102,12 @@ public class GamePlayView {
                             (x + 0.1) * Settings.getInstance().getSizeSetting().getBlockSize(),
                             1.5);
                 }
+                if (cellValue == V){
+                    drawVonBlock(
+                            (y + 1) * Settings.getInstance().getSizeSetting().getBlockSize(),
+                            (x + 0.1) * Settings.getInstance().getSizeSetting().getBlockSize(),
+                            1.5);
+                }
             }
         }
 
@@ -253,6 +259,13 @@ public class GamePlayView {
                                 1.1
                         );
                     }
+                    if (shape[y][x] == V) {
+                        drawVonBlock(
+                                Settings.getInstance().getSizeSetting().getBlockSize() * 9 + (y + 1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
+                                Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10 + (x + 0.1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
+                                1.1
+                        );
+                    }
                 }
             }
         }
@@ -278,8 +291,10 @@ public class GamePlayView {
                 return Settings.getInstance().getColorSetting().getColorOfTetrominoType(Z);
             case E:
                 return Color.WHITE;
-            case N, B:
+            case N, B, V:
                 return Color.TRANSPARENT;
+            case W:
+                return Color.BLACK;
             default:
                 return Color.rgb(255,255,255,0.3);
         }
@@ -309,6 +324,15 @@ public class GamePlayView {
         BombBlockB.setLayoutY(y);
         BombBlockB.setLayoutX(x);
         pane.getChildren().add(BombBlockB);
+    }
+
+    private void drawVonBlock(double y, double x, double fontScale){
+        Text VerticalBombBlockV = new Text("V");
+        VerticalBombBlockV.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()*fontScale));
+        VerticalBombBlockV.setFill(Color.RED);
+        VerticalBombBlockV.setLayoutY(y);
+        VerticalBombBlockV.setLayoutX(x);
+        pane.getChildren().add(VerticalBombBlockV);
     }
 }
 
