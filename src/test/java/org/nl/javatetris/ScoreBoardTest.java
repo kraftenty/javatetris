@@ -23,20 +23,20 @@ public class ScoreBoardTest {
     // 스코어보드가 10개 이하로 유지되는지 확인하는 테스트
     public void scoreboardOverflowTest() {
 
-            ScoreBoard instance = ScoreBoard.getInstance();
-            instance.addScoreByMode("aaa", 100);
-            instance.addScoreByMode("bbb", 200);
-            instance.addScoreByMode("ccc", 300);
-            instance.addScoreByMode("ddd", 400);
-            instance.addScoreByMode("eee", 500);
-            instance.addScoreByMode("fff", 600);
-            instance.addScoreByMode("ggg", 700);
-            instance.addScoreByMode("hhh", 800);
-            instance.addScoreByMode("iii", 900);
-            instance.addScoreByMode("jjj", 1000);
-            instance.addScoreByMode("lll", 1100);
+        ScoreBoard instance = ScoreBoard.getInstance();
+        instance.addScoreByMode("aaa", 100);
+        instance.addScoreByMode("bbb", 200);
+        instance.addScoreByMode("ccc", 300);
+        instance.addScoreByMode("ddd", 400);
+        instance.addScoreByMode("eee", 500);
+        instance.addScoreByMode("fff", 600);
+        instance.addScoreByMode("ggg", 700);
+        instance.addScoreByMode("hhh", 800);
+        instance.addScoreByMode("iii", 900);
+        instance.addScoreByMode("jjj", 1000);
+        instance.addScoreByMode("lll", 1100);
 
-            Assertions.assertEquals(10, instance.getClassicModeScores().size());
+        Assertions.assertEquals(10, instance.getClassicModeScores().size());
     }
 
     @Test

@@ -7,7 +7,8 @@ import org.nl.javatetris.scoreboard.ScoreBoard;
 import org.nl.javatetris.settings.SettingsManager;
 import org.nl.javatetris.config.SceneManager;
 
-public class Main extends Application {
+public class
+Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
