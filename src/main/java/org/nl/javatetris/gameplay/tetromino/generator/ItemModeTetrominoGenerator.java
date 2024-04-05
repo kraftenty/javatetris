@@ -51,17 +51,13 @@ public class ItemModeTetrominoGenerator implements TetrominoGenerator {
         int randomInt = random.nextInt(100);
         if (randomInt < 1) { // 1% 확률로 핵, 아래 변경 필요
             tetrominoQueue.add(createItemNuclear());
-        }
-        else if (randomInt < 2) { //27% 확률로 폭탄, 아래 변경 필요
+        } else if (randomInt <= 27) { //27% 확률로 폭탄, 아래 변경 필요
             tetrominoQueue.add(createItemBomb());
-        }
-        else if (randomInt < 3) { //24% 확률로 한줄 제거 블록
+        } else if (randomInt <= 51) { //24% 확률로 한줄 제거 블록
             tetrominoQueue.add(createTetrominoWithErase());
-        }
-        else if (randomInt < 4) { //24% 확률로 무게 추, 아래 변경 필요
+        } else if (randomInt <= 75) { //24% 확률로 무게 추, 아래 변경 필요
             tetrominoQueue.add(createItemWeight());
-        }
-        else { //24% 확률로 VerticalBomb 아이템 생성
+        } else { //24% 확률로 VerticalBomb 아이템 생성
             tetrominoQueue.add(createItemVerticalBomb());
         }
     }
@@ -134,21 +130,21 @@ public class ItemModeTetrominoGenerator implements TetrominoGenerator {
     }
 
     // 3X3 크기로 주변 테트로미노를 지우는 Bomb 아이템 생성
-    private Tetromino createItemBomb(){
+    private Tetromino createItemBomb() {
         Tetromino tetromino;
         tetromino = new ItemBomb();
         return tetromino;
     }
 
     // 무게추 아이템 생성
-    private Tetromino createItemWeight(){
+    private Tetromino createItemWeight() {
         Tetromino tetromino;
         tetromino = new ItemWeight();
         return tetromino;
     }
 
     // 세로로 한줄을 지우는 VerticalBomb 생성
-    private Tetromino createItemVerticalBomb(){
+    private Tetromino createItemVerticalBomb() {
         Tetromino tetromino;
         tetromino = new ItemVerticalBomb();
         return tetromino;
