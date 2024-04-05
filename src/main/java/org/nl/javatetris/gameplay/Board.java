@@ -153,7 +153,6 @@ public class Board {
         tetrominoY = 1;
         // 테트로미노를 스폰시킬 수 있는지 검사하고, 없으면 게임 오버
         if (!canSpawn()) {
-            System.out.println("Game Over!");
             return false;
         } else {
             placeTetrominoOnBoard();
