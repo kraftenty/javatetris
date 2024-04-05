@@ -52,7 +52,7 @@ public class GameOverView {
             while (!isValidInput) {
                 TextInputDialog dialog = new TextInputDialog(name);
                 dialog.setTitle("Enroll into Scoreboard");
-                dialog.setHeaderText("Enter Your Name (10 characters max)");
+                dialog.setHeaderText("Enter Your Name (8 characters max)");
                 dialog.setContentText("Name:");
 
                 // 'Cancel' 버튼 제거
@@ -61,7 +61,7 @@ public class GameOverView {
                 // Dialog를 표시하고 사용자 입력값을 받음
                 Optional<String> result = dialog.showAndWait();
 
-                if (result.isPresent() && result.get().length() <= 10) {
+                if (result.isPresent() && result.get().length() <= 8) {
                     name = result.get();
                     isValidInput = true;
                 } else {
@@ -69,14 +69,20 @@ public class GameOverView {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Enroll into Scoreboard");
                     alert.setHeaderText(null);
-                    alert.setContentText("The name must be 10 characters or less.");
+                    alert.setContentText("The name must be 8 characters or less.");
                     alert.showAndWait();
                 }
             }
             if (name.isEmpty()) {
                 name = "Anonymous";
             }
-            ScoreBoard.getInstance().addScoreByMode(name, gameOverParam.getPoint(), gameOverParam.getGameParam());
+
+            Integer mode = gameOverParam.getGameParam().getMode();
+            if (mode == 0) {
+                ScoreBoard.getInstance().addScoreInClassicModeScores(name, gameOverParam.getPoint(), gameOverParam.getGameParam().getDifficulty());
+            } else if (mode == 1) {
+                ScoreBoard.getInstance().addScoreInItemModeScores(name, gameOverParam.getPoint());
+            }
             ScoreBoard.getInstance().saveScoreboard(); // 스코어보드 저장!!
             onBackToScoreBoard.run();
         });
