@@ -2,6 +2,7 @@ package org.nl.javatetris.gameplay.tetromino.generator;
 
 import org.nl.javatetris.gameplay.GameParam;
 import org.nl.javatetris.gameplay.tetromino.*;
+import org.nl.javatetris.gameplay.tetromino.classic.*;
 
 import java.util.LinkedList;
 import java.util.Queue;

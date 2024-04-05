@@ -1,8 +1,12 @@
-package org.nl.javatetris.gameplay.tetromino;
+package org.nl.javatetris.gameplay.tetromino.item;
+
+import org.nl.javatetris.gameplay.tetromino.AbstractTetromino;
+import org.nl.javatetris.gameplay.tetromino.Tetromino;
+import org.nl.javatetris.gameplay.tetromino.classic.TetrominoI;
 
 import static org.nl.javatetris.config.constant.ModelConst.W;
-public class ItemWeight extends AbstractTetromino{
-    public ItemWeight() { setShapes();}
+public class TetrominoWeight extends AbstractTetromino {
+    public TetrominoWeight() { setShapes();}
     @Override
     protected void setShapes() {
         shapes = new int[][][]{

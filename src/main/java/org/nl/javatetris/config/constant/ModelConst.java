@@ -4,6 +4,9 @@ public class ModelConst {
 
     public static final int TETROMINO_TYPES = 7; // 테트로미노 종류 수
 
+    /**
+     * Classic Tetromino Shape Number
+     */
     public static final int EMPTY = 0;          // 0
     public static final int I = 1;              // 1
     public static final int J = 2;              // 2
@@ -14,17 +17,21 @@ public class ModelConst {
     public static final int Z = 7;              // 7
     public static final int BORDER = 9;         // 9
 
-    public static final int EI = 11;
-    public static final int EJ = 12;
-    public static final int EL = 13;
-    public static final int EO = 14;
-    public static final int ES = 15;
-    public static final int ET = 16;
-    public static final int EZ = 17;
-    public static final int N = 18;
-    public static final int B = 19;
-    public static final int W = 20;
-    public static final int V = 21;
+
+    /**
+     * Item Tetromino Shape Number
+     */
+    public static final int EI = 11;            // Erase - I
+    public static final int EJ = 12;            // Erase - J
+    public static final int EL = 13;            // Erase - L
+    public static final int EO = 14;            // Erase - O
+    public static final int ES = 15;            // Erase - S
+    public static final int ET = 16;            // Erase - T
+    public static final int EZ = 17;            // Erase - Z
+    public static final int N = 18;             // Nuclear
+    public static final int B = 19;             // Bomb
+    public static final int W = 20;             // Weight
+    public static final int V = 21;             // VerticalBomb
 
     public static final int E = 100;          // 줄을 지우는 블록
 

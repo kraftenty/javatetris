@@ -1,6 +1,8 @@
 package org.nl.javatetris.gameplay.tetromino.generator;
 
 import org.nl.javatetris.gameplay.tetromino.*;
+import org.nl.javatetris.gameplay.tetromino.classic.*;
+import org.nl.javatetris.gameplay.tetromino.item.*;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -9,16 +11,15 @@ import java.util.Random;
 import static org.nl.javatetris.config.constant.ModelConst.EO;
 import static org.nl.javatetris.config.constant.ModelConst.TETROMINO_TYPES;
 
-// TODO : 아이템모드 테트로미노 생성기
 public class ItemModeTetrominoGenerator implements TetrominoGenerator {
 
     private Queue<Tetromino> tetrominoQueue = new LinkedList<>();
-    private int lastTetrominoType = -1; // 마지막으로 생성된 테트로미노의 타입을 저장
+    private int lastClassicTetrominoType = -1; // 마지막으로 생성된 테트로미노의 타입을 저장
     private Random random = new Random();
 
 
     public ItemModeTetrominoGenerator() {
-        refillQueue();
+        refillQueue(false);
     }
 
     @Override
@@ -27,42 +28,30 @@ public class ItemModeTetrominoGenerator implements TetrominoGenerator {
     }
 
     @Override
-    public Tetromino getNextTetromino(boolean isItItem) {
+    public Tetromino getNextTetromino(boolean shouldNextTetrominoBeItem) {
         Tetromino nextTetromino = tetrominoQueue.poll();
-        if (isItItem) addItem();
-        refillQueue();
+        refillQueue(shouldNextTetrominoBeItem);
         return nextTetromino;
     }
 
-    private void refillQueue() {
-        while (tetrominoQueue.size() < 2) {
-            int randomInt;
-            do {
-                randomInt = random.nextInt(TETROMINO_TYPES);
-            } while (randomInt == lastTetrominoType); // 이전에 생성된 타입과 다를 때까지 반복
-
-            lastTetrominoType = randomInt; // 새로운 테트로미노 타입을 마지막 타입으로 업데이트
-            tetrominoQueue.add(createTetrominoByType(randomInt));
+    private void refillQueue(boolean shouldNextTetrominoBeItem) {
+        while (tetrominoQueue.size() < 1) {
+            if (shouldNextTetrominoBeItem) {
+                // 아이템 테트로미노 생성
+                tetrominoQueue.add(createItemTetrominoByRandom(random.nextInt(100)));
+            } else {
+                // 클래식 테트로미노 생성
+                int randomInt;
+                do {
+                    randomInt = random.nextInt(TETROMINO_TYPES);
+                } while (randomInt == lastClassicTetrominoType);
+                lastClassicTetrominoType = randomInt;
+                tetrominoQueue.add(createClassicTetrominoByType(randomInt));
+            }
         }
     }
 
-
-    private void addItem() {
-        int randomInt = random.nextInt(100);
-        if (randomInt < 1) { // 1% 확률로 핵, 아래 변경 필요
-            tetrominoQueue.add(createItemNuclear());
-        } else if (randomInt <= 27) { //27% 확률로 폭탄, 아래 변경 필요
-            tetrominoQueue.add(createItemBomb());
-        } else if (randomInt <= 51) { //24% 확률로 한줄 제거 블록
-            tetrominoQueue.add(createTetrominoWithErase());
-        } else if (randomInt <= 75) { //24% 확률로 무게 추, 아래 변경 필요
-            tetrominoQueue.add(createItemWeight());
-        } else { //24% 확률로 VerticalBomb 아이템 생성
-            tetrominoQueue.add(createItemVerticalBomb());
-        }
-    }
-
-    private Tetromino createTetrominoByType(int type) {
+    private Tetromino createClassicTetrominoByType(int type) {
         switch (type) {
             case 0:
                 return new TetrominoI();
@@ -83,10 +72,33 @@ public class ItemModeTetrominoGenerator implements TetrominoGenerator {
         }
     }
 
-    private Tetromino createTetrominoWithErase() {
-        int randomInt = random.nextInt(TETROMINO_TYPES);
+    private Tetromino createItemTetrominoByRandom(int randomInt) {
+        // TODO : 핵, 폭탄, 무게추, 수직제거 구현 후에 주석 해제할 것.
+//        if (randomInt < 1) {
+//            // 1% 확률로 핵, 아래 변경 필요
+//            return new TetrominoNuclear();
+//        } else if (randomInt <= 27) {
+//            // 27% 확률로 폭탄, 아래 변경 필요
+//            return new TetrominoBomb();
+//        } else if (randomInt <= 51) {
+//            // 28 29 30 3
+//            // 24% 확률로 한줄 제거 블록
+//            return getRandomEraseTetromino();
+//        } else if (randomInt <= 75) {
+//            // 24% 확률로 무게 추, 아래 변경 필요
+//            return new TetrominoWeight();
+//        } else {
+//            // 24% 확률로 VerticalBomb 아이템 생성
+//            return new TetrominoVerticalBomb();
+//        }
+        // TODO : 일단은 한줄제거만 가능하게 해 두었음.
+        return getRandomEraseTetromino();
+    }
+
+    private Tetromino getRandomEraseTetromino() {
+        int randomShapeInt = random.nextInt(TETROMINO_TYPES);
         Tetromino tetromino;
-        switch (randomInt) {
+        switch (randomShapeInt) {
             case 0:
                 tetromino = new TetrominoEraseI();
                 break;
@@ -109,44 +121,17 @@ public class ItemModeTetrominoGenerator implements TetrominoGenerator {
                 tetromino = new TetrominoEraseZ();
                 break;
             default:
-                throw new IllegalArgumentException("Unknown tetromino type: " + randomInt);
+                throw new IllegalArgumentException("Unknown tetromino type: " + randomShapeInt);
         }
 
-        randomInt = random.nextInt(4); //L이 위치할 곳
-
-        if (tetromino.getShapeNumber() == EO)
-            tetromino.setShapeIndex(randomInt);
-        else
-            tetromino.setShapeIndex(randomInt * 4);
+        int randomLocationInt = random.nextInt(4); //L이 위치할 곳
+        if (tetromino.getShapeNumber() == EO) {
+            tetromino.setShapeIndex(randomLocationInt);
+        } else {
+            tetromino.setShapeIndex(randomLocationInt * 4);
+        }
 
         return tetromino;
     }
 
-    // 맵을 전부 지우는 Nuclear 아이템 생성
-    private Tetromino createItemNuclear() {
-        Tetromino tetromino;
-        tetromino = new ItemNuclear();
-        return tetromino;
-    }
-
-    // 3X3 크기로 주변 테트로미노를 지우는 Bomb 아이템 생성
-    private Tetromino createItemBomb() {
-        Tetromino tetromino;
-        tetromino = new ItemBomb();
-        return tetromino;
-    }
-
-    // 무게추 아이템 생성
-    private Tetromino createItemWeight() {
-        Tetromino tetromino;
-        tetromino = new ItemWeight();
-        return tetromino;
-    }
-
-    // 세로로 한줄을 지우는 VerticalBomb 생성
-    private Tetromino createItemVerticalBomb() {
-        Tetromino tetromino;
-        tetromino = new ItemVerticalBomb();
-        return tetromino;
-    }
 }

@@ -147,7 +147,7 @@ public class GamePlayController {
                 break;
         }
 
-        return Math.max(0.1, baseSpeed);
+        return Math.max(0.3, baseSpeed);
     }
 
     // 레벨업 메서드

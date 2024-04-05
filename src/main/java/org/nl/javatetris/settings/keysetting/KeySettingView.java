@@ -126,8 +126,6 @@ public class KeySettingView {
 //            updateMenuItems(keySettingController.getSelectedItemIndex());
 //        });
 
-        //TODO
-        // 키 입력에 따른 액션을 처리하는 부분에 깜빡임 시작 및 중지 로직을 추가
         scene.setOnKeyPressed(e -> {
             keySettingController.handleKeyPress(e);
             // 선택된 항목 변경 시 깜빡임 중지

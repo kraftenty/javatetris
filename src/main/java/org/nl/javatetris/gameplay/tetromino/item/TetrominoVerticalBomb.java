@@ -1,9 +1,12 @@
-package org.nl.javatetris.gameplay.tetromino;
+package org.nl.javatetris.gameplay.tetromino.item;
+
+import org.nl.javatetris.gameplay.tetromino.AbstractTetromino;
+import org.nl.javatetris.gameplay.tetromino.Tetromino;
 
 import static org.nl.javatetris.config.constant.ModelConst.V;
-public class ItemVerticalBomb extends AbstractTetromino{
+public class TetrominoVerticalBomb extends AbstractTetromino {
 
-    public ItemVerticalBomb(){ setShapes();}
+    public TetrominoVerticalBomb(){ setShapes();}
 
     @Override
     protected void setShapes() {
