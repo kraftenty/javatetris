@@ -37,7 +37,7 @@ public class GamePlayController {
         this.gameParam = gameParam;
         // tetrominoGenerator 주입
         if (gameParam.getMode() == 0) { // classic mode
-            this.tetrominoGenerator = new ClassicModeTetrominoGenerator();
+            this.tetrominoGenerator = new ClassicModeTetrominoGenerator(gameParam);
         } else if (gameParam.getMode() == 1) { // item mode
             this.tetrominoGenerator = new ItemModeTetrominoGenerator();
         }
@@ -126,7 +126,28 @@ public class GamePlayController {
 
     // 레벨에 따른 속도 반환 메서드
     private double getSpeedByLevel() {
-        return Math.max(0.1, 1 - level * 0.1);
+        double baseSpeed = 1.0 - level * 0.1;
+
+        // 난이도에 따라 속도 조정하기
+        //초반 속도는 그대로이고 줄 삭제에 대한 속도만 바꿔야 하는건지? 수정예정
+        int difficulty = gameParam.getDifficulty();
+        switch (difficulty) {
+            case 0:
+                // 난이도가 0일 때, 속도가 20% 감소
+                baseSpeed *= 1.2;
+                break;
+            case 1:
+                // 난이도가 1일 때, 원래 속도
+                break;
+            case 2:
+                // 난이도가 2일 때, 속도가 20% 증가
+                baseSpeed *= 0.8;
+                break;
+            default:
+                break;
+        }
+
+        return Math.max(0.1, baseSpeed);
     }
 
     // 레벨업 메서드
