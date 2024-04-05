@@ -26,7 +26,7 @@ public class ClassicModeTetrominoGenerator implements TetrominoGenerator {
     }
 
     @Override
-    public Tetromino getNextTetromino() {
+    public Tetromino getNextTetromino(boolean isItItem) {
         Tetromino nextTetromino = tetrominoQueue.poll();
         refillQueue();
         return nextTetromino;

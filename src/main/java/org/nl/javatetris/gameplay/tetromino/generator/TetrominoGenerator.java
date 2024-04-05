@@ -6,6 +6,6 @@ public interface TetrominoGenerator {
 
     public Tetromino peekNextTetromino();
 
-    public Tetromino getNextTetromino();
+    public Tetromino getNextTetromino(boolean isItItem);
 
 }

@@ -16,6 +16,7 @@ public class Board {
     private Tetromino currentTetromino;
     private int tetrominoY;
     private int tetrominoX;
+    private int lineCount;
     private Runnable onClearCompletedLines;
 
     // 생성자
@@ -23,6 +24,7 @@ public class Board {
         this.tetrominoGenerator = tetrominoGenerator;
         this.onClearCompletedLines = onClearCompletedLines;
         board = new int[Y_MAX][X_MAX];
+        lineCount = 0;
         initialize();
     }
 
@@ -54,9 +56,47 @@ public class Board {
             if (isLineComplete(y)) {
                 removeLine(y); // 한줄 지우고
                 shiftLinesDown(y); // 하강
+                lineCount++;
                 onClearCompletedLines.run();
             }
         }
+    }
+
+    private void clearItemLine() {
+        int y = 0;
+        for (int i = 0; i < currentTetromino.getShapeHeight(); i++) {
+            for (int j = 0; j < currentTetromino.getShapeWidth(); j++) {
+                if (currentTetromino.getTetrominoBlock(i,j) == E) {
+                    y = tetrominoY + i;
+                    break;
+                }
+            }
+        }
+        removeLine(y); // 한줄 지우고
+        shiftLinesDown(y); // 하강
+        lineCount++;
+        onClearCompletedLines.run();
+    }
+
+    // 아이템모드에서 Nuclear 아이템으로 모두 지우는 메서드
+    private void clearAllLine() {
+        for (int i=1; i< Y_MAX - 1; i++){
+            removeLine(i);
+        }
+    }
+
+    // 아이템모드에서 Bomb 아이템으로 3X3의 영역을 지우는 메서드
+    private void clearArea(){
+        int x=0, y =0;
+
+    }
+
+    private void clearVerticalLine(){
+        int x= 0, y = 0;
+        currentTetromino.getTetrominoBlock(y, x);
+        x = tetrominoX;
+        removeVerticalLine(x);
+
     }
 
     // 특정 줄을 제거하는 메서드
@@ -66,6 +106,12 @@ public class Board {
         }
     }
 
+    // 세로 줄을 제거하는 메서드
+    private void removeVerticalLine(int lineIndex){
+        for (int y = 1; y < Y_MAX - 1; y++){
+            board[y][lineIndex] = EMPTY;
+        }
+    }
     // 제거된 줄 위의 모든 줄을 아래로 한 칸씩 이동시키는 메서드
     private void shiftLinesDown(int fromLineIndex) {
         // 실제 게임 내용이 있는 줄만 이동
@@ -99,9 +145,9 @@ public class Board {
     }
 
     // 테트로미노를 보드 상단에 스폰시키는 메서드
-    public boolean spawnTetromino() {
+    public boolean spawnTetromino(boolean isItItem) {
         // 테트로미노를 생성한다.
-        currentTetromino = tetrominoGenerator.getNextTetromino();
+        currentTetromino = tetrominoGenerator.getNextTetromino(isItItem);
         // 생성한 테트로미노를 화면 상단에 위치시킨다.
         tetrominoX = X_MAX / 2 - 1;
         tetrominoY = 1;
@@ -127,10 +173,11 @@ public class Board {
 
     // 테트로미노를 보드에 배치하는 메서드
     private void placeTetrominoOnBoard() {
+
         for (int y = 0; y < currentTetromino.getShapeWidth(); y++) {
             for (int x = 0; x < currentTetromino.getShapeHeight(); x++) {
                 if (currentTetromino.getShape()[y][x] != 0) {
-                    board[tetrominoY + y][tetrominoX + x] = currentTetromino.getShapeNumber();
+                    board[tetrominoY + y][tetrominoX + x] = currentTetromino.getTetrominoBlock(y,x);
                 }
             }
         }
@@ -162,6 +209,7 @@ public class Board {
     // 테트로미노를 보드 내에서 아래로 이동시키는 메서드
     public boolean moveTetrominoDown() {
         clearTetrominoFromBoard();
+        System.out.println("[DEBUG] x = " + tetrominoX + " y = " + tetrominoY);
         if (canMove(tetrominoY + 1, tetrominoX)) {
             tetrominoY++;
             placeTetrominoOnBoard();
@@ -169,8 +217,16 @@ public class Board {
 
         } else {
             placeTetrominoOnBoard();
-            clearCompletedLines();
-            return spawnTetromino();
+            int lineBeforeClear = lineCount;
+            boolean isItItem = false;
+            if (currentTetromino.getShapeNumber() >= EI && currentTetromino.getShapeNumber() <= EZ) clearItemLine();
+            clearCompletedLines(); // TetrominoEraser 실행
+            if (currentTetromino.getShapeNumber() == 18) clearAllLine(); // ItemNuclear 실행
+            if (currentTetromino.getShapeNumber() == 19) clearArea(); // ItemBomb 실행
+            if (currentTetromino.getShapeNumber() == 20) clearArea(); // ItemWeight 실행
+            if (currentTetromino.getShapeNumber() == 21) clearVerticalLine(); // ItemVerticalBomb 실행
+            if (lineCount / 10 > lineBeforeClear / 10) isItItem = true;
+            return spawnTetromino(isItItem);
         }
 
     }
@@ -267,11 +323,10 @@ public class Board {
 
     // 회전할 때 걸리는 부분을 찾고, 이동해야할 방향과 거리 리턴
     public int getRotatedMove(int tetrominoNum, int rotationIdx) { //1 2 3 4 : 상 우 하 좌 1칸, 5 6 7 8 2칸
-        if (tetrominoNum == 4) return 0;
-        if (tetrominoNum == 1) {
+        if (tetrominoNum == O ) return 0;
+        if (tetrominoNum == I) {
             int[] dy = new int[]{2, 3, 0, 2, 2, 2, 1, 0, 3, 1, 1, 1};  // I가 회전할 때 걸리는 부분
             int[] dx = new int[]{2, 2, 2, 1, 0, 3, 1, 1, 1, 2, 3, 0};
-
 
             if (board[tetrominoY + dy[rotationIdx * 3]][tetrominoX + dx[rotationIdx * 3]] != EMPTY) //1자가 두칸 밀리는 경우
                 return rotationIdx + 5;
@@ -308,6 +363,11 @@ public class Board {
         int tetrominoNum = currentTetromino.getShapeNumber();
         int rotationIdx = currentTetromino.getShapeIndex();
 
+        if (tetrominoNum >= 11 && tetrominoNum <= 17) {  //지우는 블럭을 일반 블록 취급
+            tetrominoNum -= 10;
+            rotationIdx = (rotationIdx) % 4;
+        }
+
         int[] yx = {tetrominoY, tetrominoX};
         int move = getRotatedMove(tetrominoNum, rotationIdx);
 
@@ -321,6 +381,8 @@ public class Board {
 
     // 테트로미노가 보드 내에서 회전할 수 있는지 검사하는 메서드
     public boolean canRotate() {
+        if (currentTetromino.getShapeNumber() == O || currentTetromino.getShapeNumber() == EO) return true;
+
         Tetromino rotatedTetromino = currentTetromino.getRotatedTetromino();
         int[][] shape = rotatedTetromino.getShape();
 

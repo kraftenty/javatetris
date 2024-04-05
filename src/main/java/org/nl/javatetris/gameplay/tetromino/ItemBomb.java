@@ -1,28 +1,21 @@
 package org.nl.javatetris.gameplay.tetromino;
 
-import static org.nl.javatetris.config.constant.ModelConst.O;
-
-public class TetrominoO extends AbstractTetromino {
-
-    public static final int SHAPE_NUMBER = O;
-
-    public TetrominoO() {
-        setShapes();
-    }
+import static org.nl.javatetris.config.constant.ModelConst.B;
+public class ItemBomb extends AbstractTetromino{
+    public ItemBomb() { setShapes(); }
 
     @Override
     protected void setShapes() {
-        shapes = new int[][][]{
-            {
-                {O, O},
-                {O, O}
-            }
+        shapes = new int [][][]{
+                {
+                        {B}
+                }
         };
     }
 
     @Override
     public int getShapeNumber() {
-        return O;
+        return B;
     }
 
     @Override
@@ -32,5 +25,4 @@ public class TetrominoO extends AbstractTetromino {
         tetromino.rotateRight();
         return tetromino;
     }
-
 }

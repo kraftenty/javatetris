@@ -1,6 +1,6 @@
 package org.nl.javatetris.gameplay.tetromino;
 
-import org.nl.javatetris.config.constant.ModelConst;
+import static org.nl.javatetris.config.constant.ModelConst.S;
 
 public class TetrominoS extends AbstractTetromino {
 
@@ -12,31 +12,31 @@ public class TetrominoS extends AbstractTetromino {
     protected void setShapes() {
         shapes = new int[][][]{
                 {
-                        {0, 1, 1},
-                        {1, 1, 0},
+                        {0, S, S},
+                        {S, S, 0},
                         {0, 0, 0}
                 },
                 {
-                        {0, 1, 0},
-                        {0, 1, 1},
-                        {0, 0, 1}
+                        {0, S, 0},
+                        {0, S, S},
+                        {0, 0, S}
                 },
                 {
                         {0, 0, 0},
-                        {0, 1, 1},
-                        {1, 1, 0}
+                        {0, S, S},
+                        {S, S, 0}
                 },
                 {
-                        {1, 0, 0},
-                        {1, 1, 0},
-                        {0, 1, 0}
+                        {S, 0, 0},
+                        {S, S, 0},
+                        {0, S, 0}
                 }
         };
     }
 
     @Override
     public int getShapeNumber() {
-        return ModelConst.S;
+        return S;
     }
 
     @Override

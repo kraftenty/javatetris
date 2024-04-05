@@ -13,6 +13,8 @@ public interface Tetromino {
 
     int getShapeNumber();
 
+    int getTetrominoBlock(int y, int x);
+
     Tetromino getRotatedTetromino();
 
     void setShapeIndex(int currentShapeIndex);

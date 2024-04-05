@@ -45,7 +45,7 @@ public class GamePlayController {
         this.onDrawBoardUpdate = onDrawBoardUpdate;
         this.onDrawGameOver = onDrawGameOver;
         this.board = new Board(this::addScoreOnLineClear, tetrominoGenerator); // 보드 생성
-        board.spawnTetromino();
+        board.spawnTetromino(false);
         startTimeline();
     }
 
