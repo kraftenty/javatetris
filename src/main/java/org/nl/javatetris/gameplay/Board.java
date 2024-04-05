@@ -220,7 +220,7 @@ public class Board {
             placeTetrominoOnBoard();
             int lineBeforeClear = lineCount;
             boolean isItItem = false;
-            if (currentTetromino.getShapeNumber() >= 11 && currentTetromino.getShapeNumber() <= 17) clearItemLine();
+            if (currentTetromino.getShapeNumber() >= EI && currentTetromino.getShapeNumber() <= EZ) clearItemLine();
             clearCompletedLines(); // TetrominoEraser 실행
             if (currentTetromino.getShapeNumber() == 18) clearAllLine(); // ItemNuclear 실행
             if (currentTetromino.getShapeNumber() == 19) clearArea(); // ItemBomb 실행
