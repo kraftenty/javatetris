@@ -50,6 +50,15 @@ public class Board {
     public int getValueAt(int y, int x) {
         return board[y][x];
     }
+    //현재 테트로미노 반환
+    public Tetromino getCurrentTetromino() {return currentTetromino;}
+
+    public int[] getYX() {
+        int[] yx = new int[2];
+        yx[0] = tetrominoY;
+        yx[1] = tetrominoX;
+        return yx;
+    }
 
     // 게임 보드에서 완성된 줄을 제거하고, 줄들을 아래로 이동시키는 메서드
     private void clearCompletedLines() {
@@ -126,23 +135,6 @@ public class Board {
         // 가장 위의 줄을 EMPTY로 설정
         for (int x = 1; x < X_MAX - 1; x++) {
             board[1][x] = EMPTY;
-        }
-    }
-
-    // 보드 상태를 콘솔에 출력하는 메서드 (디버깅 용도)
-    public void drawBoard() {
-        for (int y = 0; y < Y_MAX; y++) {
-            for (int x = 0; x < X_MAX; x++) {
-                int currentPointValue = board[y][x];
-                if (currentPointValue == BORDER) {
-                    System.out.print("X");
-                } else if (currentPointValue == EMPTY) {
-                    System.out.print(" ");
-                } else {
-                    System.out.print(currentPointValue);
-                }
-            }
-            System.out.println();
         }
     }
 
