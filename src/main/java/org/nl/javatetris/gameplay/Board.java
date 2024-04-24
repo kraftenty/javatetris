@@ -4,6 +4,9 @@ import org.nl.javatetris.config.constant.ModelConst;
 import org.nl.javatetris.gameplay.tetromino.Tetromino;
 import org.nl.javatetris.gameplay.tetromino.generator.TetrominoGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.nl.javatetris.config.constant.ModelConst.*;
 
 
@@ -19,6 +22,9 @@ public class Board {
     private int tetrominoX;
     private int clearedLineCount;
     private Runnable onClearCompletedLines;
+
+    // 줄 지우는 효과를 위한 필드
+    private List<Integer> completedLines = new ArrayList<>();
 
     // 생성자
     public Board(Runnable onClearCompletedLines, TetrominoGenerator tetrominoGenerator) {
@@ -51,10 +57,18 @@ public class Board {
         return board[y][x];
     }
 
+    // completedLines 리스트를 반환하고, completedLines 리스트를 초기화하는 메서드
+    public List<Integer> releaseCompletedLines() {
+        List<Integer> temp = new ArrayList<>(completedLines);
+        completedLines.clear();
+        return temp;
+    }
+
     // 게임 보드에서 완성된 줄을 제거하고, 줄들을 아래로 이동시키는 메서드
     private void clearCompletedLines() {
         for (int y = 1; y < Y_MAX - 1; y++) {
             if (isLineComplete(y)) {
+                completedLines.add(y); // 완성된 줄을 completedLines 리스트에 추가
                 removeLine(y); // 한줄 지우고
                 shiftLinesDown(y); // 하강
                 clearedLineCount++;

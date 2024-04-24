@@ -15,6 +15,7 @@ public class ModelConst {
     public static final int S = 5;              // 5
     public static final int T = 6;              // 6
     public static final int Z = 7;              // 7
+    public static final int CLEAR = 8;          // 8
     public static final int BORDER = 9;         // 9
 
 
