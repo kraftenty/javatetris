@@ -18,7 +18,8 @@ public class SettingsMenuView {
             Runnable onSettingKeyMenu,
             Runnable onHandleScreenSizeSettings
             ) {
-        this.settingsMenuController = new SettingsMenuController(menuItems.length,
+        this.settingsMenuController = new SettingsMenuController(
+                menuItems.length,
                 onBackToMenu,
                 onCheckingInitSet,
                 onChekingBoardInit,
