@@ -34,12 +34,6 @@ public class TetrominoWeight extends AbstractTetromino {
 
     @Override
     public Tetromino getRotatedTetromino() {
-        System.out.println("------------getRotatedTetromino call------------");
-        System.out.println("shapeIndex = " + shapeIndex);
-        if (shapeIndex == 0) {
-            System.out.println("shapeIndex 를 1로 변경 , shapeIndex = " + shapeIndex);
-            shapeIndex = 1;
-        }
         return new TetrominoWeight();
     }
 

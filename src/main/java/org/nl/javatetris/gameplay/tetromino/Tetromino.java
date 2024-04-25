@@ -18,4 +18,8 @@ public interface Tetromino {
     Tetromino getRotatedTetromino();
 
     void setShapeIndex(int currentShapeIndex);
+
+    boolean getReservedFlag();
+
+    void setReservedFlag(boolean reservedFlag);
 }

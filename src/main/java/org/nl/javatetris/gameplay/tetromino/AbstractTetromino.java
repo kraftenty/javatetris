@@ -4,6 +4,7 @@ public abstract class AbstractTetromino implements Tetromino {
 
     protected int[][][] shapes; // 테트로미노의 모든 회전 상태를 저장
     protected int shapeIndex = 0; // 현재 모양의 인덱스
+    protected boolean reservedFlag = false;
 
     @Override
     public void rotateRight() {
@@ -39,5 +40,13 @@ public abstract class AbstractTetromino implements Tetromino {
     @Override
     public void setShapeIndex(int shapeIndex) {
         this.shapeIndex = shapeIndex;
+    }
+
+    public boolean getReservedFlag() {
+        return reservedFlag;
+    }
+
+    public void setReservedFlag(boolean reservedFlag) {
+        this.reservedFlag = reservedFlag;
     }
 }

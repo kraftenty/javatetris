@@ -127,39 +127,6 @@ public class Board {
         }
     }
 
-
-    // 아이템모드에서 Weight 아이템 사용시
-    private void clearWeightAreaWhenDown() {
-        System.out.println("clearWeightAreaWhenDown() call");
-        int startX = tetrominoX;
-        int startY = tetrominoY + 2;
-
-        for (int x = startX; x < startX + 4; x++) {
-            if (board[startY][x] != BORDER && board[startY][x] != EMPTY) {
-                System.out.println("board[" + startY + "][" + x + "] = " + board[startY][x]);
-                board[startY][x] = EMPTY;
-                currentTetromino.getRotatedTetromino();
-            }
-        }
-    }
-
-    private void clearWeightAreaWhenDrop() {
-        int startX = tetrominoX;
-        int startY = tetrominoY;
-
-        for (int y = startY; y < Y_MAX - 1; y++) {
-            for (int x = startX; x < startX + 4; x++) {
-                if (currentTetromino.getShapeNumber() == 9) {
-                    board[y][x] = 9;
-                }
-                if (currentTetromino.getShapeNumber() != 9) {
-                    board[y][x] = EMPTY;
-                }
-            }
-        }
-    }
-
-
     private void clearVerticalLine() {
         int x = 0, y = 0;
         currentTetromino.getTetrominoBlock(y, x);
@@ -225,7 +192,6 @@ public class Board {
 
     // 테트로미노를 보드에 배치하는 메서드
     private void placeTetrominoOnBoard() {
-
         for (int y = 0; y < currentTetromino.getShapeHeight(); y++) {
             for (int x = 0; x < currentTetromino.getShapeWidth(); x++) {
                 if (currentTetromino.getShape()[y][x] != 0) {
@@ -242,8 +208,12 @@ public class Board {
 
     // 테트로미노를 보드 내에서 왼쪽으로 이동시키는 메서드
     public void moveTetrominoLeft() {
+        // 무게추 블록이면서 무게추가 이미 어떤 블럭을 삭제한 경우
+        if (currentTetromino.getShapeNumber() == W && currentTetromino.getReservedFlag())
+            return;
+
         clearTetrominoFromBoard();
-        if (canMove(tetrominoY, tetrominoX - 1) && !(currentTetromino.getShapeNumber() == W && currentTetromino.getShapeIndex() == 1)) {
+        if (canMove(tetrominoY, tetrominoX - 1)) {
             tetrominoX--;
         }
         placeTetrominoOnBoard();
@@ -251,8 +221,12 @@ public class Board {
 
     // 테트로미노를 보드 내에서 오른쪽으로 이동시키는 메서드
     public void moveTetrominoRight() {
+        // 무게추 블록이면서 무게추가 이미 어떤 블럭을 삭제한 경우
+        if (currentTetromino.getShapeNumber() == W && currentTetromino.getReservedFlag())
+            return;
+
         clearTetrominoFromBoard();
-        if (canMove(tetrominoY, tetrominoX + 1) && !(currentTetromino.getShapeNumber() == W && currentTetromino.getShapeIndex() == 1)) {
+        if (canMove(tetrominoY, tetrominoX + 1)) {
             tetrominoX++;
         }
         placeTetrominoOnBoard();
@@ -261,9 +235,6 @@ public class Board {
     // 테트로미노를 보드 내에서 아래로 이동시키는 메서드
     public boolean moveTetrominoDown() {
         clearTetrominoFromBoard();
-        if (currentTetromino.getShapeNumber() == ModelConst.W) {
-            clearWeightAreaWhenDown(); //
-        }
         if (canMove(tetrominoY + 1, tetrominoX)) {
             tetrominoY++;
             placeTetrominoOnBoard();
@@ -286,9 +257,9 @@ public class Board {
             if (currentTetromino.getShapeNumber() == ModelConst.V) {
                 clearVerticalLine(); // TetrominoVerticalBomb 실행
             }
-            if (clearedLineCount >= 1) {
+            if (clearedLineCount >= 10) {
                 shouldNextTetrominoBeItem = true;
-                clearedLineCount -= 1;
+                clearedLineCount -= 10;
             }
             return spawnTetromino(shouldNextTetrominoBeItem);
         }
@@ -300,8 +271,13 @@ public class Board {
         // 회전 후의 테트로미노 모양을 계산합니다.
         // 이 예시에서는 현재 테트로미노의 회전 메서드를 호출하여 "가상의" 회전을 수행하고,
         // 그 결과를 기반으로 회전 가능 여부를 판단합니다.
+
+        // 무게추인 경우 회전 불가
+        if (currentTetromino.getShapeNumber() == W)
+            return;
+
         clearTetrominoFromBoard();
-        if (currentTetromino.getShapeNumber() == W || !canRotate()) {
+        if (!canRotate()) {
             placeTetrominoOnBoard();
             return;
         }
@@ -314,17 +290,6 @@ public class Board {
 
     // 스페이스바를 눌러 테트로미노를 가장 아래로 내리는 메서드
     public int dropTetromino() {
-        // 무게추인 경우를 검사
-        if (currentTetromino.getShapeNumber() == W) {
-            int offset;
-            clearWeightAreaWhenDrop();
-            offset = 18 - tetrominoY;
-            tetrominoY += offset;
-            placeTetrominoOnBoard();
-            moveTetrominoDown();
-            return offset;
-        }
-
         // 맨 밑인 경우를 검사
         clearTetrominoFromBoard();
         if (!canMove(tetrominoY + 1, tetrominoX)) {
@@ -334,15 +299,30 @@ public class Board {
             placeTetrominoOnBoard();
         }
 
-        int offset = 0;
-        clearTetrominoFromBoard();
-        while (canMove(tetrominoY + offset + 1, tetrominoX)) {
-            offset++;
+        if (currentTetromino.getShapeNumber() == W) {
+            // 무게추 아이템인 경우
+            clearTetrominoFromBoard();
+            tetrominoY = Y_MAX - 3;
+            for(int y = 1; y < Y_MAX - 1; y++) {
+                for(int x = tetrominoX; x < tetrominoX +4; x++) {
+                    board[y][x] = EMPTY;
+                }
+            }
+            placeTetrominoOnBoard();
+            currentTetromino.setReservedFlag(true);
+            return 20;
+        } else {
+            // 일반 아이템인 경우
+            int offset = 0;
+            clearTetrominoFromBoard();
+            while (canMove(tetrominoY + offset + 1, tetrominoX)) {
+                offset++;
+            }
+            tetrominoY += offset;
+            placeTetrominoOnBoard();
+            moveTetrominoDown();
+            return offset;
         }
-        tetrominoY += offset;
-        placeTetrominoOnBoard();
-        moveTetrominoDown();
-        return offset;
     }
 
 
@@ -390,25 +370,30 @@ public class Board {
                     int boardY = newY + y;
                     int boardX = newX + x;
 
-
                     // 경계 조건 검사
                     if (boardX < 0 || boardX >= X_MAX || boardY < 0 || boardY >= Y_MAX) {
                         return false;
                     }
 
-                    // 이미 채워진 칸(다른 테트로미노)과의 충돌 검사
-                    if (board[boardY][boardX] != EMPTY && currentTetromino.getShapeNumber() != W) {
-                        return false;
-                    }
-
-                    // 무게추 아이템과 경계와 만나는지 검사
-                    if (currentTetromino.getShapeNumber() == W && board[boardY][boardX] == 9) {
-                        return false;
+                    if (currentTetromino.getShapeNumber() == W) {
+                        // 무게추
+                        if (boardY == Y_MAX - 1 || boardX == 0 || boardX == X_MAX - 1) {
+                            return false;
+                        }
+                        if (board[boardY][boardX] != EMPTY) {
+                            System.out.println("setReservedFlag=True");
+                            currentTetromino.setReservedFlag(true);
+                        }
+                    } else {
+                        // 일반 아이템
+                        if (board[boardY][boardX] != EMPTY) {
+                            return false;
+                        }
                     }
                 }
             }
         }
-        return true; // 위의 모든 검사를 통과한 경우, 이동 가능
+        return true;
     }
 
     // 회전할 때 걸리는 부분을 찾고, 이동해야할 방향과 거리 리턴
@@ -493,6 +478,5 @@ public class Board {
         }
         return true; // 위의 모든 검사를 통과한 경우, 회전 가능
     }
-
 
 }
