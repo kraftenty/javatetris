@@ -56,8 +56,11 @@ public class Board {
     public int getValueAt(int y, int x) {
         return board[y][x];
     }
+
     //현재 테트로미노 반환
-    public Tetromino getCurrentTetromino() {return currentTetromino;}
+    public Tetromino getCurrentTetromino() {
+        return currentTetromino;
+    }
 
     public int[] getYX() {
         int[] yx = new int[2];
@@ -146,18 +149,17 @@ public class Board {
         int startX = tetrominoX;
         int startY = tetrominoY;
 
-        for (int y = startY; y < Y_MAX-1; y++) {
-            for (int x=startX; x < startX+4; x++) {
-                if (currentTetromino.getShapeNumber() == 9){
+        for (int y = startY; y < Y_MAX - 1; y++) {
+            for (int x = startX; x < startX + 4; x++) {
+                if (currentTetromino.getShapeNumber() == 9) {
                     board[y][x] = 9;
                 }
-                if (currentTetromino.getShapeNumber() != 9){
+                if (currentTetromino.getShapeNumber() != 9) {
                     board[y][x] = EMPTY;
                 }
             }
         }
     }
-
 
 
     private void clearVerticalLine() {
@@ -326,10 +328,10 @@ public class Board {
     // 스페이스바를 눌러 테트로미노를 가장 아래로 내리는 메서드
     public int dropTetromino() {
         // 무게추인 경우를 검사
-        if (currentTetromino.getShapeNumber()==W){
+        if (currentTetromino.getShapeNumber() == W) {
             int offset;
             clearWeightArea2();
-            offset = 19-tetrominoY;
+            offset = 19 - tetrominoY;
             tetrominoY += offset;
             placeTetrominoOnBoard();
             moveTetrominoDown();
@@ -354,7 +356,6 @@ public class Board {
         placeTetrominoOnBoard();
         moveTetrominoDown();
         return offset;
-        }
     }
 
 
@@ -416,7 +417,7 @@ public class Board {
                     }
 
                     // 무게추 아이템과 경계와 만나는지 검사
-                    if (currentTetromino.getShapeNumber() == W && board[boardY][boardX] == 9){
+                    if (currentTetromino.getShapeNumber() == W && board[boardY][boardX] == 9) {
                         return false;
                     }
                 }
