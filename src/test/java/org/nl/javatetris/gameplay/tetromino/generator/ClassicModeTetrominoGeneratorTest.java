@@ -7,6 +7,8 @@ import org.nl.javatetris.gameplay.tetromino.Tetromino;
 import org.nl.javatetris.gameplay.tetromino.classic.TetrominoI;
 import org.nl.javatetris.gameplay.tetromino.generator.ClassicModeTetrominoGenerator;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Queue;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,5 +65,17 @@ class ClassicModeTetrominoGeneratorTest {
     }
 
 
+    @Test
+    public void testRefillQueue() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        GameParam gameParam = new GameParam(0, 0);
+        ClassicModeTetrominoGenerator tetrominoGenerator = new ClassicModeTetrominoGenerator(gameParam);
+
+        Method method = ClassicModeTetrominoGenerator.class.getDeclaredMethod("refillQueue");
+        method.setAccessible(true);
+        method.invoke(tetrominoGenerator);
+
+        // refillQueue를 호출한 후에 큐의 크기가 2여야 한다.
+        assertEquals(2, tetrominoGenerator.getTetrominoQueue().size());
+    }
 
 }

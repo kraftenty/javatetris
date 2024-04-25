@@ -31,7 +31,7 @@ class TetrominoVerticalBombTest {
     public void testGetRotatedTetromino() {
         TetrominoVerticalBomb tetromino = new TetrominoVerticalBomb();
         Tetromino rotatedTetromino = tetromino.getRotatedTetromino();
-        assertNull(rotatedTetromino); // null 반환(수정예정)
+        assertNull(rotatedTetromino);
     }
 
 }
