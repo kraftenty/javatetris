@@ -104,17 +104,34 @@ public class Board {
 
     // 아이템모드에서 Weight 아이템 사용시
     private void clearWeightArea() {
-        int x=0, y=0;
-        currentTetromino.getTetrominoBlock(y, x);
-        x=tetrominoX;   //현재 x값, 맨왼쪽
-        y=tetrominoY;   //현재 y값, 맨윗쪽
-        for(int i=y+3; i<Y_MAX-1; i++){
-            for (int j=x; j<x+4; j++){
-                board[i][j] = EMPTY;
+        int startX = tetrominoX;
+        int startY = tetrominoY;
+
+        for (int y = startY; y < startY + 2; y++) {
+            for (int x = startX; x < startX + 4; x++) {
+                if (currentTetromino.getShapeNumber() == 9) {
+                    board[y][x] = 9;
+                }
+                if (currentTetromino.getShapeNumber() != 9) {
+                    board[y][x] = EMPTY;
+                }
             }
-            clearTetrominoFromBoard();
-            tetrominoY++;
-            placeTetrominoOnBoard();
+        }
+    }
+
+    private void clearWeightArea2() {
+        int startX = tetrominoX;
+        int startY = tetrominoY;
+
+        for (int y = startY; y < Y_MAX-1; y++) {
+            for (int x=startX; x < startX+4; x++) {
+                if (currentTetromino.getShapeNumber() == 9){
+                    board[y][x] = 9;
+                }
+                if (currentTetromino.getShapeNumber() != 9){
+                    board[y][x] = EMPTY;
+                }
+            }
         }
     }
 
@@ -224,6 +241,9 @@ public class Board {
         System.out.println("--------------moveTetrominoDown() call-----------------------");
         System.out.println("tetrominoY = " + tetrominoY + ", tetrominoX = " + tetrominoX);
         clearTetrominoFromBoard();
+        if (currentTetromino.getShapeNumber() == ModelConst.W) {
+            clearWeightArea(); // TetrominoWeight 실행
+        }
         if (canMove(tetrominoY + 1, tetrominoX)) {
             System.out.println("canMove == true");
             tetrominoY++;
@@ -246,9 +266,9 @@ public class Board {
             if (currentTetromino.getShapeNumber() == ModelConst.B) {
                 clearBombArea(); // TetrominoBomb 실행
             }
-            if (currentTetromino.getShapeNumber() == ModelConst.W) {
-                clearWeightArea(); // TetrominoWeight 실행
-            }
+            //if (currentTetromino.getShapeNumber() == ModelConst.W) {
+            //    clearWeightArea(); // TetrominoWeight 실행
+            //}
             if (currentTetromino.getShapeNumber() == ModelConst.V) {
                 clearVerticalLine(); // TetrominoVerticalBomb 실행
             }
@@ -283,6 +303,17 @@ public class Board {
 
     // 스페이스바를 눌러 테트로미노를 가장 아래로 내리는 메서드
     public int dropTetromino() {
+        if (currentTetromino.getShapeNumber()==W){
+            int offset;
+            clearWeightArea2();
+            offset = 19-tetrominoY;
+            tetrominoY += offset;
+            placeTetrominoOnBoard();
+            moveTetrominoDown();
+            return offset;
+        }
+
+        else{
         int offset = 0;
         clearTetrominoFromBoard();
         while (canMove(tetrominoY + offset + 1, tetrominoX)) {
@@ -292,7 +323,9 @@ public class Board {
         placeTetrominoOnBoard();
         moveTetrominoDown();
         return offset;
+        }
     }
+
 
     /**
      * 검사 메서드
