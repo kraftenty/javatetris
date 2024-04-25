@@ -64,7 +64,7 @@ public class ClassicModeLobbyView {
     }
 
     private void configureBackground(VBox layout) {
-        Image backgroundImage = new Image("file:src/main/resources/images/main.png");
+        Image backgroundImage = new Image(getClass().getResourceAsStream("/images/main.png"));
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
         layout.setBackground(new Background(background));
     }

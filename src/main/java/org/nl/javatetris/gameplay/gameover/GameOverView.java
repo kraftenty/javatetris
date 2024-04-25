@@ -29,7 +29,7 @@ public class GameOverView {
 
     public Scene createScene() {
         Pane pane = new Pane();
-        Image backgroundImage = new Image("file:src/main/resources/images/play.jpg");
+        Image backgroundImage = new Image(getClass().getResourceAsStream("/images/play.jpg"));
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
         pane.setBackground(new Background(background));
 

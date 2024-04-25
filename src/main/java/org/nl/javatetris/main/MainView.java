@@ -69,13 +69,13 @@ public class MainView {
     }
 
     private void configureBackground(VBox layout) {
-        Image backgroundImage = new Image("file:src/main/resources/images/main.png");
+        Image backgroundImage = new Image(getClass().getResourceAsStream("/images/main.png"));
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
         layout.setBackground(new Background(background));
     }
 
     private void configureLogo(VBox layout) {
-        ImageView imageView = new ImageView(new Image("file:src/main/resources/images/logo.png"));
+        ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream("/images/logo.png")));
         imageView.setFitWidth(250);
         imageView.setFitHeight(100);
         layout.getChildren().add(imageView);
