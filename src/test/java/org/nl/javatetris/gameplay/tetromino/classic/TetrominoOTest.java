@@ -33,7 +33,7 @@ class TetrominoOTest {
         TetrominoO tetromino = new TetrominoO();
         Tetromino rotatedTetromino = tetromino.getRotatedTetromino();
         assertNotNull(rotatedTetromino);
-        assertEquals(tetromino.getShape(), rotatedTetromino.getShape());
+        assertArrayEquals(tetromino.getShape(), rotatedTetromino.getShape());
         assertNotSame(tetromino, rotatedTetromino);
     }
 

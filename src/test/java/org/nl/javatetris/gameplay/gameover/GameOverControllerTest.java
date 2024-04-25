@@ -1,7 +1,6 @@
 package org.nl.javatetris.gameplay.gameover;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import org.nl.javatetris.gameplay.gameover.*;
 class GameOverControllerTest {
     @Test
     public void testOnBackToScoreBoard() {
