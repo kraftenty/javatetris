@@ -33,6 +33,10 @@ public class ClassicModeTetrominoGenerator implements TetrominoGenerator {
         return nextTetromino;
     }
 
+    public Queue<Tetromino> getTetrominoQueue() {
+        return tetrominoQueue;
+    }
+
     private void refillQueue() {
         while (tetrominoQueue.size() < 2) {
             int randomInt;
