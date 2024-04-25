@@ -87,9 +87,16 @@ public class Board {
     }
 
     // 아이템모드에서 Bomb 아이템으로 3X3의 영역을 지우는 메서드
-    private void clearArea() {
+    private void clearBombArea() {
         int x = 0, y = 0;
-
+        currentTetromino.getTetrominoBlock(y, x);
+        x=tetrominoX;
+        y=tetrominoY;
+        for(int i=y-1; i<y+2; i++){
+            board[i][x-1] = EMPTY;
+            board[i][x] = EMPTY;
+            board[i][x+1] = EMPTY;
+        }
     }
 
     private void clearVerticalLine() {
@@ -97,7 +104,6 @@ public class Board {
         currentTetromino.getTetrominoBlock(y, x);
         x = tetrominoX;
         removeVerticalLine(x);
-
     }
 
     // 특정 줄을 제거하는 메서드
@@ -229,10 +235,10 @@ public class Board {
                 clearAllLine(); // ItemNuclear 실행
             }
             if (currentTetromino.getShapeNumber() == ModelConst.B) {
-                clearArea(); // ItemBomb 실행
+                clearBombArea(); // ItemBomb 실행
             }
             if (currentTetromino.getShapeNumber() == ModelConst.W) {
-                clearArea(); // ItemWeight 실행
+                clearBombArea(); // ItemWeight 실행
             }
             if (currentTetromino.getShapeNumber() == ModelConst.V) {
                 clearVerticalLine(); // ItemVerticalBomb 실행

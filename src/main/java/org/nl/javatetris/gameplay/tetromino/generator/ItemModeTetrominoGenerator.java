@@ -74,25 +74,24 @@ public class ItemModeTetrominoGenerator implements TetrominoGenerator {
 
     private Tetromino createItemTetrominoByRandom(int randomInt) {
         // TODO : 핵, 폭탄, 무게추, 수직제거 구현 후에 주석 해제할 것.
-//        if (randomInt < 1) {
-//            // 1% 확률로 핵, 아래 변경 필요
-//            return new TetrominoNuclear();
-//        } else if (randomInt <= 27) {
-//            // 27% 확률로 폭탄, 아래 변경 필요
-//            return new TetrominoBomb();
-//        } else if (randomInt <= 51) {
-//            // 28 29 30 3
-//            // 24% 확률로 한줄 제거 블록
-//            return getRandomEraseTetromino();
-//        } else if (randomInt <= 75) {
-//            // 24% 확률로 무게 추, 아래 변경 필요
-//            return new TetrominoWeight();
-//        } else {
-//            // 24% 확률로 VerticalBomb 아이템 생성
-//            return new TetrominoVerticalBomb();
-//        }
+        if (randomInt < 1) {
+            // 1% 확률로 핵
+            return new TetrominoNuclear();
+        } else if (randomInt <= 28) {
+            // 27% 확률로 폭탄
+            return new TetrominoBomb();
+        } else if (randomInt <= 52) {
+            // 24% 확률로 한줄 제거 블록
+            return getRandomEraseTetromino();
+        } else if (randomInt <= 76) {
+            // 24% 확률로 무게 추, 아래 변경 필요
+            return new TetrominoWeight();
+        } else {
+            // 24% 확률로 VerticalBomb 아이템 생성
+            return new TetrominoVerticalBomb();
+        }
         // TODO : 일단은 한줄제거만 가능하게 해 두었음.
-        return getRandomEraseTetromino();
+        //return getRandomEraseTetromino();
     }
 
     private Tetromino getRandomEraseTetromino() {
