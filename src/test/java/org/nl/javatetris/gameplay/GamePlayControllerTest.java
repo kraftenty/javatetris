@@ -4,7 +4,6 @@ import javafx.scene.input.KeyEvent;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.lang.model.util.ElementScanner6;
 
 import static javafx.scene.input.KeyCode.*;
 

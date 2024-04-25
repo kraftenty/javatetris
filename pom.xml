@@ -15,6 +15,12 @@
     </properties>
 
     <dependencies>
+        <!--https://gluonhq.com/products/javafx/  에서 sdk를 다운로드 받아야됨. 21.0.3버전-->
+        <dependency>
+            <groupId>com.akathist.maven.plugins.launch4j</groupId>
+            <artifactId>launch4j-maven-plugin</artifactId>
+            <version>2.1.1</version>
+        </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -59,6 +65,52 @@
 
     <build>
         <plugins>
+            <plugin>
+                <!--launch4j : .exe파일을 만들어주는 플러그인-->
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <version>2.1.1</version>
+                <executions>
+                    <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <outfile>target/demo.exe</outfile>
+                            <jar>target/javatetris-1.0-SNAPSHOT.jar</jar>
+                            <classPath>
+                                <mainClass>org.nl.javatetris.Main</mainClass>
+                                <preCp>C:\Users\entydt\javafx-sdk\lib</preCp>
+                            </classPath>
+                            <jre>
+                                <minVersion>8</minVersion>
+                                <opts>
+                                    <opt>--module-path</opt>
+                                    <opt>C:\Users\entydt\javafx-sdk\lib</opt>
+                                    <opt>--add-modules=javafx.controls,javafx.fxml</opt>
+                                </opts>
+                            </jre>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--메인 클래스를 지정해주는 플러그인-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>org.nl.javatetris.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

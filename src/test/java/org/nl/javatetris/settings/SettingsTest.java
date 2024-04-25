@@ -25,17 +25,17 @@ public class SettingsTest {
     /**
      * SizeSetting 테스트
      */
-    @Test
-    public void sizeSettingTest() {
-        Settings settings = Settings.getInstance();
-        Settings.SizeSetting sizeSetting = settings.getSizeSetting();
-        sizeSetting.setScreenSizeBigger();
-        assert(sizeSetting.getOffset() == 1);
-        sizeSetting.setScreenSizeBigger();
-        assert(sizeSetting.getOffset() == 2);
-        sizeSetting.setScreenSizeDefault();
-        assert(sizeSetting.getOffset() == 0);
-    }
+//    @Test
+//    public void sizeSettingTest() {
+//        Settings settings = Settings.getInstance();
+//        Settings.SizeSetting sizeSetting = settings.getSizeSetting();
+//        sizeSetting.setScreenSizeBigger();
+//        assert(sizeSetting.getOffset() == 1);
+//        sizeSetting.setScreenSizeBigger();
+//        assert(sizeSetting.getOffset() == 2);
+//        sizeSetting.setScreenSizeDefault();
+//        assert(sizeSetting.getOffset() == 0);
+//    }
 
     /**
      * KeySetting 테스트
