@@ -7,6 +7,8 @@ import org.nl.javatetris.gameplay.tetromino.classic.TetrominoI;
 import static org.nl.javatetris.config.constant.ModelConst.W;
 
 public class TetrominoWeight extends AbstractTetromino {
+
+
     public TetrominoWeight() {
         setShapes();
     }
@@ -14,6 +16,10 @@ public class TetrominoWeight extends AbstractTetromino {
     @Override
     protected void setShapes() {
         shapes = new int[][][]{
+                {
+                        {0, W, W, 0},
+                        {W, W, W, W}
+                },
                 {
                         {0, W, W, 0},
                         {W, W, W, W}
@@ -28,6 +34,13 @@ public class TetrominoWeight extends AbstractTetromino {
 
     @Override
     public Tetromino getRotatedTetromino() {
+        System.out.println("------------getRotatedTetromino call------------");
+        System.out.println("shapeIndex = " + shapeIndex);
+        if (shapeIndex == 0) {
+            System.out.println("shapeIndex 를 1로 변경 , shapeIndex = " + shapeIndex);
+            shapeIndex = 1;
+        }
         return new TetrominoWeight();
     }
+
 }
