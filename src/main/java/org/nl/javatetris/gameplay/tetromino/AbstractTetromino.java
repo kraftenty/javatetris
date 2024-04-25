@@ -28,12 +28,12 @@ public abstract class AbstractTetromino implements Tetromino {
 
     @Override
     public int getShapeWidth() {
-        return this.getShape().length;
+        return this.getShape()[0].length;
     }
 
     @Override
     public int getShapeHeight() {
-        return this.getShape()[0].length;
+        return this.getShape().length;
     }
 
     @Override

@@ -123,7 +123,7 @@ public class GamePlayView {
 
         drawScore();
         drawLevel();
-        drawNextTetromino();
+//        drawNextTetromino();
 
     }
 
