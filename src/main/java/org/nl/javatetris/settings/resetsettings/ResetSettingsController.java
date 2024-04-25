@@ -4,12 +4,12 @@ import javafx.scene.input.KeyEvent;
 import org.nl.javatetris.settings.Settings;
 
 public class ResetSettingsController {
-    private int meunItemsCount;
+    private int menuItemsCount;
     private Runnable onSettings;
     private int selectedItemIndex = 0;
 
     public ResetSettingsController(int menuItemsCount, Runnable onSettings) {
-        this.meunItemsCount = menuItemsCount;
+        this.menuItemsCount = menuItemsCount;
         this.onSettings = onSettings;
     }
 
@@ -22,7 +22,7 @@ public class ResetSettingsController {
                 selectedItemIndex = Math.max(0, selectedItemIndex - 1);
                 break;
             case DOWN:
-                selectedItemIndex = Math.min(meunItemsCount - 1, selectedItemIndex + 1);
+                selectedItemIndex = Math.min(menuItemsCount - 1, selectedItemIndex + 1);
                 break;
             case ENTER:
                 switch (selectedItemIndex) {

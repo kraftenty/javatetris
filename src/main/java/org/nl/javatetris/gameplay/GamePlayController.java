@@ -22,7 +22,6 @@ public class GamePlayController {
     private TetrominoGenerator tetrominoGenerator;  // 테트로미노 생성기
     private static Timeline timeline;                      // 타임라인
 
-
     private GameParam gameParam;                    // 게임 파라미터
     private Runnable onPause;                       // 일시정지 콜백
     private Runnable onDrawBoardUpdate;                 // 보드 업데이트 콜백
@@ -47,6 +46,18 @@ public class GamePlayController {
         this.board = new Board(this::addScoreOnLineClear, tetrominoGenerator); // 보드 생성
         board.spawnTetromino(false);
         startTimeline();
+    }
+
+    //테스트위한 생성자, 타이머 때문에 생성자 실행에 오류 생겨서 따로 만듦
+    //위에꺼 쓰면 커버리지 더 넓어지긴 할텐데 건들였다가 일날까봐 만듦
+    public GamePlayController(Runnable onPause, Runnable onDrawBoardUpdate, Runnable onDrawGameOver) {
+        this.gameParam = new GameParam(0, 0);
+        this.tetrominoGenerator = new ClassicModeTetrominoGenerator(gameParam);
+        this.onPause = onPause;
+        this.onDrawBoardUpdate = onDrawBoardUpdate;
+        this.onDrawGameOver = onDrawGameOver;
+        this.board = new Board(this::addScoreOnLineClear, tetrominoGenerator); // 보드 생성
+        board.spawnTetromino(false);
     }
 
     /**
@@ -100,6 +111,9 @@ public class GamePlayController {
     }
 
     private void addScoreOnDrop(int offset) {
+        if (offset == -1) {
+            return;
+        }
         this.point += offset;
         checkLevelUp();
     }

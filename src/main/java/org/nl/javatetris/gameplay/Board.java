@@ -4,6 +4,9 @@ import org.nl.javatetris.config.constant.ModelConst;
 import org.nl.javatetris.gameplay.tetromino.Tetromino;
 import org.nl.javatetris.gameplay.tetromino.generator.TetrominoGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.nl.javatetris.config.constant.ModelConst.*;
 
 
@@ -19,6 +22,9 @@ public class Board {
     private int tetrominoX;
     private int clearedLineCount;
     private Runnable onClearCompletedLines;
+
+    // 줄 지우는 효과를 위한 필드
+    private List<Integer> completedLines = new ArrayList<>();
 
     // 생성자
     public Board(Runnable onClearCompletedLines, TetrominoGenerator tetrominoGenerator) {
@@ -50,11 +56,28 @@ public class Board {
     public int getValueAt(int y, int x) {
         return board[y][x];
     }
+    //현재 테트로미노 반환
+    public Tetromino getCurrentTetromino() {return currentTetromino;}
+
+    public int[] getYX() {
+        int[] yx = new int[2];
+        yx[0] = tetrominoY;
+        yx[1] = tetrominoX;
+        return yx;
+    }
+
+    // completedLines 리스트를 반환하고, completedLines 리스트를 초기화하는 메서드
+    public List<Integer> releaseCompletedLines() {
+        List<Integer> temp = new ArrayList<>(completedLines);
+        completedLines.clear();
+        return temp;
+    }
 
     // 게임 보드에서 완성된 줄을 제거하고, 줄들을 아래로 이동시키는 메서드
     private void clearCompletedLines() {
         for (int y = 1; y < Y_MAX - 1; y++) {
             if (isLineComplete(y)) {
+                completedLines.add(y); // 완성된 줄을 completedLines 리스트에 추가
                 removeLine(y); // 한줄 지우고
                 shiftLinesDown(y); // 하강
                 clearedLineCount++;
@@ -172,7 +195,6 @@ public class Board {
             board[1][x] = EMPTY;
         }
     }
-    
 
     // 테트로미노를 보드 상단에 스폰시키는 메서드
     public boolean spawnTetromino(boolean shouldNextTetrominoBeItem) {
@@ -303,6 +325,7 @@ public class Board {
 
     // 스페이스바를 눌러 테트로미노를 가장 아래로 내리는 메서드
     public int dropTetromino() {
+        // 무게추인 경우를 검사
         if (currentTetromino.getShapeNumber()==W){
             int offset;
             clearWeightArea2();
@@ -313,7 +336,15 @@ public class Board {
             return offset;
         }
 
-        else{
+        // 맨 밑인 경우를 검사
+        clearTetrominoFromBoard();
+        if (!canMove(tetrominoY + 1, tetrominoX)) {
+            placeTetrominoOnBoard();
+            return -1; // 맨 밑에서 drop 하는 경우, -1 을 리턴
+        } else {
+            placeTetrominoOnBoard();
+        }
+
         int offset = 0;
         clearTetrominoFromBoard();
         while (canMove(tetrominoY + offset + 1, tetrominoX)) {
