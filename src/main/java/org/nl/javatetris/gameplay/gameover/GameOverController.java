@@ -8,4 +8,10 @@ public class GameOverController {
         this.onBackToScoreBoard = onBackToScoreBoard;
     }
 
+    //test용도
+    public void onBackToScoreBoard() {
+        onBackToScoreBoard.run();
+    }
+
+
 }
