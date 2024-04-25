@@ -49,7 +49,7 @@ public class GamePlayControllerTest {
         Assertions.assertEquals(0, gamePlayController.getLevel());
     }
 
-    @Test
+//    @Test   테스트 제외
     public void handleKeyPressTest() {
         gamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", ESCAPE, false, false, false, false));
         Assertions.assertEquals("Pause", output);

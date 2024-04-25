@@ -1,4 +1,4 @@
-package org.nl.javatetris.gameplay;
+package org.nl.javatetris.gameplay.classic;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -9,7 +9,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
-public class GamePlayViewTest {
+public class ClassicModeLobbyViewTest {
 
     @BeforeAll
     public static void setupHeadlessMode() {
@@ -21,11 +21,11 @@ public class GamePlayViewTest {
     }
 
     @Test
-    public void GamePlaySceneCreateTest() {
+    public void ClassicModeLobbySceneCreateTest() {
         // Given
-        GamePlayView gamePlayView = new GamePlayView(new GameParam(0,0), () -> {}, (v) -> {}, () -> {});
+        ClassicModeLobbyView classicModeLobbyView = new ClassicModeLobbyView(() -> {}, (v) -> {});
         // When
-        Scene scene = gamePlayView.createScene();
+        Scene scene = classicModeLobbyView.createScene();
         // Then
         // 성공적으로 scene 이 생성되면 테스트 성공
     }

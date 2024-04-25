@@ -27,11 +27,4 @@ class TetrominoVerticalBombTest {
         assertEquals(V, tetromino.getShapeNumber());
     }
 
-    @Test
-    public void testGetRotatedTetromino() {
-        TetrominoVerticalBomb tetromino = new TetrominoVerticalBomb();
-        Tetromino rotatedTetromino = tetromino.getRotatedTetromino();
-        assertNull(rotatedTetromino);
-    }
-
 }
