@@ -1,4 +1,4 @@
-package org.nl.javatetris;
+package org.nl.javatetris.gameplay;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
