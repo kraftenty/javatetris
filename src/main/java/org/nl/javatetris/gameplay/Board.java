@@ -132,7 +132,7 @@ public class Board {
     private void clearWeightAreaWhenDown() {
         System.out.println("clearWeightAreaWhenDown() call");
         int startX = tetrominoX;
-        int startY = tetrominoY + 1;
+        int startY = tetrominoY + 2;
 
         for (int x = startX; x < startX + 4; x++) {
             if (board[startY][x] != BORDER && board[startY][x] != EMPTY) {
@@ -262,7 +262,7 @@ public class Board {
     public boolean moveTetrominoDown() {
         clearTetrominoFromBoard();
         if (currentTetromino.getShapeNumber() == ModelConst.W) {
-            clearWeightAreaWhenDown(); // TetrominoWeight 실행
+            clearWeightAreaWhenDown(); //
         }
         if (canMove(tetrominoY + 1, tetrominoX)) {
             tetrominoY++;
@@ -318,7 +318,7 @@ public class Board {
         if (currentTetromino.getShapeNumber() == W) {
             int offset;
             clearWeightAreaWhenDrop();
-            offset = 19 - tetrominoY;
+            offset = 18 - tetrominoY;
             tetrominoY += offset;
             placeTetrominoOnBoard();
             moveTetrominoDown();
