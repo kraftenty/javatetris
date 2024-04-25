@@ -282,6 +282,15 @@ public class Board {
 
     // 스페이스바를 눌러 테트로미노를 가장 아래로 내리는 메서드
     public int dropTetromino() {
+        // 맨 밑인 경우를 검사
+        clearTetrominoFromBoard();
+        if (!canMove(tetrominoY + 1, tetrominoX)) {
+            placeTetrominoOnBoard();
+            return -1; // 맨 밑에서 drop 하는 경우, -1 을 리턴
+        } else {
+            placeTetrominoOnBoard();
+        }
+
         int offset = 0;
         clearTetrominoFromBoard();
         while (canMove(tetrominoY + offset + 1, tetrominoX)) {
