@@ -22,6 +22,6 @@ public class TetrominoVerticalBomb extends AbstractTetromino {
 
     @Override
     public Tetromino getRotatedTetromino() {
-        return null;
+        return new TetrominoVerticalBomb();
     }
 }

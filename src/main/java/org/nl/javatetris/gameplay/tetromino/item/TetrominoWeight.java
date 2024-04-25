@@ -5,27 +5,29 @@ import org.nl.javatetris.gameplay.tetromino.Tetromino;
 import org.nl.javatetris.gameplay.tetromino.classic.TetrominoI;
 
 import static org.nl.javatetris.config.constant.ModelConst.W;
+
 public class TetrominoWeight extends AbstractTetromino {
-    public TetrominoWeight() { setShapes();}
+    public TetrominoWeight() {
+        setShapes();
+    }
+
     @Override
     protected void setShapes() {
         shapes = new int[][][]{
                 {
-                        {0, 0, 0, 0},
                         {0, W, W, 0},
-                        {W, W, W, W},
-                        {0, 0, 0, 0}
+                        {W, W, W, W}
                 }
         };
     }
 
     @Override
-    public int getShapeNumber() { return W; }
+    public int getShapeNumber() {
+        return W;
+    }
 
     @Override
     public Tetromino getRotatedTetromino() {
-        Tetromino tetromino = new TetrominoI();
-        tetromino.setShapeIndex(this.getShapeIndex());
-        return tetromino;
+        return new TetrominoWeight();
     }
 }

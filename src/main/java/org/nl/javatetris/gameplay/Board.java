@@ -88,37 +88,38 @@ public class Board {
 
     // 아이템모드에서 Bomb 아이템으로 3X3의 영역을 지우는 메서드
     private void clearBombArea() {
-        int x = 0, y = 0;
-        currentTetromino.getTetrominoBlock(y, x);
-        x=tetrominoX;
-        y=tetrominoY;
-        for(int i=y-1; i<y+2; i++){
-            board[i][x-1] = EMPTY;
-            board[i][x] = EMPTY;
-            board[i][x+1] = EMPTY;
+        int centerX = tetrominoX;
+        int centerY = tetrominoY;
+
+        for (int y = centerY - 1; y <= centerY + 1; y++) {
+            for (int x = centerX - 1; x <= centerX + 1; x++) {
+                if (isBorder(y, x)) {
+                    continue;
+                }
+                board[y][x] = EMPTY;
+            }
         }
     }
+
+
     // 아이템모드에서 Weight 아이템 사용시
     private void clearWeightArea() {
         int x=0, y=0;
         currentTetromino.getTetrominoBlock(y, x);
         x=tetrominoX;   //현재 x값, 맨왼쪽
         y=tetrominoY;   //현재 y값, 맨윗쪽
-        for(int i=0; i<4; i++){
-
-        }
-/*
         for(int i=y+3; i<Y_MAX-1; i++){
-            clearTetrominoFromBoard();
-            for(int j=x; j<x+4; j++) {
+            for (int j=x; j<x+4; j++){
                 board[i][j] = EMPTY;
-                tetrominoY += 1;
-                placeTetrominoOnBoard();
             }
+            clearTetrominoFromBoard();
+            tetrominoY++;
+            placeTetrominoOnBoard();
         }
- */
-
     }
+
+
+
     private void clearVerticalLine() {
         int x = 0, y = 0;
         currentTetromino.getTetrominoBlock(y, x);
@@ -154,23 +155,7 @@ public class Board {
             board[1][x] = EMPTY;
         }
     }
-
-    // 보드 상태를 콘솔에 출력하는 메서드 (디버깅 용도)
-    public void drawBoard() {
-        for (int y = 0; y < Y_MAX; y++) {
-            for (int x = 0; x < X_MAX; x++) {
-                int currentPointValue = board[y][x];
-                if (currentPointValue == BORDER) {
-                    System.out.print("X");
-                } else if (currentPointValue == EMPTY) {
-                    System.out.print(" ");
-                } else {
-                    System.out.print(currentPointValue);
-                }
-            }
-            System.out.println();
-        }
-    }
+    
 
     // 테트로미노를 보드 상단에 스폰시키는 메서드
     public boolean spawnTetromino(boolean shouldNextTetrominoBeItem) {
@@ -190,8 +175,8 @@ public class Board {
 
     // 테트로미노를 보드에서 지우는 메서드
     private void clearTetrominoFromBoard() {
-        for (int y = 0; y < currentTetromino.getShapeWidth(); y++) {
-            for (int x = 0; x < currentTetromino.getShapeHeight(); x++) {
+        for (int y = 0; y < currentTetromino.getShapeHeight(); y++) {
+            for (int x = 0; x < currentTetromino.getShapeWidth(); x++) {
                 if (currentTetromino.getShape()[y][x] != 0) {
                     board[tetrominoY + y][tetrominoX + x] = EMPTY;
                 }
@@ -202,8 +187,8 @@ public class Board {
     // 테트로미노를 보드에 배치하는 메서드
     private void placeTetrominoOnBoard() {
 
-        for (int y = 0; y < currentTetromino.getShapeWidth(); y++) {
-            for (int x = 0; x < currentTetromino.getShapeHeight(); x++) {
+        for (int y = 0; y < currentTetromino.getShapeHeight(); y++) {
+            for (int x = 0; x < currentTetromino.getShapeWidth(); x++) {
                 if (currentTetromino.getShape()[y][x] != 0) {
                     board[tetrominoY + y][tetrominoX + x] = currentTetromino.getTetrominoBlock(y, x);
                 }
@@ -236,13 +221,17 @@ public class Board {
 
     // 테트로미노를 보드 내에서 아래로 이동시키는 메서드
     public boolean moveTetrominoDown() {
+        System.out.println("--------------moveTetrominoDown() call-----------------------");
+        System.out.println("tetrominoY = " + tetrominoY + ", tetrominoX = " + tetrominoX);
         clearTetrominoFromBoard();
         if (canMove(tetrominoY + 1, tetrominoX)) {
+            System.out.println("canMove == true");
             tetrominoY++;
             placeTetrominoOnBoard();
             return true;
 
         } else {
+            System.out.println("canMove == false");
             placeTetrominoOnBoard();
 //            int lineBeforeClear = clearedLineCount;
             boolean shouldNextTetrominoBeItem = false;
@@ -266,9 +255,9 @@ public class Board {
 //            if ((clearedLineCount / 10) > (lineBeforeClear / 10)) {
 //                shouldNextTetrominoBeItem = true;
 //            }
-            if (clearedLineCount >= 10) {
+            if (clearedLineCount >= 2) {
                 shouldNextTetrominoBeItem = true;
-                clearedLineCount -= 10;
+                clearedLineCount -= 2;
             }
             return spawnTetromino(shouldNextTetrominoBeItem);
         }
@@ -352,16 +341,24 @@ public class Board {
 
                     // 경계 조건 검사
                     if (boardX < 0 || boardX >= X_MAX || boardY < 0 || boardY >= Y_MAX) {
+                        System.out.println("canMove - 경계 조건 검사에서 탈락");
                         return false;
                     }
 
                     // 이미 채워진 칸(다른 테트로미노)과의 충돌 검사
-                    if (board[boardY][boardX] != EMPTY) {
+                    if (board[boardY][boardX] != EMPTY && currentTetromino.getShapeNumber() != W) {
+                        System.out.println("canMove - 다른 칸과의 충돌 검사에서 탈락");
+                        return false;
+                    }
+
+                    // 무게추 아이템과 경계와 만나는지 검사
+                    if (currentTetromino.getShapeNumber() == W && board[boardY][boardX] == 9){
                         return false;
                     }
                 }
             }
         }
+        System.out.printf("canMove - 경계 조건 통과!!!ㅃ");
         return true; // 위의 모든 검사를 통과한 경우, 이동 가능
     }
 

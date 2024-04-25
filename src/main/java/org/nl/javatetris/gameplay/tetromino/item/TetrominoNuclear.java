@@ -22,9 +22,6 @@ public class TetrominoNuclear extends AbstractTetromino {
 
     @Override
     public Tetromino getRotatedTetromino() {
-        Tetromino tetromino = new TetrominoO();
-        tetromino.setShapeIndex(this.getShapeIndex());
-        tetromino.rotateRight();
-        return tetromino;
+        return new TetrominoNuclear();
     }
 }
