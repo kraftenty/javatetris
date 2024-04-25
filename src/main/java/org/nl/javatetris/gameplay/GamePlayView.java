@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -16,6 +15,7 @@ import org.nl.javatetris.scoreboard.ScoreBoard;
 import org.nl.javatetris.settings.Settings;
 import org.nl.javatetris.gameplay.tetromino.Tetromino;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import static org.nl.javatetris.config.constant.ModelConst.*;
@@ -26,6 +26,8 @@ public class GamePlayView {
     private Pane pane;
     private Consumer<GameOverParam> showGameOver; // Runnable 대신 Consumer<> 사용
     private Runnable onBackToMenu;
+
+    private boolean isBlinking = false;
 
     public GamePlayView(GameParam gameParam, Runnable onPause, Consumer<GameOverParam> showGameOver, Runnable onBackToMenu) {
         this.gamePlayController = new GamePlayController(
@@ -56,7 +58,7 @@ public class GamePlayView {
         scene.setOnKeyPressed(e -> {
             boolean isGameKeepGoing = gamePlayController.handleKeyPress(e);
             // 키 입력 후 보드 상태 업데이트 로직 필요
-            if (isGameKeepGoing) {
+            if (isGameKeepGoing && !isBlinking) {
                 drawGamePlayScreen();
             }
         });
@@ -70,6 +72,8 @@ public class GamePlayView {
         pane.getChildren().clear();
 
         // 보드의 상태를 가져와서 화면에 그리기
+        List<Integer> completedLines = gamePlayController.getBoard().releaseCompletedLines(); // 완성된 가로줄의 y좌표 리스트. 삭제 효과를 위한 것임.
+
         for (int y = 0; y < Y_MAX; y++) {
             for (int x = 0; x < X_MAX; x++) {
                 Rectangle cell = new Rectangle(
@@ -78,11 +82,17 @@ public class GamePlayView {
                         Settings.getInstance().getSizeSetting().getBlockSize(),
                         Settings.getInstance().getSizeSetting().getBlockSize()
                 );
-                cell.setStroke(Color.rgb(128,128,128,0.5)); // 셀의 테두리 색상
+                cell.setStroke(Color.rgb(128, 128, 128, 0.5)); // 셀의 테두리 색상
 
+                // 기본 셀 색상 설정
                 int cellValue = gamePlayController.getBoard().getValueAt(y, x);
                 cell.setFill(getColorOfCell(cellValue));
+
                 pane.getChildren().add(cell);
+
+                if (completedLines.contains(y) && cellValue != BORDER) {
+                    blinkLine(cell, cellValue);
+                }
 
                 if (cellValue == E) {
                     drawLonBlock(
@@ -90,19 +100,19 @@ public class GamePlayView {
                             (x + 0.1) * Settings.getInstance().getSizeSetting().getBlockSize(),
                             1.5);
                 }
-                if (cellValue == N){
+                if (cellValue == N) {
                     drawNonBlock(
                             (y + 1) * Settings.getInstance().getSizeSetting().getBlockSize(),
                             (x + 0.1) * Settings.getInstance().getSizeSetting().getBlockSize(),
                             1.5);
                 }
-                if (cellValue == B){
+                if (cellValue == B) {
                     drawBonBlock(
                             (y + 1) * Settings.getInstance().getSizeSetting().getBlockSize(),
                             (x + 0.1) * Settings.getInstance().getSizeSetting().getBlockSize(),
                             1.5);
                 }
-                if (cellValue == V){
+                if (cellValue == V) {
                     drawVonBlock(
                             (y + 1) * Settings.getInstance().getSizeSetting().getBlockSize(),
                             (x + 0.1) * Settings.getInstance().getSizeSetting().getBlockSize(),
@@ -117,6 +127,20 @@ public class GamePlayView {
 
     }
 
+    // 흰색으로 깜빡이는 효과를 주는 메서드
+    private void blinkLine(Rectangle cell, int originalCellValue) {
+        isBlinking = true;
+        Timeline blinkTimeline = new Timeline(
+                new KeyFrame(Duration.seconds(0.1), e -> cell.setFill(getColorOfCell(CLEAR))),
+                new KeyFrame(Duration.seconds(0.2), e -> {
+                    cell.setFill(getColorOfCell(originalCellValue));
+                    isBlinking = false;
+                })
+        );
+        blinkTimeline.setCycleCount(1);  // 한 번 실행
+        blinkTimeline.play();
+    }
+
     // 게임오버 화면을 그리는 메서드
     private void drawGameOverScreen() {
         pane.getChildren().clear();
@@ -128,12 +152,12 @@ public class GamePlayView {
                         y * Settings.getInstance().getSizeSetting().getBlockSize(),
                         Settings.getInstance().getSizeSetting().getBlockSize(),
                         Settings.getInstance().getSizeSetting().getBlockSize());
-                cell.setStroke(Color.rgb(128,128,128,0.5)); // 셀의 테두리 색상
+                cell.setStroke(Color.rgb(128, 128, 128, 0.5)); // 셀의 테두리 색상
 
                 int cellValue = gamePlayController.getBoard().getValueAt(y, x);
-                switch(cellValue) {
+                switch (cellValue) {
                     case EMPTY:
-                        cell.setFill(Color.rgb(255,255,255,0.3)); // 비어있는 셀의 색상
+                        cell.setFill(Color.rgb(255, 255, 255, 0.3)); // 비어있는 셀의 색상
                         break;
                     case BORDER:
                         cell.setFill(Color.BLACK); // 벽의 색상
@@ -154,8 +178,8 @@ public class GamePlayView {
         Text gameOverText = new Text("GAME OVER");
         gameOverText.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getTitleFontSize()));
         gameOverText.setFill(Color.RED);
-        gameOverText.setLayoutY(Y_MAX*Settings.getInstance().getSizeSetting().getBlockSize()/2);
-        gameOverText.setLayoutX(X_MAX*Settings.getInstance().getSizeSetting().getBlockSize()/2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 20);
+        gameOverText.setLayoutY(Y_MAX * Settings.getInstance().getSizeSetting().getBlockSize() / 2);
+        gameOverText.setLayoutX(X_MAX * Settings.getInstance().getSizeSetting().getBlockSize() / 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 20);
 
         // 문구를 pane에 추가
         pane.getChildren().add(gameOverText);
@@ -275,6 +299,8 @@ public class GamePlayView {
         switch (cellValue) {
             case BORDER:
                 return Color.BLACK;
+            case CLEAR:
+                return Color.WHITE;
             case I:
                 return Settings.getInstance().getColorSetting().getColorOfTetrominoType(I);
             case J:
@@ -296,39 +322,40 @@ public class GamePlayView {
             case W:
                 return Color.BLACK;
             default:
-                return Color.rgb(255,255,255,0.3);
+                return Color.rgb(255, 255, 255, 0.3);
         }
     }
+
     private void drawLonBlock(double y, double x, double fontScale) {
         Text eraseBlockL = new Text("L");
-        eraseBlockL.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()*fontScale));
+        eraseBlockL.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize() * fontScale));
         eraseBlockL.setFill(Color.RED);
         eraseBlockL.setLayoutY(y);
         eraseBlockL.setLayoutX(x);
         pane.getChildren().add(eraseBlockL);
     }
 
-    private void drawNonBlock(double y, double x, double fontScale){
+    private void drawNonBlock(double y, double x, double fontScale) {
         Text NuclearBlockN = new Text("N");
-        NuclearBlockN.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()*fontScale));
+        NuclearBlockN.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize() * fontScale));
         NuclearBlockN.setFill(Color.RED);
         NuclearBlockN.setLayoutY(y);
         NuclearBlockN.setLayoutX(x);
         pane.getChildren().add(NuclearBlockN);
     }
 
-    private void drawBonBlock(double y, double x, double fontScale){
+    private void drawBonBlock(double y, double x, double fontScale) {
         Text BombBlockB = new Text("B");
-        BombBlockB.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()*fontScale));
+        BombBlockB.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize() * fontScale));
         BombBlockB.setFill(Color.RED);
         BombBlockB.setLayoutY(y);
         BombBlockB.setLayoutX(x);
         pane.getChildren().add(BombBlockB);
     }
 
-    private void drawVonBlock(double y, double x, double fontScale){
+    private void drawVonBlock(double y, double x, double fontScale) {
         Text VerticalBombBlockV = new Text("V");
-        VerticalBombBlockV.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()*fontScale));
+        VerticalBombBlockV.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getDefaultFontSize() * fontScale));
         VerticalBombBlockV.setFill(Color.RED);
         VerticalBombBlockV.setLayoutY(y);
         VerticalBombBlockV.setLayoutX(x);

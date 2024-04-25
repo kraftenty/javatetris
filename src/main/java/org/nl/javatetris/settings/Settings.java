@@ -181,7 +181,7 @@ public class Settings implements Serializable {
             return downKeyValue;
         }
 
-        public String getDowntKeyString() {
+        public String getDownKeyString() {
             return getKeyString(downKeyValue);
         }
 
@@ -216,7 +216,6 @@ public class Settings implements Serializable {
         public static String getKeyString(int value) {
             if (value >= 48 && value <= 90)
                 return String.valueOf((char)value);
-
             switch (value) {
                 case 8:
                     return "BACKSPACE";

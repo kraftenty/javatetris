@@ -29,7 +29,7 @@ public class KeySettingView {
             new Label(Settings.getInstance().getKeySetting().getRotateKeyString()),
             new Label(Settings.getInstance().getKeySetting().getLeftKeyString()),
             new Label(Settings.getInstance().getKeySetting().getRightKeyString()),
-            new Label(Settings.getInstance().getKeySetting().getDowntKeyString()),
+            new Label(Settings.getInstance().getKeySetting().getDownKeyString()),
             new Label(Settings.getInstance().getKeySetting().getDropKeyString()),
             new Label("Back")
     };
@@ -155,7 +155,7 @@ public class KeySettingView {
         menuItems[0].setText(Settings.getInstance().getKeySetting().getRotateKeyString());
         menuItems[1].setText(Settings.getInstance().getKeySetting().getLeftKeyString());
         menuItems[2].setText(Settings.getInstance().getKeySetting().getRightKeyString());
-        menuItems[3].setText(Settings.getInstance().getKeySetting().getDowntKeyString());
+        menuItems[3].setText(Settings.getInstance().getKeySetting().getDownKeyString());
         menuItems[4].setText(Settings.getInstance().getKeySetting().getDropKeyString());
     }
 }

@@ -111,6 +111,9 @@ public class GamePlayController {
     }
 
     private void addScoreOnDrop(int offset) {
+        if (offset == -1) {
+            return;
+        }
         this.point += offset;
         checkLevelUp();
     }
