@@ -49,6 +49,7 @@ public class GamePlayController {
     }
 
     //테스트위한 생성자, 타이머 때문에 생성자 실행에 오류 생겨서 따로 만듦
+    //위에꺼 쓰면 커버리지 더 넓어지긴 할텐데 건들였다가 일날까봐 만듦
     public GamePlayController(Runnable onPause, Runnable onDrawBoardUpdate, Runnable onDrawGameOver) {
         this.gameParam = new GameParam(0, 0);
         this.tetrominoGenerator = new ClassicModeTetrominoGenerator(gameParam);

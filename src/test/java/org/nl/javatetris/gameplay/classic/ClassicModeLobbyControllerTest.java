@@ -29,20 +29,28 @@ public class ClassicModeLobbyControllerTest {
         Assertions.assertEquals(1, classicModeLobbyController.getSelectedItemIndex());
         classicModeLobbyController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", ENTER, false, false, false, false));
         Assertions.assertEquals("Start", output);
+
         classicModeLobbyController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", DOWN, false, false, false, false));
         Assertions.assertEquals(2, classicModeLobbyController.getSelectedItemIndex());
+
         classicModeLobbyController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", ENTER, false, false, false, false));
         Assertions.assertEquals("BackToMenu", output);
+
         classicModeLobbyController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", UP, false, false, false, false));
         Assertions.assertEquals(1, classicModeLobbyController.getSelectedItemIndex());
+
         classicModeLobbyController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", UP, false, false, false, false));
         Assertions.assertEquals(0, classicModeLobbyController.getSelectedItemIndex());
+
         classicModeLobbyController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", ENTER, false, false, false, false));
         Assertions.assertEquals(1, classicModeLobbyController.getDifficulty());
+
         classicModeLobbyController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", ENTER, false, false, false, false));
         Assertions.assertEquals(2, classicModeLobbyController.getDifficulty());
+
         classicModeLobbyController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", ENTER, false, false, false, false));
         Assertions.assertEquals(0, classicModeLobbyController.getDifficulty());
+
         classicModeLobbyController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", ESCAPE, false, false, false, false));
         Assertions.assertEquals("BackToMenu", output);
 
