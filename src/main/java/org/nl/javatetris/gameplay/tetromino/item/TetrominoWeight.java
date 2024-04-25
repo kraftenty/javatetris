@@ -11,8 +11,10 @@ public class TetrominoWeight extends AbstractTetromino {
     protected void setShapes() {
         shapes = new int[][][]{
                 {
+                        {0, 0, 0, 0},
                         {0, W, W, 0},
-                        {W, W, W, W}
+                        {W, W, W, W},
+                        {0, 0, 0, 0}
                 }
         };
     }
@@ -24,7 +26,6 @@ public class TetrominoWeight extends AbstractTetromino {
     public Tetromino getRotatedTetromino() {
         Tetromino tetromino = new TetrominoI();
         tetromino.setShapeIndex(this.getShapeIndex());
-        tetromino.rotateRight();
         return tetromino;
     }
 }

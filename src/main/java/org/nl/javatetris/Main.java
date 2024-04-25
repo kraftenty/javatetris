@@ -8,6 +8,7 @@ import org.nl.javatetris.settings.SettingsManager;
 import org.nl.javatetris.config.SceneManager;
 
 public class
+
 Main extends Application {
 
     @Override

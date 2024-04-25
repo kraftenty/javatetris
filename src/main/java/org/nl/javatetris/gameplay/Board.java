@@ -98,7 +98,27 @@ public class Board {
             board[i][x+1] = EMPTY;
         }
     }
+    // 아이템모드에서 Weight 아이템 사용시
+    private void clearWeightArea() {
+        int x=0, y=0;
+        currentTetromino.getTetrominoBlock(y, x);
+        x=tetrominoX;   //현재 x값, 맨왼쪽
+        y=tetrominoY;   //현재 y값, 맨윗쪽
+        for(int i=0; i<4; i++){
 
+        }
+/*
+        for(int i=y+3; i<Y_MAX-1; i++){
+            clearTetrominoFromBoard();
+            for(int j=x; j<x+4; j++) {
+                board[i][j] = EMPTY;
+                tetrominoY += 1;
+                placeTetrominoOnBoard();
+            }
+        }
+ */
+
+    }
     private void clearVerticalLine() {
         int x = 0, y = 0;
         currentTetromino.getTetrominoBlock(y, x);
@@ -232,16 +252,16 @@ public class Board {
             clearCompletedLines(); // TetrominoEraser 실행
 
             if (currentTetromino.getShapeNumber() == ModelConst.N) {
-                clearAllLine(); // ItemNuclear 실행
+                clearAllLine(); // TetrominoNuclear 실행
             }
             if (currentTetromino.getShapeNumber() == ModelConst.B) {
-                clearBombArea(); // ItemBomb 실행
+                clearBombArea(); // TetrominoBomb 실행
             }
             if (currentTetromino.getShapeNumber() == ModelConst.W) {
-                clearBombArea(); // ItemWeight 실행
+                clearWeightArea(); // TetrominoWeight 실행
             }
             if (currentTetromino.getShapeNumber() == ModelConst.V) {
-                clearVerticalLine(); // ItemVerticalBomb 실행
+                clearVerticalLine(); // TetrominoVerticalBomb 실행
             }
 //            if ((clearedLineCount / 10) > (lineBeforeClear / 10)) {
 //                shouldNextTetrominoBeItem = true;
