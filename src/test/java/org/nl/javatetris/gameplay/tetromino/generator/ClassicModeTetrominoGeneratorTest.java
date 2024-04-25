@@ -1,42 +1,67 @@
 package org.nl.javatetris.gameplay.tetromino.generator;
-
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.RepetitionInfo;
 import org.nl.javatetris.gameplay.GameParam;
 import org.nl.javatetris.gameplay.tetromino.Tetromino;
+import org.nl.javatetris.gameplay.tetromino.classic.TetrominoI;
 import org.nl.javatetris.gameplay.tetromino.generator.ClassicModeTetrominoGenerator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.nl.javatetris.config.constant.ModelConst.TETROMINO_TYPES;
+import java.util.Queue;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class ClassicModeTetrominoGeneratorTest {
-    @Test
-    public void testBlockSelectionProbabilityWithCustomWeights() {
-        GameParam gameParam = new GameParam(0, 0); // Difficulty와 Mode 모두 0으로 설정
 
+    private static final int TOTAL_SELECTIONS = 50000; //테스트 횟수 증가
+    private static final double ACCEPTABLE_ERROR_PERCENTAGE = 5.0; // 오차 범위 +-5%
+
+    @RepeatedTest(value = 3, name = "Test {currentRepetition}")
+    public void testTetrominoSelectionDistribution(RepetitionInfo repetitionInfo) {
+        int difficulty = repetitionInfo.getCurrentRepetition() - 1; // 난이도: 0, 1, 2
+        // 게임 파라미터 생성
+        GameParam gameParam = new GameParam(0, difficulty);
         ClassicModeTetrominoGenerator tetrominoGenerator = new ClassicModeTetrominoGenerator(gameParam);
+        int tetrominoICount = 0; // 테트로미노 I 선택 횟수
 
-        int[] blockCounts = new int[TETROMINO_TYPES];
-        int totalTrials = 100000; // 시뮬레이션 횟수
-
-        // 시뮬레이션을 통해 각 블록이 선택된 횟수를 계산
-        for (int i = 0; i < totalTrials; i++) {
+        // 50000번 반복하여 테트로미노 선택
+        for (int i = 0; i < TOTAL_SELECTIONS; i++) {
             Tetromino nextTetromino = tetrominoGenerator.getNextTetromino(false);
-            blockCounts[nextTetromino.getShapeIndex()]++; // 타입을 가져올 때 ordinal() 메서드를 사용하여 순서를 가져옴
+            if (nextTetromino instanceof TetrominoI) {
+                tetrominoICount++;
+            }
         }
 
-        // 기대되는 각 블록의 선택 횟수 계산
-        int totalBlocks = TETROMINO_TYPES - 1; // i 블록은 따로 계산
-        int totalNonI = totalTrials - (int) (totalTrials * 0.2); // i 블록을 제외한 총 시행 횟수
-        int expectedI = (int) (totalTrials * 0.2); // i 블록 선택 확률
-        int expectedNonI = totalNonI / totalBlocks; // 나머지 블록들의 선택 확률
+        // 기대값 계산
+        double expectedFrequency = calculateExpectedFrequency(0, difficulty); // Tetromino I의 인덱스는 0
 
-        // i 블록의 선택 횟수가 기대값의 5% 범위 내에 있는지 확인
-        assertEquals(expectedI, blockCounts[1], 0.05 * expectedI);
+        // 실제값 계산
+        double actualFrequency = (double) tetrominoICount / TOTAL_SELECTIONS * 100; // 백분율로 변환
 
-        // 나머지 블록의 선택 횟수가 기대값의 5% 범위 내에 있는지 확인
-        /*for (int i = 0; i < TETROMINO_TYPES; i++) {
-            assertEquals(expectedNonI, blockCounts[i], 0.05 * expectedNonI);
-        }*/
+        // 허용 가능한 오차 계산
+        double acceptableError = ACCEPTABLE_ERROR_PERCENTAGE / 100 * expectedFrequency; // 허용 가능한 오차
+        String errorMessage = "Tetromino I의 선택 빈도가 기대값과 차이가 너무 큽니다.";
+
+        // 테스트 수행
+        assertEquals(expectedFrequency, actualFrequency, acceptableError, errorMessage);
     }
+
+    //I 블럭 빈도의 기댓값 계산
+    private double calculateExpectedFrequency(int tetrominoTypeIndex, int difficulty) {
+        int[] defaultWeights = {10, 10, 10, 10, 10, 10, 10}; // 기본 가중치
+        if (difficulty == 0) {
+            defaultWeights[0] = 12; // 난이도가 0인 경우 I 블록 가중치 증가
+        } else if (difficulty == 2) {
+            defaultWeights[0] = 8; // 난이도가 2인 경우 I 블록 가중치 감소
+        }
+        int totalWeight = 0;
+        for (int weight : defaultWeights) {
+            totalWeight += weight;
+        }
+        double tetrominoWeight = (double) defaultWeights[tetrominoTypeIndex];
+        return (tetrominoWeight / totalWeight) * 100;
+    }
+
+
+
 }
