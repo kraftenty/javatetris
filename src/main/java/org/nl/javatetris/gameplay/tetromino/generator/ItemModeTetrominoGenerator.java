@@ -14,9 +14,9 @@ import static org.nl.javatetris.config.constant.ModelConst.TETROMINO_TYPES;
 //commit 된 부분 가져옴
 public class ItemModeTetrominoGenerator implements TetrominoGenerator {
 
-    private Queue<Tetromino> tetrominoQueue = new LinkedList<>();
+    private final Queue<Tetromino> tetrominoQueue = new LinkedList<>();
     private int lastClassicTetrominoType = -1; // 마지막으로 생성된 테트로미노의 타입을 저장
-    private Random random = new Random();
+    private final Random random = new Random();
 
 
     public ItemModeTetrominoGenerator() {
@@ -57,24 +57,16 @@ public class ItemModeTetrominoGenerator implements TetrominoGenerator {
     }
 
     private Tetromino createClassicTetrominoByType(int type) {
-        switch (type) {
-            case 0:
-                return new TetrominoI();
-            case 1:
-                return new TetrominoJ();
-            case 2:
-                return new TetrominoL();
-            case 3:
-                return new TetrominoO();
-            case 4:
-                return new TetrominoS();
-            case 5:
-                return new TetrominoT();
-            case 6:
-                return new TetrominoZ();
-            default:
-                throw new IllegalArgumentException("Unknown tetromino type: " + type);
-        }
+        return switch (type) {
+            case 0 -> new TetrominoI();
+            case 1 -> new TetrominoJ();
+            case 2 -> new TetrominoL();
+            case 3 -> new TetrominoO();
+            case 4 -> new TetrominoS();
+            case 5 -> new TetrominoT();
+            case 6 -> new TetrominoZ();
+            default -> throw new IllegalArgumentException("Unknown tetromino type: " + type);
+        };
     }
 
     private Tetromino createItemTetrominoByRandom(int randomInt) {
@@ -98,32 +90,16 @@ public class ItemModeTetrominoGenerator implements TetrominoGenerator {
 
     private Tetromino getRandomEraseTetromino() {
         int randomShapeInt = random.nextInt(TETROMINO_TYPES);
-        Tetromino tetromino;
-        switch (randomShapeInt) {
-            case 0:
-                tetromino = new TetrominoEraseI();
-                break;
-            case 1:
-                tetromino = new TetrominoEraseJ();
-                break;
-            case 2:
-                tetromino = new TetrominoEraseL();
-                break;
-            case 3:
-                tetromino = new TetrominoEraseO();
-                break;
-            case 4:
-                tetromino = new TetrominoEraseS();
-                break;
-            case 5:
-                tetromino = new TetrominoEraseT();
-                break;
-            case 6:
-                tetromino = new TetrominoEraseZ();
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown tetromino type: " + randomShapeInt);
-        }
+        Tetromino tetromino = switch (randomShapeInt) {
+            case 0 -> new TetrominoEraseI();
+            case 1 -> new TetrominoEraseJ();
+            case 2 -> new TetrominoEraseL();
+            case 3 -> new TetrominoEraseO();
+            case 4 -> new TetrominoEraseS();
+            case 5 -> new TetrominoEraseT();
+            case 6 -> new TetrominoEraseZ();
+            default -> throw new IllegalArgumentException("Unknown tetromino type: " + randomShapeInt);
+        };
 
         int randomLocationInt = random.nextInt(4); //L이 위치할 곳
         if (tetromino.getShapeNumber() == EO) {

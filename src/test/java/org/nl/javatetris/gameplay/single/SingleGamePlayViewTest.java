@@ -1,15 +1,16 @@
-package org.nl.javatetris.gameplay;
+package org.nl.javatetris.gameplay.single;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.nl.javatetris.gameplay.GameParam;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
-public class GamePlayViewTest {
+public class SingleGamePlayViewTest {
 
     @BeforeAll
     public static void setupHeadlessMode() {
@@ -23,9 +24,9 @@ public class GamePlayViewTest {
     @Test
     public void GamePlaySceneCreateTest() {
         // Given
-        GamePlayView gamePlayView = new GamePlayView(new GameParam(0,0), () -> {}, (v) -> {}, () -> {});
+        SingleGamePlayView singleGamePlayView = new SingleGamePlayView(new GameParam(0,0), (o) -> {}, (v) -> {}, () -> {});
         // When
-        Scene scene = gamePlayView.createScene();
+        Scene scene = singleGamePlayView.createScene();
         // Then
         // 성공적으로 scene 이 생성되면 테스트 성공
     }

@@ -3,13 +3,15 @@ package org.nl.javatetris.config;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.nl.javatetris.gameplay.GameParam;
-import org.nl.javatetris.gameplay.GamePlayView;
+import org.nl.javatetris.gameplay.battle.BattleGamePlayView;
+import org.nl.javatetris.gameplay.single.SingleGamePlayView;
 import org.nl.javatetris.gameplay.battle.BattleModeLobbyView;
 import org.nl.javatetris.gameplay.single.classic.ClassicModeLobbyView;
 import org.nl.javatetris.gameplay.gameover.GameOverParam;
 import org.nl.javatetris.gameplay.gameover.GameOverView;
 import org.nl.javatetris.gameplay.single.item.ItemModeLobbyView;
 import org.nl.javatetris.main.MainView;
+import org.nl.javatetris.pause.PauseMenuParam;
 import org.nl.javatetris.pause.PauseMenuView;
 import org.nl.javatetris.scoreboard.ScoreBoardView;
 import org.nl.javatetris.settings.SettingsMenuView;
@@ -28,7 +30,8 @@ public class SceneManager {
     private Scene classicModeLobbyScene;
     private Scene itemModeLobbyScene;
     private Scene battleModeLobbyScene;
-    private Scene gamePlayScene;
+    private Scene singleGamePlayScene;
+    private Scene battleGamePlayScene;
     private Scene pauseMenuScene;
     private Scene settingsMenuScene;
     private Scene scoreBoardScene;
@@ -81,7 +84,7 @@ public class SceneManager {
     public void showClassicModeLobby() {
         ClassicModeLobbyView classicModeLobbyView = new ClassicModeLobbyView(
                 this::showStartMenu,
-                gameParam -> showGamePlay(gameParam)
+                gameParam -> showSingleGamePlay(gameParam)
         );
         this.classicModeLobbyScene = classicModeLobbyView.createScene();
 
@@ -92,7 +95,7 @@ public class SceneManager {
     public void showItemModeLobby() {
         ItemModeLobbyView itemModeLobbyView = new ItemModeLobbyView(
                 this::showStartMenu,
-                gameParam -> showGamePlay(gameParam)
+                gameParam -> showSingleGamePlay(gameParam)
         );
         this.itemModeLobbyScene = itemModeLobbyView.createScene();
 
@@ -103,7 +106,7 @@ public class SceneManager {
     public void showBattleModeLobby() {
         BattleModeLobbyView battleModeLobbyView = new BattleModeLobbyView(
                 this::showStartMenu,
-                gameParam -> showGamePlay(gameParam)
+                gameParam -> showBattleGamePlay(gameParam)
         );
         this.battleModeLobbyScene = battleModeLobbyView.createScene();
 
@@ -111,22 +114,38 @@ public class SceneManager {
         currentSceneNumber = BATTLE_MODE_LOBBY_SCENE;
     }
 
-    public void showGamePlay(GameParam gameParam) {
-        GamePlayView gamePlayView = new GamePlayView(
+    public void showSingleGamePlay(GameParam gameParam) {
+        SingleGamePlayView singleGamePlayView = new SingleGamePlayView(
                 gameParam,
-                this::showPauseMenu,
+                o -> showPauseMenu(o),
                 o -> showGameOver(o),
                 this::showStartMenu
         );
-        this.gamePlayScene = gamePlayView.createScene();
+        this.singleGamePlayScene = singleGamePlayView.createScene();
 
-        setScene(gamePlayScene);
-        currentSceneNumber = GAME_PLAY_SCENE;
+        setScene(singleGamePlayScene);
+        currentSceneNumber = SINGLE_GAME_PLAY_SCENE;
     }
 
-    private void resumeGame() {
-        currentSceneNumber = GAME_PLAY_SCENE;
-        setScene(gamePlayScene);
+    public void showBattleGamePlay(GameParam gameParam) {
+        BattleGamePlayView battleGamePlayView = new BattleGamePlayView(
+                gameParam,
+                o -> showPauseMenu(o),
+                this::showStartMenu
+        );
+        this.battleGamePlayScene = battleGamePlayView.createScene();
+        setScene(battleGamePlayScene);
+        currentSceneNumber = BATTLE_GAME_PLAY_SCENE;
+    }
+
+    private void resumeSingleGame() {
+        setScene(singleGamePlayScene);
+        currentSceneNumber = SINGLE_GAME_PLAY_SCENE;
+    }
+
+    private void resumeBattleGame() {
+        setScene(battleGamePlayScene);
+        currentSceneNumber = BATTLE_GAME_PLAY_SCENE;
     }
 
     private void endGame() {
@@ -145,9 +164,11 @@ public class SceneManager {
     }
 
 
-    public void showPauseMenu() {
+    public void showPauseMenu(PauseMenuParam pauseMenuParam) {
         PauseMenuView pauseMenuView = new PauseMenuView(
-                this::resumeGame,
+                pauseMenuParam,
+                this::resumeSingleGame,
+                this::resumeBattleGame,
                 this::endGame
         );
         this.pauseMenuScene = pauseMenuView.createScene();

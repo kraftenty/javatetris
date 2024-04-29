@@ -35,4 +35,8 @@ public class ControllerConst {
     public static final int DIFFICULTY_NORMAL = 1;
     public static final int DIFFICULTY_HARD = 2;
 
+    // PauseMenuParam 에 사용될 모드
+    public static final int PAUSE_MENU_SINGLE_MODE = 0;
+    public static final int PAUSE_MENU_BATTLE_MODE = 1;
+
 }

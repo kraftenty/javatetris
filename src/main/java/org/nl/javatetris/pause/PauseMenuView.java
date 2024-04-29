@@ -7,6 +7,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import org.nl.javatetris.config.constant.ControllerConst;
 import org.nl.javatetris.settings.Settings;
 import org.nl.javatetris.config.FontManager;
 
@@ -19,9 +20,11 @@ public class PauseMenuView {
             new Label("Main Menu"),
             new Label("Quit")
     };
+    private PauseMenuParam pauseMenuParam;
 
-    public PauseMenuView(Runnable onResume, Runnable onBackToMenu) {
-        this.pauseMenuController = new PauseMenuController(menuItems.length, onResume, onBackToMenu);
+    public PauseMenuView(PauseMenuParam pauseMenuParam, Runnable onResumeSingleGame, Runnable onResumeBattleGame, Runnable onBackToMenu) {
+        this.pauseMenuParam = pauseMenuParam;
+        this.pauseMenuController = new PauseMenuController(menuItems.length, onResumeSingleGame, onResumeBattleGame, onBackToMenu, pauseMenuParam);
     }
 
     public Scene createScene() {
@@ -42,12 +45,23 @@ public class PauseMenuView {
             menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
             layout.getChildren().add(menuItem);
         }
+        Scene scene = null;
+        if (pauseMenuParam.getMode() == ControllerConst.PAUSE_MENU_SINGLE_MODE) {
+            scene = new Scene(
+                    layout,
+                    Settings.getInstance().getSizeSetting().getScreenWidth(),
+                    Settings.getInstance().getSizeSetting().getScreenHeight()
+            );
+        } else if (pauseMenuParam.getMode() == ControllerConst.PAUSE_MENU_BATTLE_MODE) {
+            scene = new Scene(
+                    layout,
+                    Settings.getInstance().getSizeSetting().getScreenWidth() * 2,
+                    Settings.getInstance().getSizeSetting().getScreenHeight()
+            );
+        } else {
+            throw new IllegalArgumentException("Invalid pause menu param");
+        }
 
-        Scene scene = new Scene(
-                layout,
-                Settings.getInstance().getSizeSetting().getScreenWidth(),
-                Settings.getInstance().getSizeSetting().getScreenHeight()
-        );
         // 키 입력에 따른 액션을 처리합니다.
         scene.setOnKeyPressed(e -> {
             pauseMenuController.handleKeyPress(e);

@@ -21,7 +21,9 @@ public class ModelConst {
 
     /**
      * Item Tetromino Shape Number
+     * E, N, B, W, V 는 ASCII 코드값을 사용
      */
+    public static final int E = 69;            // Erase
     public static final int EI = 11;            // Erase - I
     public static final int EJ = 12;            // Erase - J
     public static final int EL = 13;            // Erase - L
@@ -29,12 +31,10 @@ public class ModelConst {
     public static final int ES = 15;            // Erase - S
     public static final int ET = 16;            // Erase - T
     public static final int EZ = 17;            // Erase - Z
-    public static final int N = 18;             // Nuclear
-    public static final int B = 19;             // Bomb
-    public static final int W = 20;             // Weight
-    public static final int V = 21;             // VerticalBomb
-
-    public static final int E = 100;          // 줄을 지우는 블록
+    public static final int N = 78;             // Nuclear
+    public static final int B = 66;             // Bomb
+    public static final int W = 87;             // Weight
+    public static final int V = 86;             // VerticalBomb
 
 
     public static final int Y_MAX = 22;          // 세로 크기 (20 + 테두리 2칸)

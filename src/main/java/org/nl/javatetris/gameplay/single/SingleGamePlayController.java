@@ -1,29 +1,34 @@
-package org.nl.javatetris.gameplay;
+package org.nl.javatetris.gameplay.single;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
+import org.nl.javatetris.gameplay.Board;
+import org.nl.javatetris.gameplay.GameParam;
 import org.nl.javatetris.gameplay.tetromino.generator.ItemModeTetrominoGenerator;
 import org.nl.javatetris.gameplay.tetromino.generator.TetrominoGenerator;
+import org.nl.javatetris.pause.PauseMenuParam;
 import org.nl.javatetris.settings.Settings;
 import org.nl.javatetris.gameplay.tetromino.generator.ClassicModeTetrominoGenerator;
 import org.nl.javatetris.config.SceneManager;
 import org.nl.javatetris.config.constant.ViewConst;
+
+import java.util.function.Consumer;
 
 import static org.nl.javatetris.config.constant.ControllerConst.*;
 
 /**
  * 게임 플레이의 운영을 담당하는 컨트롤러
  */
-public class GamePlayController {
+public class SingleGamePlayController {
 
     private Board board;                            // 보드
     private TetrominoGenerator tetrominoGenerator;  // 테트로미노 생성기
     private static Timeline timeline;                      // 타임라인
 
     private GameParam gameParam;                    // 게임 파라미터
-    private Runnable onPause;                       // 일시정지 콜백
+    private Consumer<PauseMenuParam> onPause;            // 일시정지 콜백
     private Runnable onDrawBoardUpdate;                 // 보드 업데이트 콜백
     private Runnable onDrawGameOver;                    // 게임오버 콜백
 
@@ -31,8 +36,11 @@ public class GamePlayController {
     private int point = 0;                          // 게임 점수
     private boolean isGameOver = false;             // 게임오버 여부
 
+    // TODO
+    private int timelineCount=0;
+
     // 생성자
-    public GamePlayController(GameParam gameParam, Runnable onPause, Runnable onDrawBoardUpdate, Runnable onDrawGameOver) {
+    public SingleGamePlayController(GameParam gameParam, Consumer<PauseMenuParam> onPause, Runnable onDrawBoardUpdate, Runnable onDrawGameOver) {
         this.gameParam = gameParam;
         // tetrominoGenerator 주입
         if (gameParam.getMode() == 0) { // classic mode
@@ -50,7 +58,7 @@ public class GamePlayController {
 
     //테스트위한 생성자, 타이머 때문에 생성자 실행에 오류 생겨서 따로 만듦
     //위에꺼 쓰면 커버리지 더 넓어지긴 할텐데 건들였다가 일날까봐 만듦
-    public GamePlayController(Runnable onPause, Runnable onDrawBoardUpdate, Runnable onDrawGameOver) {
+    public SingleGamePlayController(Consumer<PauseMenuParam> onPause, Runnable onDrawBoardUpdate, Runnable onDrawGameOver) {
         this.gameParam = new GameParam(0, 0);
         this.tetrominoGenerator = new ClassicModeTetrominoGenerator(gameParam);
         this.onPause = onPause;
@@ -70,7 +78,8 @@ public class GamePlayController {
             timeline.stop(); // 기존 타임라인이 존재한다면 중지
         }
         timeline = new Timeline(new KeyFrame(Duration.seconds(getSpeedByLevel()), e -> {
-            if (SceneManager.getCurrentSceneNumber() == ViewConst.GAME_PLAY_SCENE) {
+            System.out.println("timeline running..." + timelineCount++);
+            if (SceneManager.getCurrentSceneNumber() == ViewConst.SINGLE_GAME_PLAY_SCENE) {
                 boolean isProperlyDowned = board.moveTetrominoDown();
                 if (!isProperlyDowned) {
                     timeline.stop(); // 타임라인 중지 하고
@@ -184,7 +193,7 @@ public class GamePlayController {
 
         int keyCode = e.getCode().getCode();
         if (keyCode == 27) {
-            onPause.run();
+            onPause.accept(new PauseMenuParam(PAUSE_MENU_SINGLE_MODE, this::shutdownGame));
         } else if (keyCode == Settings.getInstance().getKeySetting().getDownKeyValue()) {
             boolean isProperlyDowned = board.moveTetrominoDown();
             if (!isProperlyDowned) {
@@ -205,5 +214,28 @@ public class GamePlayController {
             addScoreOnDrop(offset);
         }
         return true;
+    }
+
+    // 게임 자원 해제 및 종료 처리 메서드
+    public void shutdownGame() {
+        if (timeline != null) {
+            timeline.stop(); // 타임라인 중지
+            timeline = null; // 참조 제거
+        }
+
+        // 게임 관련 객체 참조 제거
+        board = null;
+        tetrominoGenerator = null;
+
+        // 콜백 참조 제거
+        onPause = null;
+        onDrawBoardUpdate = null;
+        onDrawGameOver = null;
+
+        // 게임 컨트롤러가 보유한 모든 설정 및 상태 정보를 null 로 설정
+        gameParam = null;
+
+        // 시스템 가비지 컬렉터에게 수집을 제안
+        System.gc();
     }
 }

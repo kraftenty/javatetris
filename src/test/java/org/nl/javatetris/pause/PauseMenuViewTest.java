@@ -24,7 +24,7 @@ public class PauseMenuViewTest {
     @Test
     public void PauseMenuSceneCreateTest() {
         // Given
-        PauseMenuView pauseMenuView = new PauseMenuView(() -> {}, () -> {});
+        PauseMenuView pauseMenuView = new PauseMenuView(new PauseMenuParam(0),() -> {}, () -> {}, () -> {});
         // When
         Scene scene = pauseMenuView.createScene();
         // Then

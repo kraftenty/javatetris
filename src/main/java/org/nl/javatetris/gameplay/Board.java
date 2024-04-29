@@ -13,18 +13,18 @@ import static org.nl.javatetris.config.constant.ModelConst.*;
 public class Board {
 
     // 보드 자체 관련 필드
-    private int[][] board;
+    private final int[][] board;
 
     // 테트로미노 관련 필드
-    private TetrominoGenerator tetrominoGenerator;
+    private final TetrominoGenerator tetrominoGenerator;
     private Tetromino currentTetromino;
     private int tetrominoY;
     private int tetrominoX;
     private int clearedLineCount;
-    private Runnable onClearCompletedLines;
+    private final Runnable onClearCompletedLines;
 
     // 줄 지우는 효과를 위한 필드
-    private List<Integer> completedLines = new ArrayList<>();
+    private final List<Integer> completedLines = new ArrayList<>();
 
     // 생성자
     public Board(Runnable onClearCompletedLines, TetrominoGenerator tetrominoGenerator) {
@@ -137,7 +137,7 @@ public class Board {
     // 특정 줄을 제거하는 메서드
     private void removeLine(int lineIndex) {
         for (int x = 1; x < X_MAX - 1; x++) {
-            board[lineIndex][x] = EMPTY; // 해당 줄의 모든 칸을 EMPTY로 설정하여 줄을 제거
+            board[lineIndex][x] = EMPTY; // 해당 줄의 모든 칸을 EMPTY 로 설정하여 줄을 제거
         }
     }
 
@@ -157,7 +157,7 @@ public class Board {
             }
         }
 
-        // 가장 위의 줄을 EMPTY로 설정
+        // 가장 위의 줄을 EMPTY 로 설정
         for (int x = 1; x < X_MAX - 1; x++) {
             board[1][x] = EMPTY;
         }
@@ -257,9 +257,9 @@ public class Board {
             if (currentTetromino.getShapeNumber() == ModelConst.V) {
                 clearVerticalLine(); // TetrominoVerticalBomb 실행
             }
-            if (clearedLineCount >= 1) {
+            if (clearedLineCount >= 10) {
                 shouldNextTetrominoBeItem = true;
-                clearedLineCount -= 1;
+                clearedLineCount -= 10;
             }
             return spawnTetromino(shouldNextTetrominoBeItem);
         }

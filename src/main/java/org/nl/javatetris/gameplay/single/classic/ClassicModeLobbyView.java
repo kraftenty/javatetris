@@ -9,7 +9,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.nl.javatetris.config.FontManager;
 import org.nl.javatetris.gameplay.GameParam;
-import org.nl.javatetris.gameplay.single.classic.ClassicModeLobbyController;
 import org.nl.javatetris.settings.Settings;
 
 import java.util.function.Consumer;
