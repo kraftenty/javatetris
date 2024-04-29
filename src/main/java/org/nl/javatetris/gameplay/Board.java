@@ -257,9 +257,9 @@ public class Board {
             if (currentTetromino.getShapeNumber() == ModelConst.V) {
                 clearVerticalLine(); // TetrominoVerticalBomb 실행
             }
-            if (clearedLineCount >= 10) {
+            if (clearedLineCount >= 1) {
                 shouldNextTetrominoBeItem = true;
-                clearedLineCount -= 10;
+                clearedLineCount -= 1;
             }
             return spawnTetromino(shouldNextTetrominoBeItem);
         }

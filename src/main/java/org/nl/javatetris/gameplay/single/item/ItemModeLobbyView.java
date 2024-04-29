@@ -1,4 +1,4 @@
-package org.nl.javatetris.gameplay.classic;
+package org.nl.javatetris.gameplay.single.item;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,22 +9,22 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.nl.javatetris.config.FontManager;
 import org.nl.javatetris.gameplay.GameParam;
+import org.nl.javatetris.gameplay.single.item.ItemModeLobbyController;
 import org.nl.javatetris.settings.Settings;
 
 import java.util.function.Consumer;
 
-public class ClassicModeLobbyView {
+public class ItemModeLobbyView {
 
-    private ClassicModeLobbyController classicModeLobbyController;
+    private ItemModeLobbyController itemModeLobbyController;
     private static final DropShadow DROP_SHADOW = createDropShadow();
     private static Label[] menuItems = new Label[]{
-            new Label("Difficulty - easy"),
             new Label("Start Game"),
             new Label("Back")
     };
 
-    public ClassicModeLobbyView(Runnable onBackToMenu, Consumer<GameParam> onStartGame) {
-        this.classicModeLobbyController = new ClassicModeLobbyController(
+    public ItemModeLobbyView(Runnable onBackToMenu, Consumer<GameParam> onStartGame) {
+        this.itemModeLobbyController = new ItemModeLobbyController(
                 menuItems.length,
                 onBackToMenu,
                 onStartGame
@@ -37,13 +37,12 @@ public class ClassicModeLobbyView {
 
         configureBackground(layout);
 
-        Label title = new Label("Classic Mode");
+        Label title = new Label("Item Mode");
         title.setTextFill(Color.YELLOW);
         title.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getTitleFontSize()));
         title.setEffect(DROP_SHADOW);
         layout.getChildren().add(title);
 
-        updateDifficultyText();
         configureMenuItems(layout);
 
         Scene scene = new Scene(
@@ -53,14 +52,14 @@ public class ClassicModeLobbyView {
         );
 
         scene.setOnKeyPressed(e -> {
-            classicModeLobbyController.handleKeyPress(e);
-            updateDifficultyText();
-            updateMenuItems(classicModeLobbyController.getSelectedItemIndex());
+            itemModeLobbyController.handleKeyPress(e);
+            updateMenuItems(itemModeLobbyController.getSelectedItemIndex());
         });
 
-        updateMenuItems(classicModeLobbyController.getSelectedItemIndex());
+        updateMenuItems(itemModeLobbyController.getSelectedItemIndex());
 
         return scene;
+
     }
 
     private void configureBackground(VBox layout) {
@@ -93,13 +92,5 @@ public class ClassicModeLobbyView {
         }
     }
 
-    private void updateDifficultyText() {
-        if (classicModeLobbyController.getDifficulty() == 0)
-            menuItems[0].setText("Difficulty - easy");
-        else if (classicModeLobbyController.getDifficulty() == 1)
-            menuItems[0].setText("Difficulty - normal");
-        else
-            menuItems[0].setText("Difficulty - hard");
-    }
 
 }

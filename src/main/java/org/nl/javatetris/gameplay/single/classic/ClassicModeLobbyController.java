@@ -1,4 +1,4 @@
-package org.nl.javatetris.gameplay.item;
+package org.nl.javatetris.gameplay.single.classic;
 
 import javafx.scene.input.KeyEvent;
 import org.nl.javatetris.config.constant.ControllerConst;
@@ -6,17 +6,22 @@ import org.nl.javatetris.gameplay.GameParam;
 
 import java.util.function.Consumer;
 
-public class ItemModeLobbyController {
+public class ClassicModeLobbyController {
 
     private Runnable onBackToMenu;
     private Consumer<GameParam> onStartGame;
     private int selectedItemIndex = 0;
     private int menuItemsCount;
+    private int difficulty = 0;
 
-    public ItemModeLobbyController(int menuItemsCount, Runnable onBackToMenu, Consumer<GameParam> onStartGame) {
+    public ClassicModeLobbyController(int menuItemsCount, Runnable onBackToMenu, Consumer<GameParam> onStartGame) {
         this.menuItemsCount = menuItemsCount;
         this.onBackToMenu = onBackToMenu;
         this.onStartGame = onStartGame;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
     }
 
     public void handleKeyPress(KeyEvent e) {
@@ -33,9 +38,18 @@ public class ItemModeLobbyController {
             case ENTER:
                 switch (selectedItemIndex) {
                     case 0:
-                        onStartGame.accept(new GameParam(ControllerConst.MODE_ITEM, ControllerConst.DIFFICULTY_NORMAL));
+                        if (difficulty == 0) {
+                            difficulty = 1;
+                        } else if (difficulty == 1) {
+                            difficulty = 2;
+                        } else {
+                            difficulty = 0;
+                        }
                         break;
                     case 1:
+                        onStartGame.accept(new GameParam(ControllerConst.SINGLE_CLASSIC, difficulty));
+                        break;
+                    case 2:
                         onBackToMenu.run();
                         break;
                 }
@@ -46,4 +60,5 @@ public class ItemModeLobbyController {
     public int getSelectedItemIndex() {
         return selectedItemIndex;
     }
+
 }

@@ -44,6 +44,10 @@ class ClassicModeTetrominoGeneratorTest {
         double acceptableError = ACCEPTABLE_ERROR_PERCENTAGE / 100 * expectedFrequency; // 허용 가능한 오차
         String errorMessage = "Tetromino I의 선택 빈도가 기대값과 차이가 너무 큽니다.";
 
+        System.out.println("expectedFrequency: " + expectedFrequency);
+        System.out.println("actualFrequency: " + actualFrequency);
+        System.out.println("acceptableError: " + acceptableError);
+
         // 테스트 수행
         assertEquals(expectedFrequency, actualFrequency, acceptableError, errorMessage);
     }

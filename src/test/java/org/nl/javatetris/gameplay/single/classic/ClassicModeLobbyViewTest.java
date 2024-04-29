@@ -1,10 +1,11 @@
-package org.nl.javatetris.gameplay.classic;
+package org.nl.javatetris.gameplay.single.classic;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.nl.javatetris.gameplay.single.classic.ClassicModeLobbyView;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 

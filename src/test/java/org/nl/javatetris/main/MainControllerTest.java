@@ -18,9 +18,13 @@ public class MainControllerTest {
     public void onClassicModeLobbyTest() {
         // given
         AtomicBoolean onClassicModeLobbyFlag = new AtomicBoolean(false);
-        MainController controller = new MainController(5, () -> {
+        MainController controller = new MainController(6, () -> {
             onClassicModeLobbyFlag.set(true);
-        }, () -> {}, () -> {}, () -> {});
+        }, () -> {
+        }, () -> {
+        }, () -> {
+        }, () -> {
+        });
 
         KeyEvent enterKeyEvent = new KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "", KeyCode.ENTER, false, false, false, false);
 
@@ -36,9 +40,13 @@ public class MainControllerTest {
     public void onItemModeLobbyTest() {
         // given
         AtomicBoolean onItemModeLobbyFlag = new AtomicBoolean(false);
-        MainController controller = new MainController(5, () -> {}, () -> {
+        MainController controller = new MainController(6, () -> {
+        }, () -> {
             onItemModeLobbyFlag.set(true);
-        }, () -> {}, () -> {});
+        }, () -> {
+        }, () -> {
+        }, () -> {
+        });
 
         KeyEvent downKeyEvent = new KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "", KeyCode.DOWN, false, false, false, false);
 
@@ -56,15 +64,27 @@ public class MainControllerTest {
     public void onSettingsTest() {
         // given
         AtomicBoolean onSettingsFlag = new AtomicBoolean(false);
-        MainController controller = new MainController(5, () -> {}, () -> {}, () -> {
-            onSettingsFlag.set(true);
-        }, () -> {});
+        MainController controller = new MainController(
+                6,
+                () -> {
+                },
+                () -> {
+                },
+                () -> {
+                },
+                () -> {
+                    onSettingsFlag.set(true);
+                },
+                () -> {
+                }
+        );
 
-        KeyEvent downKeyEvent = new KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "", KeyCode.DOWN, false, false, false,false);
+        KeyEvent downKeyEvent = new KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "", KeyCode.DOWN, false, false, false, false);
 
         KeyEvent enterKeyEvent = new KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "", KeyCode.ENTER, false, false, false, false);
 
         // when
+        controller.handleKeyPress(downKeyEvent);
         controller.handleKeyPress(downKeyEvent);
         controller.handleKeyPress(downKeyEvent);
         controller.handleKeyPress(enterKeyEvent);
@@ -77,7 +97,11 @@ public class MainControllerTest {
     public void onScoreBoardTest() {
         // given
         AtomicBoolean onScoreBoardFlag = new AtomicBoolean(false);
-        MainController controller = new MainController(5, () -> {}, () -> {}, () -> {}, () -> {
+        MainController controller = new MainController(6, () -> {
+        }, () -> {
+        }, () -> {
+        }, () -> {
+        }, () -> {
             onScoreBoardFlag.set(true);
         });
 
@@ -86,6 +110,7 @@ public class MainControllerTest {
         KeyEvent enterKeyEvent = new KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "", KeyCode.ENTER, false, false, false, false);
 
         // when
+        controller.handleKeyPress(downKeyEvent);
         controller.handleKeyPress(downKeyEvent);
         controller.handleKeyPress(downKeyEvent);
         controller.handleKeyPress(downKeyEvent);

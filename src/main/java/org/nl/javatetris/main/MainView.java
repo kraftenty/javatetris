@@ -21,14 +21,15 @@ public class MainView {
     private static Label[] menuItems = new Label[]{
             new Label("Classic Mode"),
             new Label("Item Mode"),
+            new Label("Battle Mode"),
             new Label("Settings"),
             new Label("Score Board"),
             new Label("Quit")
     };
 
 
-    public MainView(Runnable onClassicModeLobby, Runnable onItemModeLobby, Runnable onSettings, Runnable onScoreBoard) {
-        this.mainController = new MainController(menuItems.length, onClassicModeLobby, onItemModeLobby, onSettings, onScoreBoard);
+    public MainView(Runnable onClassicModeLobby, Runnable onItemModeLobby, Runnable onBattleModeLobby, Runnable onSettings, Runnable onScoreBoard) {
+        this.mainController = new MainController(menuItems.length, onClassicModeLobby, onItemModeLobby, onBattleModeLobby, onSettings, onScoreBoard);
     }
 
     public Scene createScene() {

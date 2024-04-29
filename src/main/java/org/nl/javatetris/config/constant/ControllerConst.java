@@ -24,8 +24,11 @@ public class ControllerConst {
     };
 
     // GameParam 에 사용될 게임모드
-    public static final int MODE_CLASSIC = 0;
-    public static final int MODE_ITEM = 1;
+    public static final int SINGLE_CLASSIC = 0;
+    public static final int SINGLE_ITEM = 1;
+    public static final int BATTLE_CLASSIC = 10;
+    public static final int BATTLE_ITEM = 11;
+    public static final int BATTLE_TIME_ATTACK = 12;
 
     // GameParam 에 사용될 난이도
     public static final int DIFFICULTY_EASY = 0;

@@ -1,4 +1,4 @@
-package org.nl.javatetris.gameplay.item;
+package org.nl.javatetris.gameplay.battle;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,17 +13,20 @@ import org.nl.javatetris.settings.Settings;
 
 import java.util.function.Consumer;
 
-public class ItemModeLobbyView {
+public class BattleModeLobbyView {
 
-    private ItemModeLobbyController itemModeLobbyController;
+    private BattleModeLobbyController battleModeLobbyController;
     private static final DropShadow DROP_SHADOW = createDropShadow();
+
     private static Label[] menuItems = new Label[]{
-            new Label("Start Game"),
+            new Label("Classic Battle"),
+            new Label("Item Battle"),
+            new Label("Time Attack Battle"),
             new Label("Back")
     };
 
-    public ItemModeLobbyView(Runnable onBackToMenu, Consumer<GameParam> onStartGame) {
-        this.itemModeLobbyController = new ItemModeLobbyController(
+    public BattleModeLobbyView(Runnable onBackToMenu, Consumer<GameParam> onStartGame) {
+        this.battleModeLobbyController = new BattleModeLobbyController(
                 menuItems.length,
                 onBackToMenu,
                 onStartGame
@@ -36,7 +39,7 @@ public class ItemModeLobbyView {
 
         configureBackground(layout);
 
-        Label title = new Label("Item Mode");
+        Label title = new Label("Battle Mode");
         title.setTextFill(Color.YELLOW);
         title.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getTitleFontSize()));
         title.setEffect(DROP_SHADOW);
@@ -51,14 +54,13 @@ public class ItemModeLobbyView {
         );
 
         scene.setOnKeyPressed(e -> {
-            itemModeLobbyController.handleKeyPress(e);
-            updateMenuItems(itemModeLobbyController.getSelectedItemIndex());
+            battleModeLobbyController.handleKeyPress(e);
+            updateMenuItems(battleModeLobbyController.getSelectedItemIndex());
         });
 
-        updateMenuItems(itemModeLobbyController.getSelectedItemIndex());
+        updateMenuItems(battleModeLobbyController.getSelectedItemIndex());
 
         return scene;
-
     }
 
     private void configureBackground(VBox layout) {
@@ -90,6 +92,5 @@ public class ItemModeLobbyView {
             menuItems[i].setTextFill(i == selectedIndex ? Color.RED : Color.WHITE);
         }
     }
-
 
 }

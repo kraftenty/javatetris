@@ -1,10 +1,10 @@
-package org.nl.javatetris.gameplay.classic;
+package org.nl.javatetris.gameplay.single.classic;
 
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.nl.javatetris.gameplay.GameParam;
+import org.nl.javatetris.gameplay.single.classic.ClassicModeLobbyController;
 
 import java.util.function.Consumer;
 

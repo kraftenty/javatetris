@@ -4,10 +4,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.nl.javatetris.gameplay.GameParam;
 import org.nl.javatetris.gameplay.GamePlayView;
-import org.nl.javatetris.gameplay.classic.ClassicModeLobbyView;
+import org.nl.javatetris.gameplay.battle.BattleModeLobbyView;
+import org.nl.javatetris.gameplay.single.classic.ClassicModeLobbyView;
 import org.nl.javatetris.gameplay.gameover.GameOverParam;
 import org.nl.javatetris.gameplay.gameover.GameOverView;
-import org.nl.javatetris.gameplay.item.ItemModeLobbyView;
+import org.nl.javatetris.gameplay.single.item.ItemModeLobbyView;
 import org.nl.javatetris.main.MainView;
 import org.nl.javatetris.pause.PauseMenuView;
 import org.nl.javatetris.scoreboard.ScoreBoardView;
@@ -26,6 +27,7 @@ public class SceneManager {
     private Scene startMenuScene;
     private Scene classicModeLobbyScene;
     private Scene itemModeLobbyScene;
+    private Scene battleModeLobbyScene;
     private Scene gamePlayScene;
     private Scene pauseMenuScene;
     private Scene settingsMenuScene;
@@ -66,6 +68,7 @@ public class SceneManager {
         MainView mainView = new MainView(
                 this::showClassicModeLobby,
                 this::showItemModeLobby,
+                this::showBattleModeLobby,
                 this::showSettingsMenu,
                 this::showScoreBoard
         );
@@ -95,6 +98,17 @@ public class SceneManager {
 
         setScene(itemModeLobbyScene);
         currentSceneNumber = ITEM_MODE_LOBBY_SCENE;
+    }
+
+    public void showBattleModeLobby() {
+        BattleModeLobbyView battleModeLobbyView = new BattleModeLobbyView(
+                this::showStartMenu,
+                gameParam -> showGamePlay(gameParam)
+        );
+        this.battleModeLobbyScene = battleModeLobbyView.createScene();
+
+        setScene(battleModeLobbyScene);
+        currentSceneNumber = BATTLE_MODE_LOBBY_SCENE;
     }
 
     public void showGamePlay(GameParam gameParam) {

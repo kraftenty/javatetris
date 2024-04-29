@@ -1,4 +1,4 @@
-package org.nl.javatetris.gameplay.classic;
+package org.nl.javatetris.gameplay.battle;
 
 import javafx.scene.input.KeyEvent;
 import org.nl.javatetris.config.constant.ControllerConst;
@@ -6,22 +6,18 @@ import org.nl.javatetris.gameplay.GameParam;
 
 import java.util.function.Consumer;
 
-public class ClassicModeLobbyController {
+
+public class BattleModeLobbyController {
 
     private Runnable onBackToMenu;
     private Consumer<GameParam> onStartGame;
     private int selectedItemIndex = 0;
     private int menuItemsCount;
-    private int difficulty = 0;
 
-    public ClassicModeLobbyController(int menuItemsCount, Runnable onBackToMenu, Consumer<GameParam> onStartGame) {
+    public BattleModeLobbyController(int menuItemsCount, Runnable onBackToMenu, Consumer<GameParam> onStartGame) {
         this.menuItemsCount = menuItemsCount;
         this.onBackToMenu = onBackToMenu;
         this.onStartGame = onStartGame;
-    }
-
-    public int getDifficulty() {
-        return difficulty;
     }
 
     public void handleKeyPress(KeyEvent e) {
@@ -38,18 +34,15 @@ public class ClassicModeLobbyController {
             case ENTER:
                 switch (selectedItemIndex) {
                     case 0:
-                        if (difficulty == 0) {
-                            difficulty = 1;
-                        } else if (difficulty == 1) {
-                            difficulty = 2;
-                        } else {
-                            difficulty = 0;
-                        }
+                        onStartGame.accept(new GameParam(ControllerConst.BATTLE_CLASSIC, ControllerConst.DIFFICULTY_NORMAL));
                         break;
                     case 1:
-                        onStartGame.accept(new GameParam(ControllerConst.MODE_CLASSIC, difficulty));
+                        onStartGame.accept(new GameParam(ControllerConst.BATTLE_ITEM, ControllerConst.DIFFICULTY_NORMAL));
                         break;
                     case 2:
+                        onStartGame.accept(new GameParam(ControllerConst.BATTLE_TIME_ATTACK, ControllerConst.DIFFICULTY_NORMAL));
+                        break;
+                    case 3:
                         onBackToMenu.run();
                         break;
                 }
@@ -60,5 +53,4 @@ public class ClassicModeLobbyController {
     public int getSelectedItemIndex() {
         return selectedItemIndex;
     }
-
 }
