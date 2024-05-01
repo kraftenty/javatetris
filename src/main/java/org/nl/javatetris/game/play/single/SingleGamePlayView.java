@@ -3,7 +3,7 @@ package org.nl.javatetris.game.play.single;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 
-import org.nl.javatetris.config.BackgroundManager;
+import org.nl.javatetris.config.manager.BackgroundManager;
 import org.nl.javatetris.game.GameParam;
 import org.nl.javatetris.game.gameover.GameOverParam;
 import org.nl.javatetris.game.play.GamePlayView;

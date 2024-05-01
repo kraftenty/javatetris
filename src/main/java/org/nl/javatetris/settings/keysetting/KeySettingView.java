@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import org.nl.javatetris.config.FontManager;
+import org.nl.javatetris.config.manager.FontManager;
 import org.nl.javatetris.settings.Settings;
 
 public class KeySettingView {

@@ -8,9 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import org.nl.javatetris.config.BackgroundManager;
-import org.nl.javatetris.config.FontManager;
-import org.nl.javatetris.main.MainController;
+import org.nl.javatetris.config.manager.BackgroundManager;
+import org.nl.javatetris.config.manager.FontManager;
 import org.nl.javatetris.settings.Settings;
 
 public class MainView {

@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import org.nl.javatetris.config.FontManager;
+import org.nl.javatetris.config.manager.FontManager;
 import org.nl.javatetris.scoreboard.ScoreBoard;
 import org.nl.javatetris.settings.Settings;
 

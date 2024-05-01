@@ -1,4 +1,4 @@
-package org.nl.javatetris.config;
+package org.nl.javatetris.config.manager;
 
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;

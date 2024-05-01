@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.nl.javatetris.config.constant.ControllerConst;
 import org.nl.javatetris.settings.Settings;
-import org.nl.javatetris.config.FontManager;
+import org.nl.javatetris.config.manager.FontManager;
 
 public class PauseMenuView {
 

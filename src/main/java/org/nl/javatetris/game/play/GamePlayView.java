@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import org.nl.javatetris.config.FontManager;
+import org.nl.javatetris.config.manager.FontManager;
 import org.nl.javatetris.game.tetromino.Tetromino;
 import org.nl.javatetris.settings.Settings;
 
@@ -135,8 +135,8 @@ public abstract class GamePlayView {
                 if (cellValue != EMPTY) {
                     // 각 셀 그리기
                     Rectangle previewCell = new Rectangle(
-                            Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10 + x * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
-                            Settings.getInstance().getSizeSetting().getBlockSize() * 9 + y * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
+                            layoutX + x * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
+                            layoutY + Settings.getInstance().getSizeSetting().getBlockSize() + y * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
                             Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
                             Settings.getInstance().getSizeSetting().getPreviewBlockSize()
                     );
@@ -148,8 +148,8 @@ public abstract class GamePlayView {
                     if (cellValue == E || cellValue == N || cellValue == B || cellValue == V) {
                         drawCharacterOnBlock(
                                 pane,
-                                Settings.getInstance().getSizeSetting().getBlockSize() * 9 + (y + 1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
-                                Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10 + (x + 0.1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
+                                layoutY + Settings.getInstance().getSizeSetting().getBlockSize() + (y + 1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
+                                layoutX + (x + 0.1) * Settings.getInstance().getSizeSetting().getPreviewBlockSize(),
                                 (char) cellValue,
                                 1.1
                         );

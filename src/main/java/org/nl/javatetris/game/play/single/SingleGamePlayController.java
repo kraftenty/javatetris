@@ -12,7 +12,7 @@ import org.nl.javatetris.game.tetromino.generator.TetrominoGenerator;
 import org.nl.javatetris.pause.PauseMenuParam;
 import org.nl.javatetris.settings.Settings;
 import org.nl.javatetris.game.tetromino.generator.ClassicModeTetrominoGenerator;
-import org.nl.javatetris.config.SceneManager;
+import org.nl.javatetris.config.manager.SceneManager;
 import org.nl.javatetris.config.constant.ViewConst;
 
 import java.util.function.Consumer;

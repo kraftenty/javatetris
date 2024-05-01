@@ -5,7 +5,7 @@ import javafx.animation.Timeline;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
-import org.nl.javatetris.config.SceneManager;
+import org.nl.javatetris.config.manager.SceneManager;
 import org.nl.javatetris.config.constant.ViewConst;
 import org.nl.javatetris.game.play.Board;
 import org.nl.javatetris.game.GameParam;
@@ -243,6 +243,7 @@ public class BattleGamePlayController {
         }
 
         int keyCode = e.getCode().getCode();
+        System.out.println("-------handleKeyPress Called! keyCode: " + keyCode);
         if (keyCode == KeyCode.ESCAPE.getCode()) { // ESC
             onPause.accept(new PauseMenuParam(PAUSE_MENU_BATTLE_MODE, this::shutdownGame));
         }

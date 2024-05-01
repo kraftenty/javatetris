@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import org.nl.javatetris.settings.Settings;
-import org.nl.javatetris.config.FontManager;
+import org.nl.javatetris.config.manager.FontManager;
 
 
 public class ScoreBoardView {

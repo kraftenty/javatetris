@@ -2,7 +2,7 @@ package org.nl.javatetris.game.play.battle;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
-import org.nl.javatetris.config.BackgroundManager;
+import org.nl.javatetris.config.manager.BackgroundManager;
 import org.nl.javatetris.game.GameParam;
 import org.nl.javatetris.game.play.GamePlayView;
 import org.nl.javatetris.pause.PauseMenuParam;
@@ -74,9 +74,14 @@ public class BattleGamePlayView extends GamePlayView {
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize() * 4,
                 Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
-                 battleGamePlayController.getLevel1()
+                battleGamePlayController.getLevel1()
         );
-
+        drawPreview(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 8,
+                Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
+                battleGamePlayController.getTetrominoGenerator1().peekNextTetromino()
+        );
 
         // Player 2
         drawBoard(
@@ -90,7 +95,7 @@ public class BattleGamePlayView extends GamePlayView {
         drawPoint(
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize(),
-                Settings.getInstance().getSizeSetting().getScreenWidth()*2  - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
+                Settings.getInstance().getSizeSetting().getScreenWidth() * 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
                 battleGamePlayController.getPoint2()
         );
         drawLevel(
@@ -99,7 +104,12 @@ public class BattleGamePlayView extends GamePlayView {
                 Settings.getInstance().getSizeSetting().getScreenWidth() * 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
                 battleGamePlayController.getLevel2()
         );
-
+        drawPreview(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 8,
+                Settings.getInstance().getSizeSetting().getScreenWidth() * 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
+                battleGamePlayController.getTetrominoGenerator2().peekNextTetromino()
+        );
 
 
     }
