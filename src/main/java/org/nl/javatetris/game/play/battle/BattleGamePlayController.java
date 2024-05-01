@@ -39,6 +39,9 @@ public class BattleGamePlayController {
     private int point2 = 0;
     private boolean isGameOver = false;
 
+    private Integer winner = 0;
+
+
     // 생성자
     public BattleGamePlayController(GameParam gameParam, Consumer<PauseMenuParam> onPause, Runnable onDrawBoardUpdate, Runnable onDrawGameOver) {
         this.gameParam = gameParam;
@@ -78,7 +81,10 @@ public class BattleGamePlayController {
                 boolean isProperlyDowned = board1.moveTetrominoDown();
                 if (!isProperlyDowned) {
                     timeline1.stop(); // 타임라인 중지 하고
+                    timeline2.stop();
                     isGameOver = true; // 게임오버 상태로 변경
+                    winner = 2;
+                    System.out.println("Player 1 overed game    ");
                     onDrawGameOver.run();
                 } else {
                     addScoreOnDown1();
@@ -100,7 +106,10 @@ public class BattleGamePlayController {
                 boolean isProperlyDowned = board2.moveTetrominoDown();
                 if (!isProperlyDowned) {
                     timeline2.stop(); // 타임라인 중지 하고
+                    timeline1.stop();
                     isGameOver = true; // 게임오버 상태로 변경
+                    winner = 1;
+                    System.out.println("Player 2 overed game    ");
                     onDrawGameOver.run();
                 } else {
                     addScoreOnDown2();
@@ -132,6 +141,10 @@ public class BattleGamePlayController {
 
     public GameParam getGameParam() {
         return gameParam;
+    }
+
+    public int getWinner() {
+        return winner;
     }
 
     /**
@@ -235,15 +248,12 @@ public class BattleGamePlayController {
     /**
      * 키 이벤트 관련 메서드
      */
-
-    // 키 이벤트 핸들러 메서드
     public boolean handleKeyPress(KeyEvent e) {
         if (isGameOver) {
             return false;
         }
 
         int keyCode = e.getCode().getCode();
-        System.out.println("-------handleKeyPress Called! keyCode: " + keyCode);
         if (keyCode == KeyCode.ESCAPE.getCode()) { // ESC
             onPause.accept(new PauseMenuParam(PAUSE_MENU_BATTLE_MODE, this::shutdownGame));
         }

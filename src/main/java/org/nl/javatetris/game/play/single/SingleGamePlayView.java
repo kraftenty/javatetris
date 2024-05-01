@@ -77,13 +77,15 @@ public class SingleGamePlayView extends GamePlayView {
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize(),
                 Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
-                singleGamePlayController.getPoint()
+                singleGamePlayController.getPoint(),
+                "point"
         );
         drawLevel(
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize() * 4,
                 Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
-                singleGamePlayController.getLevel()
+                singleGamePlayController.getLevel(),
+                "level"
         );
         drawPreview(
                 pane,
@@ -110,13 +112,15 @@ public class SingleGamePlayView extends GamePlayView {
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize(),
                 Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
-                singleGamePlayController.getPoint()
+                singleGamePlayController.getPoint(),
+                "point"
         );
         drawLevel(
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize() * 4,
                 Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
-                singleGamePlayController.getLevel()
+                singleGamePlayController.getLevel(),
+                "level"
         );
         drawBlinkingGameOver(
                 pane,
@@ -137,7 +141,8 @@ public class SingleGamePlayView extends GamePlayView {
                             onBackToMenu.run();
                         }
                     }
-                }
+                },
+                "GAME OVER"
         );
     }
 

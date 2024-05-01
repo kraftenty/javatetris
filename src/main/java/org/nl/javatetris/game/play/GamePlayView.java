@@ -77,8 +77,8 @@ public abstract class GamePlayView {
     }
 
     // 깜빡이는 GAME OVER 텍스트 표시 메서드
-    protected void drawBlinkingGameOver(Pane pane, double layoutY, double layoutX, EventHandler<ActionEvent> eventHandler) {
-        Text text = new Text("GAME OVER");
+    protected void drawBlinkingGameOver(Pane pane, double layoutY, double layoutX, EventHandler<ActionEvent> eventHandler, String showText) {
+        Text text = new Text(showText);
         text.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getTitleFontSize()));
         text.setFill(Color.RED);
         text.setLayoutY(layoutY);
@@ -98,8 +98,8 @@ public abstract class GamePlayView {
     }
 
     // 점수 표시 메서드
-    protected void drawPoint(Pane pane, double layoutY, double layoutX, int point) {
-        Text scoreText = new Text("point\n" + point);
+    protected void drawPoint(Pane pane, double layoutY, double layoutX, int point, String showText) {
+        Text scoreText = new Text( showText + "\n" + point);
         scoreText.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
         scoreText.setFill(Color.WHITE);
         scoreText.setLayoutY(layoutY);
@@ -108,8 +108,8 @@ public abstract class GamePlayView {
     }
 
     // 레벨 표시 메서드
-    protected void drawLevel(Pane pane, double layoutY, double layoutX, int level) {
-        Text levelText = new Text("level\n" + level);
+    protected void drawLevel(Pane pane, double layoutY, double layoutX, int level, String showText) {
+        Text levelText = new Text( showText + "\n" + level);
         levelText.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
         levelText.setFill(Color.WHITE);
         levelText.setLayoutY(layoutY);

@@ -10,6 +10,9 @@ import org.nl.javatetris.settings.Settings;
 
 import java.util.function.Consumer;
 
+import static org.nl.javatetris.config.constant.ModelConst.X_MAX;
+import static org.nl.javatetris.config.constant.ModelConst.Y_MAX;
+
 public class BattleGamePlayView extends GamePlayView {
 
     private BattleGamePlayController battleGamePlayController;
@@ -68,13 +71,15 @@ public class BattleGamePlayView extends GamePlayView {
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize(),
                 Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
-                battleGamePlayController.getPoint1()
+                battleGamePlayController.getPoint1(),
+                "p1 point"
         );
         drawLevel(
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize() * 4,
                 Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
-                battleGamePlayController.getLevel1()
+                battleGamePlayController.getLevel1(),
+                "p1 level"
         );
         drawPreview(
                 pane,
@@ -96,13 +101,15 @@ public class BattleGamePlayView extends GamePlayView {
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize(),
                 Settings.getInstance().getSizeSetting().getScreenWidth() * 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
-                battleGamePlayController.getPoint2()
+                battleGamePlayController.getPoint2(),
+                "p2 point"
         );
         drawLevel(
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize() * 4,
                 Settings.getInstance().getSizeSetting().getScreenWidth() * 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
-                battleGamePlayController.getLevel2()
+                battleGamePlayController.getLevel2(),
+                "p2 level"
         );
         drawPreview(
                 pane,
@@ -116,6 +123,74 @@ public class BattleGamePlayView extends GamePlayView {
 
 
     private void updateGameOverScene() {
+        pane.getChildren().clear();
+        // Player 1
+        drawBoard(
+                pane,
+                0,
+                0,
+                false,
+                battleGamePlayController.getBoard1(),
+                isBlinking
+        );
+        drawPoint(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize(),
+                Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
+                battleGamePlayController.getPoint1(),
+                "p1 point"
+        );
+        drawLevel(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 4,
+                Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
+                battleGamePlayController.getLevel1(),
+                "p1 level"
+        );
+
+
+        // Player 2
+        drawBoard(
+                pane,
+                0,
+                Settings.getInstance().getSizeSetting().getScreenWidth(),
+                false,
+                battleGamePlayController.getBoard2(),
+                isBlinking
+        );
+        drawPoint(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize(),
+                Settings.getInstance().getSizeSetting().getScreenWidth() * 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
+                battleGamePlayController.getPoint2(),
+                "p2 point"
+        );
+        drawLevel(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 4,
+                Settings.getInstance().getSizeSetting().getScreenWidth() * 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
+                battleGamePlayController.getLevel2(),
+                "p2 level"
+        );
+
+        drawBlinkingGameOver(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 5,
+                Settings.getInstance().getSizeSetting().getBlockSize(),
+                e -> {
+                    onBackToMenu.run();
+                },
+                "PLAYER " + battleGamePlayController.getWinner() + " WIN"
+        );
+        drawBlinkingGameOver(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 5,
+                Settings.getInstance().getSizeSetting().getScreenWidth() + Settings.getInstance().getSizeSetting().getBlockSize(),
+                e -> {
+                    onBackToMenu.run();
+                },
+                "PLAYER " + battleGamePlayController.getWinner() + " WIN"
+        );
 
     }
 
