@@ -15,7 +15,7 @@ public class ControllerConst {
     public static final int DEFAULT_DROP_KEY = 32;
 
     // 키 설정으로 등록되면 안되는 키.
-    // 27 91 92 93 112 ~ 123 144 145 불가능 (ESC, 윈도우, F1~F12, NUMLOCK, SCROLLLOCK)
+    // 27 91 92 93 112 ~ 123 144 145 불가능 (ESC, 윈도우, F1~F12, NUM LOCK, SCROLL LOCK)
     // 윈도우 윈도우키 = 524, 맥os 커맨드키 = 768
     public static final int[] invalidKeys = {
             10, 13, 27, 91, 92, 93, 112, 113,

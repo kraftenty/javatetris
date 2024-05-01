@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import org.nl.javatetris.config.BackgroundManager;
 import org.nl.javatetris.config.FontManager;
 import org.nl.javatetris.main.MainController;
 import org.nl.javatetris.settings.Settings;
@@ -70,9 +71,7 @@ public class MainView {
     }
 
     private void configureBackground(VBox layout) {
-        Image backgroundImage = new Image(getClass().getResourceAsStream("/images/main.png"));
-        BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
-        layout.setBackground(new Background(background));
+        layout.setBackground(BackgroundManager.getMainBackground());
     }
 
     private void configureLogo(VBox layout) {

@@ -9,10 +9,10 @@ public class FontManager {
 
     // 클래스가 로드될 때 폰트를 로드합니다.
     static {
-        loadFonts();
+        load();
     }
 
-    private static void loadFonts() {
+    private static void load() {
         squareFont = Font.loadFont(FontManager.class.getResourceAsStream("/fonts/square.ttf"), 14);
         if (squareFont == null) {
             System.err.println("Failed to load Square font. Using default font instead.");
