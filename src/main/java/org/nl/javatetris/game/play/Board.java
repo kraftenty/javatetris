@@ -99,9 +99,11 @@ public class Board {
         for (int i=0; i<completedLines.size(); i++) {
             for (int x = 0; x < X_MAX; x++) {
                 if (previousBoard[completedLines.get(i)][x] == EMPTY)
-                    System.out.print("X");
-                else
+                { System.out.print("X");
+                previousBoard[completedLines.get(i)][x]=0;}
+                else{
                     System.out.print("O");
+                    previousBoard[completedLines.get(i)][x]=1;}
             }
         }
     }

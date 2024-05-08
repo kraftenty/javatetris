@@ -169,20 +169,30 @@ public abstract class GamePlayView {
     }
 
     protected void drawDeletedLinePreview(Pane pane, double layoutY, double layoutX, int[][] previousBoard, List<Integer> completedLines) {
-        double blockSize = Settings.getInstance().getSizeSetting().getBlockSize() / 2.0;
+        double blockSize = Settings.getInstance().getSizeSetting().getBlockSize() / 2.5;
+//        //프리뷰 보드 위치 확인용
+//        double boardWidth = X_MAX * blockSize;
+//        double boardHeight = Y_MAX * blockSize;
+//
+//        Rectangle background = new Rectangle(layoutX, layoutY, boardWidth, boardHeight);
+//        background.setFill(WHITE);
+//        pane.getChildren().add(background);
 
         for (int i = 0; i < completedLines.size(); i++) {
+            //밑에서부터 그리도록 y 위치를 계산
+            double yPos = layoutY + (completedLines.size() - 1 - i) * blockSize;
+
             int y = completedLines.get(i);
             for (int x = 0; x < X_MAX; x++) {
                 Rectangle cell = new Rectangle(
                         layoutX + x * blockSize,
-                        layoutY + i * blockSize,
+                        yPos,
                         blockSize,
                         blockSize
                 );
-                // previousBoard에서 EMPTY가 아닌 셀만 흰색으로 처리
-                if (previousBoard[y][x] != EMPTY) {
-                    cell.setFill(Color.WHITE);
+
+                if (previousBoard[y][x] == 1) {
+                    cell.setFill(Color.GRAY);
                 } else {
                     cell.setFill(Color.TRANSPARENT);
                 }
@@ -191,6 +201,7 @@ public abstract class GamePlayView {
             }
         }
     }
+
     protected Color getColorOfCell(int cellValue) {
         return switch (cellValue) {
             // 보드 기본
