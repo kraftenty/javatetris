@@ -174,10 +174,14 @@ public class SingleGamePlayController {
         return Math.max(0.3, baseSpeed);
     }
 
+    private int getLevelUpScore(int currentLevel) {
+        return ((currentLevel+1)*(currentLevel+2)/2) * 500;
+    }
+
     // 레벨업 메서드
     private void checkLevelUp() {
-        if ((point / LEVEL_UP_SCORE) > level) {
-            level = point / LEVEL_UP_SCORE;
+        if (point >= getLevelUpScore(level)) {
+            level++;
             startTimeline(); // 새로운 속도로 타임라인 재시작
         }
     }

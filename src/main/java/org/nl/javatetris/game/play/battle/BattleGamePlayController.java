@@ -230,18 +230,23 @@ public class BattleGamePlayController {
         return Math.max(0.3, baseSpeed);
     }
 
+    // 레벨업에 필요한 점수를 리턴해주는 메서드
+    private int getLevelUpScore(int currentLevel) {
+        return ((currentLevel+1)*(currentLevel+2)/2) * 500;
+    }
+
     // 레벨업 메서드
     private void checkLevelUp1() {
-        if ((point1 / LEVEL_UP_SCORE) > level1) {
-            level1 = point1 / LEVEL_UP_SCORE;
-            startTimeline1(); // 새로운 속도로 타임라인 재시작
+        if (point1 >= getLevelUpScore(level1)) {
+            level1++;
+            startTimeline1();
         }
     }
 
     private void checkLevelUp2() {
-        if ((point2 / LEVEL_UP_SCORE) > level2) {
-            level2 = point2 / LEVEL_UP_SCORE;
-            startTimeline2(); // 새로운 속도로 타임라인 재시작
+        if (point2 >= getLevelUpScore(level2)) {
+            level2++;
+            startTimeline2();
         }
     }
 
