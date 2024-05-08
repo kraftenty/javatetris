@@ -14,6 +14,7 @@ public class Board {
 
     // 보드 자체 관련 필드
     private final int[][] board;
+    private int[][] previousBoard;
 
     // 테트로미노 관련 필드
     private final TetrominoGenerator tetrominoGenerator;
@@ -31,6 +32,7 @@ public class Board {
         this.tetrominoGenerator = tetrominoGenerator;
         this.onClearCompletedLines = onClearCompletedLines;
         board = new int[Y_MAX][X_MAX];
+        previousBoard = new int[Y_MAX][X_MAX];
         clearedLineCount = 0;
         initialize();
     }
@@ -85,6 +87,14 @@ public class Board {
                 shiftLinesDown(y); // 하강
                 clearedLineCount++;
                 onClearCompletedLines.run();
+            }
+        }
+        for (int i=0; i<completedLines.size(); i++) {
+            for (int x = 0; x < X_MAX; x++) {
+                if (previousBoard[completedLines.get(i)][x] == EMPTY)
+                    System.out.print("X");
+                else
+                    System.out.print("O");
             }
         }
     }
@@ -260,6 +270,12 @@ public class Board {
             if (clearedLineCount >= 10) {
                 shouldNextTetrominoBeItem = true;
                 clearedLineCount -= 10;
+            }
+            //previouse board로 얕은 복사
+            for (int y = 0; y < Y_MAX; y++) {
+                for (int x = 0; x < X_MAX; x++) {
+                    previousBoard[y][x] = board[y][x];
+                }
             }
             return spawnTetromino(shouldNextTetrominoBeItem);
         }
