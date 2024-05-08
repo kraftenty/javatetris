@@ -168,6 +168,29 @@ public abstract class GamePlayView {
         pane.getChildren().add(timeText);
     }
 
+    protected void drawDeletedLinePreview(Pane pane, double layoutY, double layoutX, int[][] previousBoard, List<Integer> completedLines) {
+        double blockSize = Settings.getInstance().getSizeSetting().getBlockSize() / 2.0;
+
+        for (int i = 0; i < completedLines.size(); i++) {
+            int y = completedLines.get(i);
+            for (int x = 0; x < X_MAX; x++) {
+                Rectangle cell = new Rectangle(
+                        layoutX + x * blockSize,
+                        layoutY + i * blockSize,
+                        blockSize,
+                        blockSize
+                );
+                // previousBoard에서 EMPTY가 아닌 셀만 흰색으로 처리
+                if (previousBoard[y][x] != EMPTY) {
+                    cell.setFill(Color.WHITE);
+                } else {
+                    cell.setFill(Color.TRANSPARENT);
+                }
+                cell.setStroke(Color.rgb(128, 128, 128, 0.5)); // 셀의 경계선 색상 설정
+                pane.getChildren().add(cell);
+            }
+        }
+    }
     protected Color getColorOfCell(int cellValue) {
         return switch (cellValue) {
             // 보드 기본

@@ -96,6 +96,15 @@ public class BattleGamePlayView extends GamePlayView {
                     "Time left"
             );
         }
+
+        drawDeletedLinePreview(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 12,
+                Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
+                battleGamePlayController.getBoard2().getPreviousBoard(),
+                battleGamePlayController.getBoard2().getCompletedLines()
+        );
+
         // Player 2
         drawBoard(
                 pane,
@@ -134,6 +143,13 @@ public class BattleGamePlayView extends GamePlayView {
                     "Time left"
             );
         }
+        drawDeletedLinePreview(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 12,
+                Settings.getInstance().getSizeSetting().getScreenWidth() *2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
+                battleGamePlayController.getBoard1().getPreviousBoard(),
+                battleGamePlayController.getBoard1().getCompletedLines()
+        );
     }
 
 

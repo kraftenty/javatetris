@@ -24,9 +24,16 @@ public class Board {
     private int clearedLineCount;
     private final Runnable onClearCompletedLines;
 
+    public List<Integer> getCompletedLines() {
+        return completedLines;
+    }
+
     // 줄 지우는 효과를 위한 필드
     private final List<Integer> completedLines = new ArrayList<>();
 
+    public int[][] getPreviousBoard() {
+        return previousBoard;
+    }
     // 생성자
     public Board(Runnable onClearCompletedLines, TetrominoGenerator tetrominoGenerator) {
         this.tetrominoGenerator = tetrominoGenerator;
