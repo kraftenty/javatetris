@@ -116,7 +116,7 @@ public class SingleGamePlayController {
 
     // 한칸 내려갈 때 점수 가산 메서드
     private void addScoreOnDown() {
-        this.point += DOWN_SCORE;
+        this.point += DOWN_SCORE + (level / 2); //5레벨 마다 내려가는 점수 증가
         checkLevelUp(); // 레벨업 체크
     }
 
@@ -124,7 +124,7 @@ public class SingleGamePlayController {
         if (offset == -1) {
             return;
         }
-        this.point += offset;
+        this.point += offset * DOWN_SCORE + (level/2);
         checkLevelUp();
     }
 

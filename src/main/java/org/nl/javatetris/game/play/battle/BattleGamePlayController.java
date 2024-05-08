@@ -152,12 +152,12 @@ public class BattleGamePlayController {
      */
 
     public void addScoreOnDown1() {
-        this.point1 += DOWN_SCORE;
+        this.point1 += DOWN_SCORE + (level1 / 2);
         checkLevelUp1(); // 레벨업 체크
     }
 
     public void addScoreOnDown2() {
-        this.point2 += DOWN_SCORE;
+        this.point2 += DOWN_SCORE + (level2 / 2);
         checkLevelUp2(); // 레벨업 체크
     }
 
@@ -165,7 +165,7 @@ public class BattleGamePlayController {
         if (offset == -1) {
             return;
         }
-        this.point1 += offset;
+        this.point1 += offset + (level1/2);
         checkLevelUp1();
     }
 
@@ -173,7 +173,7 @@ public class BattleGamePlayController {
         if (offset == -1) {
             return;
         }
-        this.point2 += offset;
+        this.point2 += offset + (level2/2);
         checkLevelUp2();
     }
 
