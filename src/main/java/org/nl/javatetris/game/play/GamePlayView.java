@@ -159,6 +159,15 @@ public abstract class GamePlayView {
         }
     }
 
+    protected void drawTimeLimit(Pane pane, double layoutY, double layoutX, int timeLimit, String showText) {
+        Text timeText = new Text( showText + "\n" + timeLimit );
+        timeText.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
+        timeText.setFill(Color.WHITE);
+        timeText.setLayoutY(layoutY);
+        timeText.setLayoutX(layoutX);
+        pane.getChildren().add(timeText);
+    }
+
     protected Color getColorOfCell(int cellValue) {
         return switch (cellValue) {
             // 보드 기본

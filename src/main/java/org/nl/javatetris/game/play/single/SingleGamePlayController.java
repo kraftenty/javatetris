@@ -128,7 +128,6 @@ public class SingleGamePlayController {
         checkLevelUp();
     }
 
-
     // 라인 클리어 시 점수 가산 메서드
     private void addScoreOnLineClear() {
         this.point += LINE_CLEAR_SCORE;

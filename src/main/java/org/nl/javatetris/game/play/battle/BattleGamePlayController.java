@@ -27,6 +27,7 @@ public class BattleGamePlayController {
     private TetrominoGenerator tetrominoGenerator2;
     private static Timeline timeline1;
     private static Timeline timeline2;
+    private int timelineCount;
 
     private GameParam gameParam;
     private Consumer<PauseMenuParam> onPause;
@@ -77,6 +78,7 @@ public class BattleGamePlayController {
             timeline1.stop(); // 기존 타임라인이 존재한다면 중지
         }
         timeline1 = new Timeline(new KeyFrame(Duration.seconds(getSpeedByLevel(1)), e -> {
+            System.out.println("timeline running..." + timelineCount++);
             if (SceneManager.getCurrentSceneNumber() == ViewConst.BATTLE_GAME_PLAY_SCENE) {
                 boolean isProperlyDowned = board1.moveTetrominoDown();
                 if (!isProperlyDowned) {
@@ -122,6 +124,11 @@ public class BattleGamePlayController {
         timeline2.play();
     }
 
+    public int getTimeLimit(){
+        int timeLimit=100 - timelineCount;
+        return timeLimit;
+    }
+
     // 보드 반환 메서드
     public Board getBoard1() {
         return board1;
@@ -139,9 +146,7 @@ public class BattleGamePlayController {
         return tetrominoGenerator2;
     }
 
-    public GameParam getGameParam() {
-        return gameParam;
-    }
+    public GameParam getGameParam() { return gameParam; }
 
     public int getWinner() {
         return winner;

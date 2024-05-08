@@ -87,7 +87,15 @@ public class BattleGamePlayView extends GamePlayView {
                 Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
                 battleGamePlayController.getTetrominoGenerator1().peekNextTetromino()
         );
-
+        if (battleGamePlayController.getGameParam().getMode() == 12){
+            drawTimeLimit(
+                    pane,
+                    Settings.getInstance().getSizeSetting().getBlockSize() * 12,
+                    Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
+                    battleGamePlayController.getTimeLimit(),
+                    "Time left"
+            );
+        }
         // Player 2
         drawBoard(
                 pane,
@@ -117,8 +125,15 @@ public class BattleGamePlayView extends GamePlayView {
                 Settings.getInstance().getSizeSetting().getScreenWidth() * 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
                 battleGamePlayController.getTetrominoGenerator2().peekNextTetromino()
         );
-
-
+        if (battleGamePlayController.getGameParam().getMode() == 12){
+            drawTimeLimit(
+                    pane,
+                    Settings.getInstance().getSizeSetting().getBlockSize() * 12,
+                    Settings.getInstance().getSizeSetting().getScreenWidth() * 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
+                    battleGamePlayController.getTimeLimit(),
+                    "Time left"
+            );
+        }
     }
 
 
