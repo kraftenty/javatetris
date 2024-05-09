@@ -154,7 +154,7 @@ public class BattleGamePlayController {
              else if (point1 < point2) return 2;
              else return 0; // 무승부
         }
-        else return 0; // 아직 시간이 남은 경우에는 승자가 없음
+        else return 3; // 아직 시간이 남은 경우에는 승자가 없음
     }
 
         // 보드 반환 메서드

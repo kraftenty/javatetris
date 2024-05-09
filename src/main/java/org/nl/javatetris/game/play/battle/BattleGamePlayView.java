@@ -227,35 +227,38 @@ public class BattleGamePlayView extends GamePlayView {
 
         //시간제한 모드에서 winner
         if (battleGamePlayController.getGameParam().getMode() == 12) {
-        drawBlinkingGameOver(
-                pane,
-                Settings.getInstance().getSizeSetting().getBlockSize() * 5,
-                Settings.getInstance().getSizeSetting().getBlockSize(),
-                e -> {
-                    onBackToMenu.run();
-                },
-                "PLAYER " + battleGamePlayController.getWinnerInTimeLimitMode() + " WIN"
-        );
-        drawBlinkingGameOver(
-                pane,
-                Settings.getInstance().getSizeSetting().getBlockSize() * 5,
-                Settings.getInstance().getSizeSetting().getScreenWidth() + Settings.getInstance().getSizeSetting().getBlockSize(),
-                e -> {
-                    onBackToMenu.run();
-                },
-                "PLAYER " + battleGamePlayController.getWinnerInTimeLimitMode() + " WIN"
-        );
-        //무승부일때
-        if(battleGamePlayController.getWinnerInTimeLimitMode()==0){
-            drawBlinkingGameOver(
+            //둘중 하나가 게임오버될 경우
+            if (battleGamePlayController.getWinner() == 1 || battleGamePlayController.getWinner() == 2) {
+                drawBlinkingGameOver(
+                        pane,
+                        Settings.getInstance().getSizeSetting().getBlockSize() * 5,
+                        Settings.getInstance().getSizeSetting().getBlockSize(),
+                        e -> {
+                            onBackToMenu.run();
+                        },
+                        "PLAYER " + battleGamePlayController.getWinner() + " WIN"
+                );
+                drawBlinkingGameOver(
+                        pane,
+                        Settings.getInstance().getSizeSetting().getBlockSize() * 5,
+                        Settings.getInstance().getSizeSetting().getScreenWidth() + Settings.getInstance().getSizeSetting().getBlockSize(),
+                        e -> {
+                            onBackToMenu.run();
+                        },
+                        "PLAYER " + battleGamePlayController.getWinner() + " WIN"
+                );
+            }
+            //점수가 같아 무승부일 경우
+            if (battleGamePlayController.getWinnerInTimeLimitMode() == 0){
+                drawBlinkingGameOver(
                     pane,
                     Settings.getInstance().getSizeSetting().getBlockSize() * 5,
                     Settings.getInstance().getSizeSetting().getBlockSize(),
                     e -> {
                         onBackToMenu.run();
                     },
-                    "The game ended in a tie"
-            );
+                    "Draw"
+                );
             drawBlinkingGameOver(
                     pane,
                     Settings.getInstance().getSizeSetting().getBlockSize() * 5,
@@ -263,10 +266,31 @@ public class BattleGamePlayView extends GamePlayView {
                     e -> {
                         onBackToMenu.run();
                     },
-                    "The game ended in a tie"
-            );
-        }
-}
+                    "Draw"
+                );
+            }
+            //둘다 게임오버 되지않고 시간이 끝났을 경우
+            if (battleGamePlayController.getWinnerInTimeLimitMode() == 1 || battleGamePlayController.getWinnerInTimeLimitMode() == 2) {
+                drawBlinkingGameOver(
+                        pane,
+                        Settings.getInstance().getSizeSetting().getBlockSize() * 5,
+                        Settings.getInstance().getSizeSetting().getBlockSize(),
+                        e -> {
+                            onBackToMenu.run();
+                        },
+                        "PLAYER " + battleGamePlayController.getWinnerInTimeLimitMode() + " WIN"
+                );
+                drawBlinkingGameOver(
+                        pane,
+                        Settings.getInstance().getSizeSetting().getBlockSize() * 5,
+                        Settings.getInstance().getSizeSetting().getScreenWidth() + Settings.getInstance().getSizeSetting().getBlockSize(),
+                        e -> {
+                            onBackToMenu.run();
+                        },
+                        "PLAYER " + battleGamePlayController.getWinnerInTimeLimitMode() + " WIN"
+                );
+            }
+            }
         }
     }
 
