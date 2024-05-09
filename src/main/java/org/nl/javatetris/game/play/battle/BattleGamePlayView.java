@@ -223,6 +223,62 @@ public class BattleGamePlayView extends GamePlayView {
                 "PLAYER " + battleGamePlayController.getWinner() + " WIN"
         );
 
+        //시간제한 모드에서 winner
+        if (battleGamePlayController.getGameParam().getMode() == 12) {
+    if (battleGamePlayController.getWinnerInTimeLimitMode()==1) {
+        drawBlinkingGameOver(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 5,
+                Settings.getInstance().getSizeSetting().getBlockSize(),
+                e -> {
+                    onBackToMenu.run();
+                },
+                "PLAYER 1 WIN"
+        );
+
+        drawBlinkingGameOver(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 5,
+                Settings.getInstance().getSizeSetting().getScreenWidth() + Settings.getInstance().getSizeSetting().getBlockSize(),
+                e -> {
+                    onBackToMenu.run();
+                },
+                "PLAYER 1 WIN"
+        );
+
+    } else if (battleGamePlayController.getWinnerInTimeLimitMode()==2) {
+        drawBlinkingGameOver(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 5,
+                Settings.getInstance().getSizeSetting().getBlockSize(),
+                e -> {
+                    onBackToMenu.run();
+                },
+                "PLAYER 2 WIN"
+        );
+
+        drawBlinkingGameOver(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 5,
+                Settings.getInstance().getSizeSetting().getScreenWidth() + Settings.getInstance().getSizeSetting().getBlockSize(),
+                e -> {
+                    onBackToMenu.run();
+                },
+                "PLAYER 2 WIN"
+        );
+      //무승부일때
+    } else {
+        drawBlinkingGameOver(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 5,
+                Settings.getInstance().getSizeSetting().getBlockSize(),
+                e -> {
+                    onBackToMenu.run();
+                },
+                "DRAW"
+        );
+    }
+}
+        }
     }
 
-}

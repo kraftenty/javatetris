@@ -80,7 +80,15 @@ public class BattleGamePlayController {
         timeline1 = new Timeline(new KeyFrame(Duration.seconds(getSpeedByLevel(1)), e -> {
             System.out.println("timeline running..." + timelineCount++);
             if (SceneManager.getCurrentSceneNumber() == ViewConst.BATTLE_GAME_PLAY_SCENE) {
-                boolean isProperlyDowned = board1.moveTetrominoDown();
+                if (getGameParam().getMode() == 12 && getTimeLimit() <= 0) {
+                    int winner = getWinnerInTimeLimitMode();
+                    timeline1.stop();
+                    timeline2.stop();
+                    isGameOver = true;
+                    System.out.println("Player " + winner + " win");
+                    onDrawGameOver.run();
+                }
+                else{boolean isProperlyDowned = board1.moveTetrominoDown();
                 if (!isProperlyDowned) {
                     timeline1.stop(); // 타임라인 중지 하고
                     timeline2.stop();
@@ -91,6 +99,7 @@ public class BattleGamePlayController {
                 } else {
                     addScoreOnDown1();
                     onDrawBoardUpdate.run();
+                }
                 }
             }
 
@@ -105,7 +114,15 @@ public class BattleGamePlayController {
         }
         timeline2 = new Timeline(new KeyFrame(Duration.seconds(getSpeedByLevel(2)), e -> {
             if (SceneManager.getCurrentSceneNumber() == ViewConst.BATTLE_GAME_PLAY_SCENE) {
-                boolean isProperlyDowned = board2.moveTetrominoDown();
+                if (getGameParam().getMode() == 12 && getTimeLimit() <= 0) {
+                    int winner = getWinnerInTimeLimitMode();
+                    timeline1.stop();
+                    timeline2.stop();
+                    isGameOver = true;
+                    System.out.println("Player " + winner + "win");
+                    onDrawGameOver.run();
+                }
+                else{boolean isProperlyDowned = board2.moveTetrominoDown();
                 if (!isProperlyDowned) {
                     timeline2.stop(); // 타임라인 중지 하고
                     timeline1.stop();
@@ -118,6 +135,7 @@ public class BattleGamePlayController {
                     onDrawBoardUpdate.run();
                 }
             }
+            }
 
         }));
         timeline2.setCycleCount(Timeline.INDEFINITE);
@@ -125,11 +143,21 @@ public class BattleGamePlayController {
     }
 
     public int getTimeLimit(){
-        int timeLimit=100 - timelineCount;
+        int timeLimit= 5 - timelineCount;
         return timeLimit;
     }
 
-    // 보드 반환 메서드
+    public int getWinnerInTimeLimitMode() {
+        int timeLimit = getTimeLimit();
+        if (timeLimit == 0) {
+            if (point1 > point2) return 1;
+             else if (point1 < point2) return 2;
+             else return 0; // 무승부
+        }
+        else return 0; // 아직 시간이 남은 경우에는 승자가 없음
+    }
+
+        // 보드 반환 메서드
     public Board getBoard1() {
         return board1;
     }
