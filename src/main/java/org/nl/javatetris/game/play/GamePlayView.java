@@ -168,20 +168,54 @@ public abstract class GamePlayView {
         pane.getChildren().add(timeText);
     }
 
-    protected void drawDeletedLinePreview(Pane pane, double layoutY, double layoutX, int[][] previousBoard, List<Integer> completedLines) {
-        double blockSize = Settings.getInstance().getSizeSetting().getBlockSize() / 2.5;
-//        //프리뷰 보드 위치 확인용
-//        double boardWidth = X_MAX * blockSize;
-//        double boardHeight = Y_MAX * blockSize;
+//    protected void drawDeletedLinePreview(Pane pane, double layoutY, double layoutX, int[][] previousBoard, List<Integer> completedLines) {
+//        double blockSize = Settings.getInstance().getSizeSetting().getBlockSize() / 2.5;
+////        //프리뷰 보드 위치 확인용
+////        double boardWidth = X_MAX * blockSize;
+////        double boardHeight = Y_MAX * blockSize;
+////
+////        Rectangle background = new Rectangle(layoutX, layoutY, boardWidth, boardHeight);
+////        background.setFill(WHITE);
+////        pane.getChildren().add(background);
 //
-//        Rectangle background = new Rectangle(layoutX, layoutY, boardWidth, boardHeight);
-//        background.setFill(WHITE);
-//        pane.getChildren().add(background);
+//        for (int i = 0; i < completedLines.size(); i++) {
+//            //밑에서부터 그리도록 y 위치를 계산
+//            double yPos = layoutY + (completedLines.size() - 1 - i) * blockSize;
+//
+//            int y = completedLines.get(i);
+//            for (int x = 0; x < X_MAX; x++) {
+//                Rectangle cell = new Rectangle(
+//                        layoutX + x * blockSize,
+//                        yPos,
+//                        blockSize,
+//                        blockSize
+//                );
+//
+//                if (previousBoard[y][x] == 1) {
+//                    cell.setFill(Color.GRAY);
+//                } else {
+//                    cell.setFill(Color.TRANSPARENT);
+//                }
+//                cell.setStroke(Color.rgb(128, 128, 128, 0.5)); // 셀의 경계선 색상 설정
+//                pane.getChildren().add(cell);
+//            }
+//        }
+//    }
+
+    protected void drawDeletedLinePreview(Pane pane, double layoutY, double layoutX, int[][] previousBoard, List<Integer> completedLines) {
+        if (completedLines.size() <= 2) {
+        double blockSize = Settings.getInstance().getSizeSetting().getBlockSize() / 2.5;
+
+        // 프리뷰 보드의 배경 그리기 (필요한 경우 주석 해제)
+        double boardWidth = X_MAX * blockSize;
+        double boardHeight = completedLines.size() * blockSize;
+        Rectangle background = new Rectangle(layoutX, layoutY, boardWidth, boardHeight);
+        background.setFill(Color.WHITE);
+        pane.getChildren().add(background);
 
         for (int i = 0; i < completedLines.size(); i++) {
-            //밑에서부터 그리도록 y 위치를 계산
+            // 밑에서부터 그리도록 y 위치를 계산
             double yPos = layoutY + (completedLines.size() - 1 - i) * blockSize;
-
             int y = completedLines.get(i);
             for (int x = 0; x < X_MAX; x++) {
                 Rectangle cell = new Rectangle(
@@ -199,6 +233,7 @@ public abstract class GamePlayView {
                 cell.setStroke(Color.rgb(128, 128, 128, 0.5)); // 셀의 경계선 색상 설정
                 pane.getChildren().add(cell);
             }
+        }
         }
     }
 

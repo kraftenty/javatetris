@@ -204,6 +204,7 @@ public class BattleGamePlayView extends GamePlayView {
                 "p2 level"
         );
 
+        if (battleGamePlayController.getGameParam().getMode() == 10 || battleGamePlayController.getGameParam().getMode() == 11 ) {
         drawBlinkingGameOver(
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize() * 5,
@@ -222,10 +223,10 @@ public class BattleGamePlayView extends GamePlayView {
                 },
                 "PLAYER " + battleGamePlayController.getWinner() + " WIN"
         );
+        }
 
         //시간제한 모드에서 winner
         if (battleGamePlayController.getGameParam().getMode() == 12) {
-    if (battleGamePlayController.getWinnerInTimeLimitMode()==1) {
         drawBlinkingGameOver(
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize() * 5,
@@ -233,9 +234,8 @@ public class BattleGamePlayView extends GamePlayView {
                 e -> {
                     onBackToMenu.run();
                 },
-                "PLAYER 1 WIN"
+                "PLAYER " + battleGamePlayController.getWinnerInTimeLimitMode() + " WIN"
         );
-
         drawBlinkingGameOver(
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize() * 5,
@@ -243,41 +243,29 @@ public class BattleGamePlayView extends GamePlayView {
                 e -> {
                     onBackToMenu.run();
                 },
-                "PLAYER 1 WIN"
+                "PLAYER " + battleGamePlayController.getWinnerInTimeLimitMode() + " WIN"
         );
-
-    } else if (battleGamePlayController.getWinnerInTimeLimitMode()==2) {
-        drawBlinkingGameOver(
-                pane,
-                Settings.getInstance().getSizeSetting().getBlockSize() * 5,
-                Settings.getInstance().getSizeSetting().getBlockSize(),
-                e -> {
-                    onBackToMenu.run();
-                },
-                "PLAYER 2 WIN"
-        );
-
-        drawBlinkingGameOver(
-                pane,
-                Settings.getInstance().getSizeSetting().getBlockSize() * 5,
-                Settings.getInstance().getSizeSetting().getScreenWidth() + Settings.getInstance().getSizeSetting().getBlockSize(),
-                e -> {
-                    onBackToMenu.run();
-                },
-                "PLAYER 2 WIN"
-        );
-      //무승부일때
-    } else {
-        drawBlinkingGameOver(
-                pane,
-                Settings.getInstance().getSizeSetting().getBlockSize() * 5,
-                Settings.getInstance().getSizeSetting().getBlockSize(),
-                e -> {
-                    onBackToMenu.run();
-                },
-                "DRAW"
-        );
-    }
+        //무승부일때
+        if(battleGamePlayController.getWinnerInTimeLimitMode()==0){
+            drawBlinkingGameOver(
+                    pane,
+                    Settings.getInstance().getSizeSetting().getBlockSize() * 5,
+                    Settings.getInstance().getSizeSetting().getBlockSize(),
+                    e -> {
+                        onBackToMenu.run();
+                    },
+                    "The game ended in a tie"
+            );
+            drawBlinkingGameOver(
+                    pane,
+                    Settings.getInstance().getSizeSetting().getBlockSize() * 5,
+                    Settings.getInstance().getSizeSetting().getScreenWidth() + Settings.getInstance().getSizeSetting().getBlockSize(),
+                    e -> {
+                        onBackToMenu.run();
+                    },
+                    "The game ended in a tie"
+            );
+        }
 }
         }
     }

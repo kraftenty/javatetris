@@ -86,7 +86,30 @@ public class Board {
     }
 
     // 게임 보드에서 완성된 줄을 제거하고, 줄들을 아래로 이동시키는 메서드
+//    private void clearCompletedLines() {
+//        for (int y = 1; y < Y_MAX - 1; y++) {
+//            if (isLineComplete(y)) {
+//                completedLines.add(y); // 완성된 줄을 completedLines 리스트에 추가
+//                removeLine(y); // 한줄 지우고
+//                shiftLinesDown(y); // 하강
+//                clearedLineCount++;
+//                onClearCompletedLines.run();
+//            }
+//        }
+//        for (int i=0; i<completedLines.size(); i++) {
+//            for (int x = 0; x < X_MAX; x++) {
+//                if (previousBoard[completedLines.get(i)][x] == EMPTY)
+//                { System.out.print("X");
+//                previousBoard[completedLines.get(i)][x]=0;}
+//                else{
+//                    System.out.print("O");
+//                    previousBoard[completedLines.get(i)][x]=1;}
+//            }
+//        }
+//    }
+
     private void clearCompletedLines() {
+        completedLines.clear(); // completedLines 초기화
         for (int y = 1; y < Y_MAX - 1; y++) {
             if (isLineComplete(y)) {
                 completedLines.add(y); // 완성된 줄을 completedLines 리스트에 추가
@@ -96,18 +119,21 @@ public class Board {
                 onClearCompletedLines.run();
             }
         }
-        for (int i=0; i<completedLines.size(); i++) {
+        // previousBoard 상태 업데이트
+        for (int i = 0; i < completedLines.size(); i++) {
+            int y = completedLines.get(i);
             for (int x = 0; x < X_MAX; x++) {
-                if (previousBoard[completedLines.get(i)][x] == EMPTY)
-                { System.out.print("X");
-                previousBoard[completedLines.get(i)][x]=0;}
-                else{
+                if (previousBoard[y][x] == EMPTY) {
+                    System.out.print("X");
+                    previousBoard[y][x] = 0;
+                } else {
                     System.out.print("O");
-                    previousBoard[completedLines.get(i)][x]=1;}
+                    previousBoard[y][x] = 1;
+                }
             }
+            System.out.println(); // 줄 바꿈
         }
     }
-
     private void clearItemLine() {
         int y = 0;
         for (int i = 0; i < currentTetromino.getShapeHeight(); i++) {
