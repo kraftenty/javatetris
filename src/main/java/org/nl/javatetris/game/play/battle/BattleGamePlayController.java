@@ -152,12 +152,12 @@ public class BattleGamePlayController {
      */
 
     public void addScoreOnDown1() {
-        this.point1 += DOWN_SCORE;
+        this.point1 += DOWN_SCORE + (level1 / 2);
         checkLevelUp1(); // 레벨업 체크
     }
 
     public void addScoreOnDown2() {
-        this.point2 += DOWN_SCORE;
+        this.point2 += DOWN_SCORE + (level2 / 2);
         checkLevelUp2(); // 레벨업 체크
     }
 
@@ -165,7 +165,7 @@ public class BattleGamePlayController {
         if (offset == -1) {
             return;
         }
-        this.point1 += offset;
+        this.point1 += offset + (level1/2);
         checkLevelUp1();
     }
 
@@ -173,7 +173,7 @@ public class BattleGamePlayController {
         if (offset == -1) {
             return;
         }
-        this.point2 += offset;
+        this.point2 += offset + (level2/2);
         checkLevelUp2();
     }
 
@@ -230,18 +230,23 @@ public class BattleGamePlayController {
         return Math.max(0.3, baseSpeed);
     }
 
+    // 레벨업에 필요한 점수를 리턴해주는 메서드
+    private int getLevelUpScore(int currentLevel) {
+        return ((currentLevel+1)*(currentLevel+2)/2) * 500;
+    }
+
     // 레벨업 메서드
     private void checkLevelUp1() {
-        if ((point1 / LEVEL_UP_SCORE) > level1) {
-            level1 = point1 / LEVEL_UP_SCORE;
-            startTimeline1(); // 새로운 속도로 타임라인 재시작
+        if (point1 >= getLevelUpScore(level1)) {
+            level1++;
+            startTimeline1();
         }
     }
 
     private void checkLevelUp2() {
-        if ((point2 / LEVEL_UP_SCORE) > level2) {
-            level2 = point2 / LEVEL_UP_SCORE;
-            startTimeline2(); // 새로운 속도로 타임라인 재시작
+        if (point2 >= getLevelUpScore(level2)) {
+            level2++;
+            startTimeline2();
         }
     }
 

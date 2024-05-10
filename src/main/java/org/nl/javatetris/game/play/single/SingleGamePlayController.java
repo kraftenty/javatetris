@@ -116,7 +116,7 @@ public class SingleGamePlayController {
 
     // 한칸 내려갈 때 점수 가산 메서드
     private void addScoreOnDown() {
-        this.point += DOWN_SCORE;
+        this.point += DOWN_SCORE + (level / 2); //5레벨 마다 내려가는 점수 증가
         checkLevelUp(); // 레벨업 체크
     }
 
@@ -124,7 +124,7 @@ public class SingleGamePlayController {
         if (offset == -1) {
             return;
         }
-        this.point += offset;
+        this.point += offset * DOWN_SCORE + (level/2);
         checkLevelUp();
     }
 
@@ -174,10 +174,14 @@ public class SingleGamePlayController {
         return Math.max(0.3, baseSpeed);
     }
 
+    private int getLevelUpScore(int currentLevel) {
+        return ((currentLevel+1)*(currentLevel+2)/2) * 500;
+    }
+
     // 레벨업 메서드
     private void checkLevelUp() {
-        if ((point / LEVEL_UP_SCORE) > level) {
-            level = point / LEVEL_UP_SCORE;
+        if (point >= getLevelUpScore(level)) {
+            level++;
             startTimeline(); // 새로운 속도로 타임라인 재시작
         }
     }
