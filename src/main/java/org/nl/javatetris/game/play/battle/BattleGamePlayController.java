@@ -5,7 +5,6 @@ import javafx.animation.Timeline;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
-import org.nl.javatetris.config.constant.ControllerConst;
 import org.nl.javatetris.config.manager.SceneManager;
 import org.nl.javatetris.config.constant.ViewConst;
 import org.nl.javatetris.game.play.Board;
@@ -13,7 +12,6 @@ import org.nl.javatetris.game.GameParam;
 import org.nl.javatetris.game.tetromino.generator.ClassicModeTetrominoGenerator;
 import org.nl.javatetris.game.tetromino.generator.ItemModeTetrominoGenerator;
 import org.nl.javatetris.game.tetromino.generator.TetrominoGenerator;
-import org.nl.javatetris.pause.PauseMenuController;
 import org.nl.javatetris.pause.PauseMenuParam;
 
 import java.util.function.Consumer;
@@ -43,6 +41,8 @@ public class BattleGamePlayController {
     private boolean isGameOver = false;
     private boolean isPaused = false;
     private Integer winner = 0;
+
+
     // 생성자
     public BattleGamePlayController(GameParam gameParam, Consumer<PauseMenuParam> onPause, Runnable onDrawBoardUpdate, Runnable onDrawGameOver) {
         this.gameParam = gameParam;
@@ -147,7 +147,15 @@ public class BattleGamePlayController {
         return timeLimit;
     }
 
-
+    public int getWinnerInTimeLimitMode() {
+        int timeLimit = getTimeLimit();
+        if (timeLimit == 0) {
+            if (point1 > point2) return 1;
+            else if (point1 < point2) return 2;
+            else return 0; // 무승부
+        }
+        else return 3; // 아직 시간이 남은 경우에는 승자가 없음
+    }
     public void pauseTimer() {
         isPaused = true;
         if (timeline1 != null) {
@@ -166,15 +174,6 @@ public class BattleGamePlayController {
         if (timeline2 != null) {
             timeline2.play();
         }
-    }
-    public int getWinnerInTimeLimitMode() {
-        int timeLimit = getTimeLimit();
-        if (timeLimit == 0) {
-            if (point1 > point2) return 1;
-            else if (point1 < point2) return 2;
-            else return 0; // 무승부
-        }
-        else return 3; // 아직 시간이 남은 경우에는 승자가 없음
     }
 
     // 보드 반환 메서드
@@ -205,12 +204,12 @@ public class BattleGamePlayController {
      */
 
     public void addScoreOnDown1() {
-        this.point1 += DOWN_SCORE;
+        this.point1 += DOWN_SCORE + (level1 / 2);
         checkLevelUp1(); // 레벨업 체크
     }
 
     public void addScoreOnDown2() {
-        this.point2 += DOWN_SCORE;
+        this.point2 += DOWN_SCORE + (level2 / 2);
         checkLevelUp2(); // 레벨업 체크
     }
 
@@ -218,7 +217,7 @@ public class BattleGamePlayController {
         if (offset == -1) {
             return;
         }
-        this.point1 += offset;
+        this.point1 += offset + (level1/2);
         checkLevelUp1();
     }
 
@@ -226,7 +225,7 @@ public class BattleGamePlayController {
         if (offset == -1) {
             return;
         }
-        this.point2 += offset;
+        this.point2 += offset + (level2/2);
         checkLevelUp2();
     }
 
@@ -283,18 +282,23 @@ public class BattleGamePlayController {
         return Math.max(0.3, baseSpeed);
     }
 
+    // 레벨업에 필요한 점수를 리턴해주는 메서드
+    private int getLevelUpScore(int currentLevel) {
+        return ((currentLevel+1)*(currentLevel+2)/2) * 500;
+    }
+
     // 레벨업 메서드
     private void checkLevelUp1() {
-        if ((point1 / LEVEL_UP_SCORE) > level1) {
-            level1 = point1 / LEVEL_UP_SCORE;
-            startTimeline1(); // 새로운 속도로 타임라인 재시작
+        if (point1 >= getLevelUpScore(level1)) {
+            level1++;
+            startTimeline1();
         }
     }
 
     private void checkLevelUp2() {
-        if ((point2 / LEVEL_UP_SCORE) > level2) {
-            level2 = point2 / LEVEL_UP_SCORE;
-            startTimeline2(); // 새로운 속도로 타임라인 재시작
+        if (point2 >= getLevelUpScore(level2)) {
+            level2++;
+            startTimeline2();
         }
     }
 
@@ -309,7 +313,6 @@ public class BattleGamePlayController {
         int keyCode = e.getCode().getCode();
         if (keyCode == KeyCode.ESCAPE.getCode()) { // ESC
             pauseTimer();
-            //onPause.accept(new PauseMenuParam(PAUSE_MENU_BATTLE_MODE, this::shutdownGame));
             onPause.accept(new PauseMenuParam(PAUSE_MENU_BATTLE_MODE, this::shutdownGame, this::resumeTimer));
         }
         // 플레이어 1
