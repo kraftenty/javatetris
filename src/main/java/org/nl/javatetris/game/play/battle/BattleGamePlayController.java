@@ -9,14 +9,11 @@ import org.nl.javatetris.config.manager.SceneManager;
 import org.nl.javatetris.config.constant.ViewConst;
 import org.nl.javatetris.game.play.Board;
 import org.nl.javatetris.game.GameParam;
-import org.nl.javatetris.game.play.LineDTO;
 import org.nl.javatetris.game.tetromino.generator.ClassicModeTetrominoGenerator;
 import org.nl.javatetris.game.tetromino.generator.ItemModeTetrominoGenerator;
 import org.nl.javatetris.game.tetromino.generator.TetrominoGenerator;
 import org.nl.javatetris.pause.PauseMenuParam;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 
 import static org.nl.javatetris.config.constant.ControllerConst.*;
@@ -44,12 +41,6 @@ public class BattleGamePlayController {
 
     private Integer winner = 0;
 
-    // TODO : 공격 관련 변수
-    private List<LineDTO> player1DamagedLinesBuffer = new ArrayList<>();
-    private List<LineDTO> player2DamagedLinesBuffer = new ArrayList<>();
-
-
-
     // 생성자
     public BattleGamePlayController(GameParam gameParam, Consumer<PauseMenuParam> onPause, Runnable onDrawBoardUpdate, Runnable onDrawGameOver) {
         this.gameParam = gameParam;
@@ -75,16 +66,6 @@ public class BattleGamePlayController {
         startTimeline2();
     }
 
-    // Board1로부터 데미지 라인을 처리
-    private void handleDamagedLinesForBoard1(List<LineDTO> damagedLines) {
-        board1.processReceivedDamageLines(damagedLines);
-    }
-
-    // Board2로부터 데미지 라인을 처리
-    private void handleDamagedLinesForBoard2(List<LineDTO> damagedLines) {
-        board2.processReceivedDamageLines(damagedLines);
-    }
-
     /**
      * 유틸 메서드
      */
@@ -96,11 +77,8 @@ public class BattleGamePlayController {
         }
         timeline1 = new Timeline(new KeyFrame(Duration.seconds(getSpeedByLevel(1)), e -> {
             System.out.println("timeline running..." + timelineCount++);
-            // TODO
-            // 상대 보드의 버퍼를 내 damaged 버퍼에 쌓기
-            board2.releaseCompletedLineBuffer().forEach(lineDTO -> player1DamagedLinesBuffer.add(lineDTO));
-            // 내 damaged 버퍼를 내 보드에 적용
-            handleDamagedLinesForBoard1(releasePlayer1DamagedLinesBuffer());
+            // TODO : 상대가 공격한 라인을 내 보드에 데미지 입힘
+            board1.receiveDamage(board2.releaseAttackLineBuffer());
 
             if (SceneManager.getCurrentSceneNumber() == ViewConst.BATTLE_GAME_PLAY_SCENE) {
                 if (getGameParam().getMode() == 12 && getTimeLimit() <= 0) {
@@ -136,11 +114,8 @@ public class BattleGamePlayController {
             timeline2.stop(); // 기존 타임라인이 존재한다면 중지
         }
         timeline2 = new Timeline(new KeyFrame(Duration.seconds(getSpeedByLevel(2)), e -> {
-            // TODO
-            // 상대 보드의 버퍼를 내 damaged 버퍼에 쌓기
-            board1.releaseCompletedLineBuffer().forEach(lineDTO -> player2DamagedLinesBuffer.add(lineDTO));
-            // 내 damaged 버퍼를 내 보드에 적용
-            handleDamagedLinesForBoard2(releasePlayer2DamagedLinesBuffer());
+            // TODO : 상대가 공격한 라인을 내 보드에 데미지 입힘
+            board2.receiveDamage(board1.releaseAttackLineBuffer());
 
             if (SceneManager.getCurrentSceneNumber() == ViewConst.BATTLE_GAME_PLAY_SCENE) {
                 if (getGameParam().getMode() == 12 && getTimeLimit() <= 0) {
@@ -207,26 +182,6 @@ public class BattleGamePlayController {
 
     public int getWinner() {
         return winner;
-    }
-
-    public List<LineDTO> getPlayer1DamagedLinesBuffer() {
-        return player1DamagedLinesBuffer;
-    }
-
-    public List<LineDTO> getPlayer2DamagedLinesBuffer() {
-        return player2DamagedLinesBuffer;
-    }
-
-    public List<LineDTO> releasePlayer1DamagedLinesBuffer() {
-        List<LineDTO> temp = new ArrayList<>(player1DamagedLinesBuffer);
-        player1DamagedLinesBuffer.clear();
-        return temp;
-    }
-
-    public List<LineDTO> releasePlayer2DamagedLinesBuffer() {
-        List<LineDTO> temp = new ArrayList<>(player2DamagedLinesBuffer);
-        player2DamagedLinesBuffer.clear();
-        return temp;
     }
 
     /**

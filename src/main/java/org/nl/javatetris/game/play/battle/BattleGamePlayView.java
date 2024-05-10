@@ -2,6 +2,7 @@ package org.nl.javatetris.game.play.battle;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
+import org.nl.javatetris.config.constant.ControllerConst;
 import org.nl.javatetris.config.manager.BackgroundManager;
 import org.nl.javatetris.game.GameParam;
 import org.nl.javatetris.game.play.GamePlayView;
@@ -83,30 +84,21 @@ public class BattleGamePlayView extends GamePlayView {
                 Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
                 battleGamePlayController.getTetrominoGenerator1().peekNextTetromino()
         );
-        if (battleGamePlayController.getGameParam().getMode() == 12){
+        drawAttackLinesPreview(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 12,
+                Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
+                battleGamePlayController.getBoard1().getDamagedLineBuffer()
+        );
+        if (battleGamePlayController.getGameParam().getMode() == ControllerConst.BATTLE_TIME_ATTACK){
             drawTimeLimit(
                     pane,
-                    Settings.getInstance().getSizeSetting().getBlockSize() * 12,
+                    Settings.getInstance().getSizeSetting().getBlockSize() * 20,
                     Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
                     battleGamePlayController.getTimeLimit(),
                     "Time left"
             );
         }
-        drawAttackLinesPreview(
-                pane,
-                Settings.getInstance().getSizeSetting().getBlockSize() * 14,
-                Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
-                battleGamePlayController.getPlayer1DamagedLinesBuffer()
-        );
-        //if (!completedLines.isEmpty()) {
-//        drawDeletedLinePreview(
-//                pane,
-//                Settings.getInstance().getSizeSetting().getBlockSize() * 12,
-//                Settings.getInstance().getSizeSetting().getScreenWidth() - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
-//                battleGamePlayController.getBoard2().getPreviousBoard(),
-//                battleGamePlayController.getBoard2().getCompletedLineNumbers()
-//        );
-    //}
 
         // Player 2
         drawBoard(
@@ -137,29 +129,21 @@ public class BattleGamePlayView extends GamePlayView {
                 Settings.getInstance().getSizeSetting().getScreenWidth() * 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
                 battleGamePlayController.getTetrominoGenerator2().peekNextTetromino()
         );
-        if (battleGamePlayController.getGameParam().getMode() == 12){
+        drawAttackLinesPreview(
+                pane,
+                Settings.getInstance().getSizeSetting().getBlockSize() * 12,
+                Settings.getInstance().getSizeSetting().getScreenWidth() * 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
+                battleGamePlayController.getBoard2().getDamagedLineBuffer()
+        );
+        if (battleGamePlayController.getGameParam().getMode() == ControllerConst.BATTLE_TIME_ATTACK){
             drawTimeLimit(
                     pane,
-                    Settings.getInstance().getSizeSetting().getBlockSize() * 12,
+                    Settings.getInstance().getSizeSetting().getBlockSize() * 20,
                     Settings.getInstance().getSizeSetting().getScreenWidth() * 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
                     battleGamePlayController.getTimeLimit(),
                     "Time left"
             );
         }
-        drawAttackLinesPreview(
-                pane,
-                Settings.getInstance().getSizeSetting().getBlockSize() * 14,
-                Settings.getInstance().getSizeSetting().getScreenWidth() * 2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
-                battleGamePlayController.getPlayer2DamagedLinesBuffer()
-        );
-//        drawDeletedLinePreview(
-//                pane,
-//                Settings.getInstance().getSizeSetting().getBlockSize() * 12,
-//                Settings.getInstance().getSizeSetting().getScreenWidth() *2 - Settings.getInstance().getSizeSetting().getSidebarSize() + 10,
-//                battleGamePlayController.getBoard1().getPreviousBoard(),
-//                battleGamePlayController.getBoard1().getCompletedLineNumbers()
-//        );
-
     }
 
 

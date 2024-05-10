@@ -22,45 +22,99 @@ public class Board {
     private int tetrominoX;
     private int clearedLineCount;
     private final Runnable onClearCompletedLines;
-//    private Consumer<List<LineDTO>> onReceiveDamagedLines;
-
-    public List<Integer> getCompletedLineNumbers() {
-        return completedLineNumbers;
-    }
 
     // 줄 넘김을 위한 필드
     private final List<Integer> completedLineNumbers = new ArrayList<>();
-    private List<LineDTO> completedLineBuffer = new ArrayList<>();
-    private List<LineDTO> damagedLineBuffer = new ArrayList<>();
 
+    // 공격할 라인을 담는 버퍼
+    private List<LineDTO> attackLineBuffer = new ArrayList<>();
+    // 공격받은 라인을 담는 버퍼
+    private List<LineDTO> damagedLineBuffer = new ArrayList<>();
 
 
     // 생성자
     public Board(Runnable onClearCompletedLines, TetrominoGenerator tetrominoGenerator) {
         this.tetrominoGenerator = tetrominoGenerator;
         this.onClearCompletedLines = onClearCompletedLines;
-//        this.onReceiveDamagedLines = null;
         board = new int[Y_MAX][X_MAX];
         clearedLineCount = 0;
         initialize();
     }
-//
-//    public Board(Runnable onClearCompletedLines, TetrominoGenerator tetrominoGenerator, Consumer<List<LineDTO>> onReceiveDamagedLines) {
-//        this.tetrominoGenerator = tetrominoGenerator;
-//        this.onClearCompletedLines = onClearCompletedLines;
-//        this.onReceiveDamagedLines = onReceiveDamagedLines;
-//        board = new int[Y_MAX][X_MAX];
-//        clearedLineCount = 0;
-//        initialize();
-//    }
 
-    //// TODO ::::::::::::::::::::::::::
-    // 외부에서 데미지 라인을 전달받아 버퍼에 추가
-    public void processReceivedDamageLines(List<LineDTO> damagedLines) {
-        damagedLineBuffer.addAll(damagedLines);  // damagedLines를 버퍼에 추가
+    /**
+     * 어택 및 데미지 처리 관련 메서드 TODO
+     */
+    public List<LineDTO> getDamagedLineBuffer() {
+        return damagedLineBuffer;
     }
 
-    //// END TODO ::::::::::::::::::::::::::
+    // 외부에서 데미지 라인을 전달받아 버퍼에 추가하는 메서드
+    public void receiveDamage(List<LineDTO> damagedLines) {
+        // 2줄 이하면 damagedLineBuffer 에 추가하지 않음
+        if (damagedLines.size() < 2) {
+            return;
+        }
+        damagedLineBuffer.addAll(damagedLines);  // damagedLines 를 버퍼에 추가
+    }
+
+    // 데미지 입은 라인을 보드에 추가하는 메서드
+    public void addDamagedLinesToBoard() {
+        int linesToElivate = damagedLineBuffer.size();
+        if (linesToElivate > 0) {
+            // 현재 쌓여있는 블럭들을 damagedLineBuffer의 길이만큼 위로 올림
+            for (int y = 1; y < Y_MAX - linesToElivate - 1; y++) {
+                for (int x = 1; x < X_MAX - 1; x++) {
+                    board[y][x] = board[y + linesToElivate][x];
+                }
+            }
+
+            // 게임 하단에 데미지 입은 라인을 추가
+            for (int y = 0; y < linesToElivate; y++) {
+                List<Integer> newLine = damagedLineBuffer.get(y).getLine();
+                int targetY = Y_MAX - linesToElivate - 1 + y; // 새 줄이 추가될 y 위치
+                for (int x = 1; x < X_MAX - 1; x++) {
+                    if (x <= newLine.size()) {
+                        board[targetY][x] = newLine.get(x - 1) == 1 ? W : EMPTY; // x - 1은 damagedLineBuffer의 인덱스 조정
+                    }
+                }
+            }
+
+            damagedLineBuffer.clear(); // 처리 후 버퍼 비우기
+        }
+    }
+
+    // attackLineBuffer 리스트를 반환하고, attackLineBuffer 리스트를 초기화하는 메서드
+    public List<LineDTO> releaseAttackLineBuffer() {
+        List<LineDTO> temp = new ArrayList<>(attackLineBuffer);
+        attackLineBuffer.clear();
+        return temp;
+    }
+
+    // 공격할 라인을 받아서 버퍼에 추가하는 메서드
+    private void putCompletedLineIntoAttackLineBuffer(int lineNumber) {
+        List<Integer> line = new ArrayList<>();
+        for (int x = 1; x < X_MAX - 1; x++) {
+            // 현재 테트로미노의 위치와 매치되는지 확인
+            boolean isPartOfTetromino = false;
+            for (int i = 0; i < currentTetromino.getShapeHeight(); i++) {
+                for (int j = 0; j < currentTetromino.getShapeWidth(); j++) {
+                    // 테트로미노의 각 블록이 라인과 일치하는지, 그리고 테트로미노 모양에서 해당 위치가 블록인지 확인
+                    if (currentTetromino.getTetrominoBlock(i, j) != 0 &&
+                            tetrominoY + i == lineNumber &&
+                            tetrominoX + j == x) {
+                        isPartOfTetromino = true;
+                        break;
+                    }
+                }
+                if (isPartOfTetromino) {
+                    break;
+                }
+            }
+            // 라인을 완성시킨 원인이 되는 현재 테트로미노는 0으로 add, 아닌 경우 1로 add
+            line.add(isPartOfTetromino ? 0 : 1);
+        }
+        attackLineBuffer.add(new LineDTO(line));
+    }
 
 
     /**
@@ -97,40 +151,6 @@ public class Board {
         return yx;
     }
 
-    public void receiveDamagedLines(List<LineDTO> damagedLines) {
-        damagedLineBuffer.addAll(damagedLines);
-    }
-
-    public void addDamagedLinesToBoard() {
-        int linesToAdd = damagedLineBuffer.size();
-        if (linesToAdd > 0) {
-            // 현재 쌓여있는 블럭들을 damagedLineBuffer의 길이만큼 위로 올림
-            for (int y = 1; y < Y_MAX - linesToAdd - 1; y++) {
-                for (int x = 1; x < X_MAX - 1; x++) {
-                    board[y][x] = board[y + linesToAdd][x];
-                }
-            }
-
-            // 게임 하단에 새로운 데미지 라인을 추가
-            for (int i = 0; i < linesToAdd; i++) {
-                List<Integer> newLine = damagedLineBuffer.get(i).getLine();
-                int boardY = Y_MAX - linesToAdd - 1 + i; // 새 줄이 추가될 y 위치
-                for (int x = 1; x < X_MAX - 1; x++) {
-                    // 데미지 라인의 값은 테트로미노와 일치하는 위치에서만 적용
-                    if (x-1 < newLine.size()) {
-                        board[boardY][x] = newLine.get(x - 1); // x - 1은 damagedLineBuffer의 인덱스 조정
-                    } else {
-                        board[boardY][x] = EMPTY; // 테두리 너머는 빈칸으로 처리
-                    }
-                }
-            }
-
-            damagedLineBuffer.clear(); // 처리 후 버퍼 비우기
-        }
-    }
-
-
-
     // completedLines 리스트를 반환하고, completedLines 리스트를 초기화하는 메서드
     public List<Integer> releaseCompletedLines() {
         List<Integer> temp = new ArrayList<>(completedLineNumbers);
@@ -138,59 +158,23 @@ public class Board {
         return temp;
     }
 
-    // completedLineBuffer 리스트를 반환하고, completedLineBuffer 리스트를 초기화하는 메서드
-    public List<LineDTO> releaseCompletedLineBuffer() {
-        List<LineDTO> temp = new ArrayList<>(completedLineBuffer);
-        completedLineBuffer.clear();
-        return temp;
-    }
-
-    private void putCompletedLineIntoBuffer(int lineNumber) {
-        List<Integer> line = new ArrayList<>();
-        for (int x = 1; x < X_MAX - 1; x++) {
-            // 현재 테트로미노의 위치와 매치되는지 확인
-            boolean isPartOfTetromino = false;
-            for (int i = 0; i < currentTetromino.getShapeHeight(); i++) {
-                for (int j = 0; j < currentTetromino.getShapeWidth(); j++) {
-                    // 테트로미노의 각 블록이 라인과 일치하는지, 그리고 테트로미노 모양에서 해당 위치가 블록인지 확인
-                    if (currentTetromino.getTetrominoBlock(i, j) != 0 &&
-                            tetrominoY + i == lineNumber &&
-                            tetrominoX + j == x) {
-                        isPartOfTetromino = true;
-                        break;
-                    }
-                }
-                if (isPartOfTetromino) {
-                    break;
-                }
-            }
-            // 라인을 완성시킨 원인이 되는 현재 테트로미노는 0으로 add, 아닌 경우 1로 add
-            line.add(isPartOfTetromino ? 0 : 1);
-        }
-        completedLineBuffer.add(new LineDTO(line));
-    }
-
-
     //     게임 보드에서 완성된 줄을 제거하고, 줄들을 아래로 이동시키는 메서드
     private void clearCompletedLines() {
-        completedLineBuffer.clear(); // TODO
+        attackLineBuffer.clear(); // TODO
         for (int y = 1; y < Y_MAX - 1; y++) {
             if (isLineComplete(y)) {
                 completedLineNumbers.add(y); // 완성된 줄을 completedLines 리스트에 추가
-                putCompletedLineIntoBuffer(y);
+                putCompletedLineIntoAttackLineBuffer(y);
                 removeLine(y); // 한줄 지우고
                 shiftLinesDown(y); // 하강
                 clearedLineCount++;
                 onClearCompletedLines.run();
             }
         }
-        // completedLineBuffer 내용을 출력
-        for(LineDTO line : completedLineBuffer) {
-            line.print();
-        }
     }
 
     private void clearItemLine() {
+        attackLineBuffer.clear(); // TODO
         int y = 0;
         for (int i = 0; i < currentTetromino.getShapeHeight(); i++) {
             for (int j = 0; j < currentTetromino.getShapeWidth(); j++) {
@@ -200,6 +184,8 @@ public class Board {
                 }
             }
         }
+        completedLineNumbers.add(y); // 완성된 줄을 completedLines 리스트에 추가
+        putCompletedLineIntoAttackLineBuffer(y);
         removeLine(y); // 한줄 지우고
         shiftLinesDown(y); // 하강
         clearedLineCount++;
@@ -281,54 +267,6 @@ public class Board {
             return true;
         }
     }
-
-//    public boolean spawnBattleModeTetromino(boolean shouldNextTetrominoBeItem) {
-//        //삭제한 줄이 2줄 이상일 때 삭제된 줄 스폰
-//        if (completedLineNumbers.size() >= 2) {
-//            spawnDeletedLinesAtBottom(board, previousBoard, completedLineNumbers);
-//            completedLineNumbers.clear(); // 줄을 스폰한 후 completedLines 초기화
-//        }
-//
-//        // 테트로미노를 생성한다.
-//        currentTetromino = tetrominoGenerator.getNextTetromino(shouldNextTetrominoBeItem);
-//        // 생성한 테트로미노를 화면 상단에 위치시킨다.
-//        tetrominoX = X_MAX / 2 - 1;
-//        tetrominoY = 1;
-//        // 테트로미노를 스폰시킬 수 있는지 검사하고, 없으면 게임 오버
-//        if (!canSpawn()) {
-//            return false;
-//        } else {
-//            placeTetrominoOnBoard();
-//            return true;
-//        }
-//    }
-//
-//    // 보드에 삭제된 줄을 스폰하는 메서드
-//    private void spawnDeletedLinesAtBottom(int[][] board, int[][] previousBoard, List<Integer> completedLines) {
-//        int linesToAdd = completedLines.size();
-//
-//        // 보드의 윗부분을 빈 줄로 채우고 나머지 부분을 아래로 이동
-//        for (int y = 0; y < Y_MAX - linesToAdd; y++) {
-//            for (int x = 0; x < X_MAX; x++) {
-//                board[y][x] = board[y + linesToAdd][x];
-//            }
-//        }
-//
-//        // 삭제된 줄을 보드의 아래쪽에 추가
-//        //수정해야함
-//        for (int i = 0; i < linesToAdd; i++) {
-//            int y = Y_MAX - linesToAdd + i;
-//            int completedLineIndex = completedLines.get(i);
-//            for (int x = 0; x < X_MAX; x++) {
-//                if (previousBoard[completedLineIndex][x] == 1) {
-//                    board[y][x] = 1; // 블록 한 칸을 보드에 스폰
-//                } else {
-//                    board[y][x] = EMPTY; // 빈칸 유지
-//                }
-//            }
-//        }
-//    }
-
 
     // 테트로미노를 보드에서 지우는 메서드
     private void clearTetrominoFromBoard() {
@@ -495,9 +433,6 @@ public class Board {
         }
         return true; // 줄이 완성됨
     }
-
-    // 보드 내에서 현재 테트로미노가 차지하고 있는 위치인지 확인하는 메서드
-
 
     // 테트로미노가 보드 내에서 생성될 수 있는지 검사하는 메서드
     private boolean canSpawn() {

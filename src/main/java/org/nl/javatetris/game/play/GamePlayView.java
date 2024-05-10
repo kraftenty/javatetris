@@ -188,7 +188,7 @@ public abstract class GamePlayView {
                 // 현재 줄이 공격 라인을 포함하는지 확인
                 if (y >= startLine) {
                     List<Integer> line = attackLines.get(y - startLine).getLine();
-                    cell.setFill(line.get(x) == 1 ? Color.RED : Color.TRANSPARENT); // 셀 색상 설정 (1이면 빨간색, 0이면 투명)
+                    cell.setFill(line.get(x) == 1 ? RED : TRANSPARENT); // 셀 색상 설정 (1이면 빨강, 0이면 투명)
                 } else {
                     cell.setFill(Color.TRANSPARENT); // 공격 라인이 없는 부분은 투명으로 처리
                 }
@@ -197,8 +197,6 @@ public abstract class GamePlayView {
             }
         }
     }
-
-
 
     protected Color getColorOfCell(int cellValue) {
         return switch (cellValue) {
