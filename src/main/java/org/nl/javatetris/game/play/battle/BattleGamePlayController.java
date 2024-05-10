@@ -38,7 +38,7 @@ public class BattleGamePlayController {
     private int point1 = 0;
     private int point2 = 0;
     private boolean isGameOver = false;
-
+    private boolean isPaused = false;
     private Integer winner = 0;
 
     // 생성자
@@ -90,17 +90,17 @@ public class BattleGamePlayController {
                     onDrawGameOver.run();
                 }
                 else{boolean isProperlyDowned = board1.moveTetrominoDown();
-                if (!isProperlyDowned) {
-                    timeline1.stop(); // 타임라인 중지 하고
-                    timeline2.stop();
-                    isGameOver = true; // 게임오버 상태로 변경
-                    winner = 2;
-                    System.out.println("Player 1 overed game    ");
-                    onDrawGameOver.run();
-                } else {
-                    addScoreOnDown1();
-                    onDrawBoardUpdate.run();
-                }
+                    if (!isProperlyDowned) {
+                        timeline1.stop(); // 타임라인 중지 하고
+                        timeline2.stop();
+                        isGameOver = true; // 게임오버 상태로 변경
+                        winner = 2;
+                        System.out.println("Player 1 overed game    ");
+                        onDrawGameOver.run();
+                    } else {
+                        addScoreOnDown1();
+                        onDrawBoardUpdate.run();
+                    }
                 }
             }
 
@@ -127,18 +127,18 @@ public class BattleGamePlayController {
                     onDrawGameOver.run();
                 }
                 else{boolean isProperlyDowned = board2.moveTetrominoDown();
-                if (!isProperlyDowned) {
-                    timeline2.stop(); // 타임라인 중지 하고
-                    timeline1.stop();
-                    isGameOver = true; // 게임오버 상태로 변경
-                    winner = 1;
-                    System.out.println("Player 2 overed game    ");
-                    onDrawGameOver.run();
-                } else {
-                    addScoreOnDown2();
-                    onDrawBoardUpdate.run();
+                    if (!isProperlyDowned) {
+                        timeline2.stop(); // 타임라인 중지 하고
+                        timeline1.stop();
+                        isGameOver = true; // 게임오버 상태로 변경
+                        winner = 1;
+                        System.out.println("Player 2 overed game    ");
+                        onDrawGameOver.run();
+                    } else {
+                        addScoreOnDown2();
+                        onDrawBoardUpdate.run();
+                    }
                 }
-            }
             }
 
         }));
@@ -147,7 +147,7 @@ public class BattleGamePlayController {
     }
 
     public int getTimeLimit(){
-        int timeLimit= 5 - timelineCount;
+        int timeLimit= 10 - timelineCount;
         return timeLimit;
     }
 
@@ -155,13 +155,32 @@ public class BattleGamePlayController {
         int timeLimit = getTimeLimit();
         if (timeLimit == 0) {
             if (point1 > point2) return 1;
-             else if (point1 < point2) return 2;
-             else return 0; // 무승부
+            else if (point1 < point2) return 2;
+            else return 0; // 무승부
         }
         else return 3; // 아직 시간이 남은 경우에는 승자가 없음
     }
+    public void pauseTimer() {
+        isPaused = true;
+        if (timeline1 != null) {
+            timeline1.pause();
+        }
+        if (timeline2 != null) {
+            timeline2.pause();
+        }
+    }
 
-        // 보드 반환 메서드
+    public void resumeTimer() {
+        isPaused = false;
+        if (timeline1 != null) {
+            timeline1.play();
+        }
+        if (timeline2 != null) {
+            timeline2.play();
+        }
+    }
+
+    // 보드 반환 메서드
     public Board getBoard1() {
         return board1;
     }
@@ -297,7 +316,8 @@ public class BattleGamePlayController {
 
         int keyCode = e.getCode().getCode();
         if (keyCode == KeyCode.ESCAPE.getCode()) { // ESC
-            onPause.accept(new PauseMenuParam(PAUSE_MENU_BATTLE_MODE, this::shutdownGame));
+            pauseTimer();
+            onPause.accept(new PauseMenuParam(PAUSE_MENU_BATTLE_MODE, this::shutdownGame, this::resumeTimer));
         }
         // 플레이어 1
         else if (keyCode == KeyCode.S.getCode()) { // 플레이어1 - 아래(S)
