@@ -62,8 +62,8 @@ public class BattleGamePlayController {
         this.onDrawGameOver = onDrawGameOver;
         this.board1 = new Board(this::addScoreOnLineClear1, tetrominoGenerator1);
         this.board2 = new Board(this::addScoreOnLineClear2, tetrominoGenerator2);
-        board1.spawnTetromino(false);
-        board2.spawnTetromino(false);
+        board1.spawnBattleModeTetromino(false);
+        board2.spawnBattleModeTetromino(false);
         startTimeline1();
         startTimeline2();
     }

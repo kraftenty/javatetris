@@ -8,6 +8,8 @@ import org.nl.javatetris.game.play.GamePlayView;
 import org.nl.javatetris.pause.PauseMenuParam;
 import org.nl.javatetris.settings.Settings;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import static org.nl.javatetris.config.constant.ModelConst.X_MAX;
@@ -20,7 +22,6 @@ public class BattleGamePlayView extends GamePlayView {
     private Runnable onBackToMenu;
 
     private Boolean isBlinking = false;
-
     public BattleGamePlayView(GameParam gameParam, Consumer<PauseMenuParam> onPause, Runnable onBackToMenu) {
         this.onBackToMenu = onBackToMenu;
         this.battleGamePlayController = new BattleGamePlayController(
@@ -96,7 +97,7 @@ public class BattleGamePlayView extends GamePlayView {
                     "Time left"
             );
         }
-
+        //if (!completedLines.isEmpty()) {
         drawDeletedLinePreview(
                 pane,
                 Settings.getInstance().getSizeSetting().getBlockSize() * 12,
@@ -104,6 +105,7 @@ public class BattleGamePlayView extends GamePlayView {
                 battleGamePlayController.getBoard2().getPreviousBoard(),
                 battleGamePlayController.getBoard2().getCompletedLines()
         );
+    //}
 
         // Player 2
         drawBoard(
@@ -150,6 +152,7 @@ public class BattleGamePlayView extends GamePlayView {
                 battleGamePlayController.getBoard1().getPreviousBoard(),
                 battleGamePlayController.getBoard1().getCompletedLines()
         );
+
     }
 
 

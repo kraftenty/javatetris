@@ -1,6 +1,7 @@
 package org.nl.javatetris.game.play;
 
 import org.nl.javatetris.config.constant.ModelConst;
+import org.nl.javatetris.game.GameParam;
 import org.nl.javatetris.game.tetromino.Tetromino;
 import org.nl.javatetris.game.tetromino.generator.TetrominoGenerator;
 
@@ -120,6 +121,7 @@ public class Board {
             }
         }
         // previousBoard 상태 업데이트
+        System.out.println("Completed Lines: " + completedLines);
         for (int i = 0; i < completedLines.size(); i++) {
             int y = completedLines.get(i);
             for (int x = 0; x < X_MAX; x++) {
@@ -131,7 +133,16 @@ public class Board {
                     previousBoard[y][x] = 1;
                 }
             }
-            System.out.println(); // 줄 바꿈
+            System.out.println();
+        }
+
+        System.out.println("Updated Previous Board State in Board class:");
+        for (int i = 0; i < completedLines.size(); i++) {
+            int y = completedLines.get(i);
+            for (int x = 0; x < X_MAX; x++) {
+                System.out.print(previousBoard[y][x] + " ");
+            }
+            System.out.println();
         }
     }
     private void clearItemLine() {
@@ -223,6 +234,53 @@ public class Board {
             return true;
         }
     }
+    public boolean spawnBattleModeTetromino(boolean shouldNextTetrominoBeItem) {
+        //삭제한 줄이 2줄 이상일 때 삭제된 줄 스폰
+        if (completedLines.size() >= 2) {
+            spawnDeletedLinesAtBottom(board, previousBoard, completedLines);
+            completedLines.clear(); // 줄을 스폰한 후 completedLines 초기화
+        }
+
+        // 테트로미노를 생성한다.
+        currentTetromino = tetrominoGenerator.getNextTetromino(shouldNextTetrominoBeItem);
+        // 생성한 테트로미노를 화면 상단에 위치시킨다.
+        tetrominoX = X_MAX / 2 - 1;
+        tetrominoY = 1;
+        // 테트로미노를 스폰시킬 수 있는지 검사하고, 없으면 게임 오버
+        if (!canSpawn()) {
+            return false;
+        } else {
+            placeTetrominoOnBoard();
+            return true;
+        }
+    }
+
+    // 보드에 삭제된 줄을 스폰하는 메서드
+    private void spawnDeletedLinesAtBottom(int[][] board, int[][] previousBoard, List<Integer> completedLines) {
+        int linesToAdd = completedLines.size();
+
+        // 보드의 윗부분을 빈 줄로 채우고 나머지 부분을 아래로 이동
+        for (int y = 0; y < Y_MAX - linesToAdd; y++) {
+            for (int x = 0; x < X_MAX; x++) {
+                board[y][x] = board[y + linesToAdd][x];
+            }
+        }
+
+        // 삭제된 줄을 보드의 아래쪽에 추가
+        //수정해야함
+        for (int i = 0; i < linesToAdd; i++) {
+            int y = Y_MAX - linesToAdd + i;
+            int completedLineIndex = completedLines.get(i);
+            for (int x = 0; x < X_MAX; x++) {
+                if (previousBoard[completedLineIndex][x] == 1) {
+                    board[y][x] = 1; // 블록 한 칸을 보드에 스폰
+                } else {
+                    board[y][x] = EMPTY; // 빈칸 유지
+                }
+            }
+        }
+    }
+
 
     // 테트로미노를 보드에서 지우는 메서드
     private void clearTetrominoFromBoard() {
