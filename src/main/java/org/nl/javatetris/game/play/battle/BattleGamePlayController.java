@@ -26,7 +26,8 @@ public class BattleGamePlayController {
     private TetrominoGenerator tetrominoGenerator2;
     private static Timeline timeline1;
     private static Timeline timeline2;
-    private int timelineCount;
+    private static Timeline timer;
+    private int remainingTime = TIME_ATTACK_DURATION_SECONDS;
 
     private GameParam gameParam;
     private Consumer<PauseMenuParam> onPause;
@@ -38,7 +39,6 @@ public class BattleGamePlayController {
     private int point1 = 0;
     private int point2 = 0;
     private boolean isGameOver = false;
-    private boolean isPaused = false;
     private Integer winner = 0;
 
     // 생성자
@@ -62,6 +62,10 @@ public class BattleGamePlayController {
         this.board2 = new Board(this::addScoreOnLineClear2, tetrominoGenerator2);
         board1.spawnTetromino(false);
         board2.spawnTetromino(false);
+        // 타임어택 모드일 경우 타임어택 타임라인 시작
+        if (gameParam.getMode() == BATTLE_TIME_ATTACK) {
+            startTimer();
+        }
         startTimeline1();
         startTimeline2();
     }
@@ -69,6 +73,33 @@ public class BattleGamePlayController {
     /**
      * 유틸 메서드
      */
+    // 타임어택 타임라인 시작 메서드
+    public void startTimer() {
+        if (timer != null) {
+            timer.stop(); // 기존 타임라인이 존재한다면 중지
+        }
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            remainingTime--;
+            if (remainingTime <= 0) {
+                // 승자 정하기
+                if (point1 > point2) {
+                    winner = 1;
+                } else if (point1 < point2) {
+                    winner = 2;
+                } else {
+                    winner = 0; // 무승부
+                }
+                timeline1.stop();
+                timeline2.stop();
+                timer.stop();
+                isGameOver = true;
+                System.out.println("winCode = " + winner);
+                onDrawGameOver.run();
+            }
+        }));
+        timer.setCycleCount(Timeline.INDEFINITE);
+        timer.play();
+    }
 
     // 타임라인 시작 메서드
     private void startTimeline1() {
@@ -76,32 +107,23 @@ public class BattleGamePlayController {
             timeline1.stop(); // 기존 타임라인이 존재한다면 중지
         }
         timeline1 = new Timeline(new KeyFrame(Duration.seconds(getSpeedByLevel(1)), e -> {
-            System.out.println("timeline running..." + timelineCount++);
             // TODO : 상대가 공격한 라인을 내 보드에 데미지 입힘
             board1.receiveDamage(board2.releaseAttackLineBuffer());
 
             if (SceneManager.getCurrentSceneNumber() == ViewConst.BATTLE_GAME_PLAY_SCENE) {
-                if (getGameParam().getMode() == 12 && getTimeLimit() <= 0) {
-                    int winner = getWinnerInTimeLimitMode();
-                    timeline1.stop();
+                boolean isProperlyDowned = board1.moveTetrominoDown();
+                if (!isProperlyDowned) {
+                    timeline1.stop(); // 타임라인 중지 하고
                     timeline2.stop();
-                    isGameOver = true;
-                    System.out.println("Player " + winner + " win");
+                    isGameOver = true; // 게임오버 상태로 변경
+                    winner = 2;
+                    System.out.println("Player 1 overed game    ");
                     onDrawGameOver.run();
+                } else {
+                    addScoreOnDown1();
+                    onDrawBoardUpdate.run();
                 }
-                else{boolean isProperlyDowned = board1.moveTetrominoDown();
-                    if (!isProperlyDowned) {
-                        timeline1.stop(); // 타임라인 중지 하고
-                        timeline2.stop();
-                        isGameOver = true; // 게임오버 상태로 변경
-                        winner = 2;
-                        System.out.println("Player 1 overed game    ");
-                        onDrawGameOver.run();
-                    } else {
-                        addScoreOnDown1();
-                        onDrawBoardUpdate.run();
-                    }
-                }
+//                }
             }
 
         }));
@@ -118,27 +140,19 @@ public class BattleGamePlayController {
             board2.receiveDamage(board1.releaseAttackLineBuffer());
 
             if (SceneManager.getCurrentSceneNumber() == ViewConst.BATTLE_GAME_PLAY_SCENE) {
-                if (getGameParam().getMode() == 12 && getTimeLimit() <= 0) {
-                    int winner = getWinnerInTimeLimitMode();
+                boolean isProperlyDowned = board2.moveTetrominoDown();
+                if (!isProperlyDowned) {
+                    timeline2.stop(); // 타임라인 중지 하고
                     timeline1.stop();
-                    timeline2.stop();
-                    isGameOver = true;
-                    System.out.println("Player " + winner + "win");
+                    isGameOver = true; // 게임오버 상태로 변경
+                    winner = 1;
+                    System.out.println("Player 2 overed game    ");
                     onDrawGameOver.run();
+                } else {
+                    addScoreOnDown2();
+                    onDrawBoardUpdate.run();
                 }
-                else{boolean isProperlyDowned = board2.moveTetrominoDown();
-                    if (!isProperlyDowned) {
-                        timeline2.stop(); // 타임라인 중지 하고
-                        timeline1.stop();
-                        isGameOver = true; // 게임오버 상태로 변경
-                        winner = 1;
-                        System.out.println("Player 2 overed game    ");
-                        onDrawGameOver.run();
-                    } else {
-                        addScoreOnDown2();
-                        onDrawBoardUpdate.run();
-                    }
-                }
+//                }
             }
 
         }));
@@ -146,38 +160,34 @@ public class BattleGamePlayController {
         timeline2.play();
     }
 
-    public int getTimeLimit(){
-        int timeLimit= 10 - timelineCount;
-        return timeLimit;
-    }
-
-    public int getWinnerInTimeLimitMode() {
-        int timeLimit = getTimeLimit();
-        if (timeLimit == 0) {
-            if (point1 > point2) return 1;
-            else if (point1 < point2) return 2;
-            else return 0; // 무승부
-        }
-        else return 3; // 아직 시간이 남은 경우에는 승자가 없음
-    }
     public void pauseTimer() {
-        isPaused = true;
+//        isPaused = true;
         if (timeline1 != null) {
             timeline1.pause();
         }
         if (timeline2 != null) {
             timeline2.pause();
         }
+        if (timer != null) {
+            timer.pause();
+        }
     }
 
     public void resumeTimer() {
-        isPaused = false;
+//        isPaused = false;
         if (timeline1 != null) {
             timeline1.play();
         }
         if (timeline2 != null) {
             timeline2.play();
         }
+        if (timer != null) {
+            timer.play();
+        }
+    }
+
+    public int getRemainingTime() {
+        return remainingTime;
     }
 
     // 보드 반환 메서드
@@ -197,7 +207,9 @@ public class BattleGamePlayController {
         return tetrominoGenerator2;
     }
 
-    public GameParam getGameParam() { return gameParam; }
+    public GameParam getGameParam() {
+        return gameParam;
+    }
 
     public int getWinner() {
         return winner;
@@ -221,7 +233,7 @@ public class BattleGamePlayController {
         if (offset == -1) {
             return;
         }
-        this.point1 += offset + (level1/2);
+        this.point1 += offset + (level1 / 2);
         checkLevelUp1();
     }
 
@@ -229,7 +241,7 @@ public class BattleGamePlayController {
         if (offset == -1) {
             return;
         }
-        this.point2 += offset + (level2/2);
+        this.point2 += offset + (level2 / 2);
         checkLevelUp2();
     }
 
@@ -288,7 +300,7 @@ public class BattleGamePlayController {
 
     // 레벨업에 필요한 점수를 리턴해주는 메서드
     private int getLevelUpScore(int currentLevel) {
-        return ((currentLevel+1)*(currentLevel+2)/2) * 500;
+        return ((currentLevel + 1) * (currentLevel + 2) / 2) * 500;
     }
 
     // 레벨업 메서드

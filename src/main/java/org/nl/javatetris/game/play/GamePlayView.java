@@ -170,7 +170,7 @@ public abstract class GamePlayView {
 
     // TODO
     protected void drawAttackLinesPreview(Pane pane, double layoutY, double layoutX, List<LineDTO> attackLines) {
-        double blockSize = Settings.getInstance().getSizeSetting().getPreviewBlockSize() / 2; // 축소된 블록 크기 설정
+        double blockSize = Settings.getInstance().getSizeSetting().getPreviewBlockSize() / 2.25; // 축소된 블록 크기 설정
         int boardHeight = 20; // 가정한 보드의 세로 줄 수
         int startLine = boardHeight - attackLines.size(); // 시작 줄 위치 결정
 

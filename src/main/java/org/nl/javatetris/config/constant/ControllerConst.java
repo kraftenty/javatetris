@@ -39,4 +39,8 @@ public class ControllerConst {
     public static final int PAUSE_MENU_SINGLE_MODE = 0;
     public static final int PAUSE_MENU_BATTLE_MODE = 1;
 
+
+    // BattleMode - TimeAttackMode 의 제한시간
+    public static final int TIME_ATTACK_DURATION_SECONDS = 10;
+
 }
