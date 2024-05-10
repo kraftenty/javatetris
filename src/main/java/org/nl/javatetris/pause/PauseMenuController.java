@@ -3,6 +3,7 @@ package org.nl.javatetris.pause;
 import javafx.application.Platform;
 import javafx.scene.input.KeyEvent;
 import org.nl.javatetris.config.constant.ControllerConst;
+import org.nl.javatetris.game.play.battle.BattleGamePlayController;
 
 public class PauseMenuController {
 
@@ -27,6 +28,7 @@ public class PauseMenuController {
                 if (pauseMenuParam.getMode() == ControllerConst.PAUSE_MENU_SINGLE_MODE) {
                     onResumeSingleGame.run();
                 } else if (pauseMenuParam.getMode() == ControllerConst.PAUSE_MENU_BATTLE_MODE) {
+                    pauseMenuParam.getOnResumeGame().run();
                     onResumeBattleGame.run();
                 } else {
                     throw new IllegalStateException("Invalid pause menu param");
@@ -44,6 +46,7 @@ public class PauseMenuController {
                         if (pauseMenuParam.getMode() == ControllerConst.PAUSE_MENU_SINGLE_MODE) {
                             onResumeSingleGame.run();
                         } else if (pauseMenuParam.getMode() == ControllerConst.PAUSE_MENU_BATTLE_MODE) {
+                            pauseMenuParam.getOnResumeGame().run();
                             onResumeBattleGame.run();
                         } else {
                             throw new IllegalStateException("Invalid pause menu param");
