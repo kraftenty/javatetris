@@ -17,7 +17,6 @@ import java.util.List;
 
 import static javafx.scene.paint.Color.*;
 import static org.nl.javatetris.config.constant.ModelConst.*;
-
 public abstract class GamePlayView {
 
     // Board 를 화면에 표시하는 메서드
@@ -156,6 +155,94 @@ public abstract class GamePlayView {
                     }
                 }
             }
+        }
+    }
+
+    protected void drawTimeLimit(Pane pane, double layoutY, double layoutX, int timeLimit, String showText) {
+        Text timeText = new Text( showText + "\n" + timeLimit );
+        timeText.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
+        timeText.setFill(Color.WHITE);
+        timeText.setLayoutY(layoutY);
+        timeText.setLayoutX(layoutX);
+        pane.getChildren().add(timeText);
+    }
+
+//    protected void drawDeletedLinePreview(Pane pane, double layoutY, double layoutX, int[][] previousBoard, List<Integer> completedLines) {
+//        double blockSize = Settings.getInstance().getSizeSetting().getBlockSize() / 2.5;
+////        //프리뷰 보드 위치 확인용
+////        double boardWidth = X_MAX * blockSize;
+////        double boardHeight = Y_MAX * blockSize;
+////
+////        Rectangle background = new Rectangle(layoutX, layoutY, boardWidth, boardHeight);
+////        background.setFill(WHITE);
+////        pane.getChildren().add(background);
+//
+//        for (int i = 0; i < completedLines.size(); i++) {
+//            //밑에서부터 그리도록 y 위치를 계산
+//            double yPos = layoutY + (completedLines.size() - 1 - i) * blockSize;
+//
+//            int y = completedLines.get(i);
+//            for (int x = 0; x < X_MAX; x++) {
+//                Rectangle cell = new Rectangle(
+//                        layoutX + x * blockSize,
+//                        yPos,
+//                        blockSize,
+//                        blockSize
+//                );
+//
+//                if (previousBoard[y][x] == 1) {
+//                    cell.setFill(Color.GRAY);
+//                } else {
+//                    cell.setFill(Color.TRANSPARENT);
+//                }
+//                cell.setStroke(Color.rgb(128, 128, 128, 0.5)); // 셀의 경계선 색상 설정
+//                pane.getChildren().add(cell);
+//            }
+//        }
+//    }
+
+
+    protected void drawDeletedLinePreview(Pane pane, double layoutY, double layoutX, int[][] previousBoard, List<Integer> completedLines) {
+        System.out.println("Previous Board State:");
+        for (int i = 0; i < completedLines.size(); i++) {
+            int y = completedLines.get(i);
+            for (int x = 0; x < X_MAX; x++) {
+                System.out.print(previousBoard[y][x] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println("Completed lines: " + completedLines);
+
+
+        if (completedLines.size() >= 2) {
+        double blockSize = Settings.getInstance().getSizeSetting().getBlockSize() / 2.5;
+
+
+        for (int i = 0; i < completedLines.size(); i++) {
+
+            int y = completedLines.get(i);
+            for (int x = 0; x < X_MAX; x++) {
+                Rectangle cell = new Rectangle(
+                        layoutX + x * blockSize,
+                        layoutY + y * blockSize,
+                        blockSize,
+                        blockSize
+                );
+
+
+                if (previousBoard[y][x] != EMPTY && previousBoard[y][x]!=9) {
+                    cell.setFill(Color.WHITE);
+                } else {
+                    cell.setFill(Color.TRANSPARENT);
+                }
+                cell.setStroke(Color.rgb(128, 128, 128, 0.5)); // 셀의 경계선 색상 설정
+                // 셀 상태 디버깅 출력
+                System.out.println("Cell at (" + x + ", " + y + "): " +
+                        "Value = " + previousBoard[y][x] + ", " +
+                        "Color = " + (previousBoard[y][x] == 1 ? "WHITE" : "TRANSPARENT"));
+                pane.getChildren().add(cell);
+            }
+        }
         }
     }
 

@@ -27,6 +27,7 @@ public class BattleGamePlayController {
     private TetrominoGenerator tetrominoGenerator2;
     private static Timeline timeline1;
     private static Timeline timeline2;
+    private int timelineCount;
 
     private GameParam gameParam;
     private Consumer<PauseMenuParam> onPause;
@@ -61,8 +62,8 @@ public class BattleGamePlayController {
         this.onDrawGameOver = onDrawGameOver;
         this.board1 = new Board(this::addScoreOnLineClear1, tetrominoGenerator1);
         this.board2 = new Board(this::addScoreOnLineClear2, tetrominoGenerator2);
-        board1.spawnTetromino(false);
-        board2.spawnTetromino(false);
+        board1.spawnBattleModeTetromino(false);
+        board2.spawnBattleModeTetromino(false);
         startTimeline1();
         startTimeline2();
     }
@@ -77,8 +78,17 @@ public class BattleGamePlayController {
             timeline1.stop(); // 기존 타임라인이 존재한다면 중지
         }
         timeline1 = new Timeline(new KeyFrame(Duration.seconds(getSpeedByLevel(1)), e -> {
+            System.out.println("timeline running..." + timelineCount++);
             if (SceneManager.getCurrentSceneNumber() == ViewConst.BATTLE_GAME_PLAY_SCENE) {
-                boolean isProperlyDowned = board1.moveTetrominoDown();
+                if (getGameParam().getMode() == 12 && getTimeLimit() <= 0) {
+                    int winner = getWinnerInTimeLimitMode();
+                    timeline1.stop();
+                    timeline2.stop();
+                    isGameOver = true;
+                    System.out.println("Player " + winner + " win");
+                    onDrawGameOver.run();
+                }
+                else{boolean isProperlyDowned = board1.moveTetrominoDown();
                 if (!isProperlyDowned) {
                     timeline1.stop(); // 타임라인 중지 하고
                     timeline2.stop();
@@ -89,6 +99,7 @@ public class BattleGamePlayController {
                 } else {
                     addScoreOnDown1();
                     onDrawBoardUpdate.run();
+                }
                 }
             }
 
@@ -103,7 +114,15 @@ public class BattleGamePlayController {
         }
         timeline2 = new Timeline(new KeyFrame(Duration.seconds(getSpeedByLevel(2)), e -> {
             if (SceneManager.getCurrentSceneNumber() == ViewConst.BATTLE_GAME_PLAY_SCENE) {
-                boolean isProperlyDowned = board2.moveTetrominoDown();
+                if (getGameParam().getMode() == 12 && getTimeLimit() <= 0) {
+                    int winner = getWinnerInTimeLimitMode();
+                    timeline1.stop();
+                    timeline2.stop();
+                    isGameOver = true;
+                    System.out.println("Player " + winner + "win");
+                    onDrawGameOver.run();
+                }
+                else{boolean isProperlyDowned = board2.moveTetrominoDown();
                 if (!isProperlyDowned) {
                     timeline2.stop(); // 타임라인 중지 하고
                     timeline1.stop();
@@ -116,13 +135,29 @@ public class BattleGamePlayController {
                     onDrawBoardUpdate.run();
                 }
             }
+            }
 
         }));
         timeline2.setCycleCount(Timeline.INDEFINITE);
         timeline2.play();
     }
 
-    // 보드 반환 메서드
+    public int getTimeLimit(){
+        int timeLimit= 5 - timelineCount;
+        return timeLimit;
+    }
+
+    public int getWinnerInTimeLimitMode() {
+        int timeLimit = getTimeLimit();
+        if (timeLimit == 0) {
+            if (point1 > point2) return 1;
+             else if (point1 < point2) return 2;
+             else return 0; // 무승부
+        }
+        else return 3; // 아직 시간이 남은 경우에는 승자가 없음
+    }
+
+        // 보드 반환 메서드
     public Board getBoard1() {
         return board1;
     }
@@ -139,9 +174,7 @@ public class BattleGamePlayController {
         return tetrominoGenerator2;
     }
 
-    public GameParam getGameParam() {
-        return gameParam;
-    }
+    public GameParam getGameParam() { return gameParam; }
 
     public int getWinner() {
         return winner;
