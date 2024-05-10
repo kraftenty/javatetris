@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -167,84 +168,37 @@ public abstract class GamePlayView {
         pane.getChildren().add(timeText);
     }
 
-//    protected void drawDeletedLinePreview(Pane pane, double layoutY, double layoutX, int[][] previousBoard, List<Integer> completedLines) {
-//        double blockSize = Settings.getInstance().getSizeSetting().getBlockSize() / 2.5;
-////        //프리뷰 보드 위치 확인용
-////        double boardWidth = X_MAX * blockSize;
-////        double boardHeight = Y_MAX * blockSize;
-////
-////        Rectangle background = new Rectangle(layoutX, layoutY, boardWidth, boardHeight);
-////        background.setFill(WHITE);
-////        pane.getChildren().add(background);
-//
-//        for (int i = 0; i < completedLines.size(); i++) {
-//            //밑에서부터 그리도록 y 위치를 계산
-//            double yPos = layoutY + (completedLines.size() - 1 - i) * blockSize;
-//
-//            int y = completedLines.get(i);
-//            for (int x = 0; x < X_MAX; x++) {
-//                Rectangle cell = new Rectangle(
-//                        layoutX + x * blockSize,
-//                        yPos,
-//                        blockSize,
-//                        blockSize
-//                );
-//
-//                if (previousBoard[y][x] == 1) {
-//                    cell.setFill(Color.GRAY);
-//                } else {
-//                    cell.setFill(Color.TRANSPARENT);
-//                }
-//                cell.setStroke(Color.rgb(128, 128, 128, 0.5)); // 셀의 경계선 색상 설정
-//                pane.getChildren().add(cell);
-//            }
-//        }
-//    }
+    // TODO
+    protected void drawAttackLinesPreview(Pane pane, double layoutY, double layoutX, List<LineDTO> attackLines) {
+        double blockSize = Settings.getInstance().getSizeSetting().getPreviewBlockSize() / 2; // 축소된 블록 크기 설정
+        int boardHeight = 20; // 가정한 보드의 세로 줄 수
+        int startLine = boardHeight - attackLines.size(); // 시작 줄 위치 결정
 
-
-    protected void drawDeletedLinePreview(Pane pane, double layoutY, double layoutX, int[][] previousBoard, List<Integer> completedLines) {
-        System.out.println("Previous Board State:");
-        for (int i = 0; i < completedLines.size(); i++) {
-            int y = completedLines.get(i);
-            for (int x = 0; x < X_MAX; x++) {
-                System.out.print(previousBoard[y][x] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println("Completed lines: " + completedLines);
-
-
-        if (completedLines.size() >= 2) {
-        double blockSize = Settings.getInstance().getSizeSetting().getBlockSize() / 2.5;
-
-
-        for (int i = 0; i < completedLines.size(); i++) {
-
-            int y = completedLines.get(i);
-            for (int x = 0; x < X_MAX; x++) {
+        // 전체 보드를 그리는 반복문
+        for (int y = 0; y < boardHeight; y++) {
+            for (int x = 0; x < X_MAX-2; x++) {
                 Rectangle cell = new Rectangle(
                         layoutX + x * blockSize,
                         layoutY + y * blockSize,
                         blockSize,
                         blockSize
                 );
+                cell.setStroke(Color.LIGHTGRAY); // 테두리 색상 설정
 
-
-                if (previousBoard[y][x] != EMPTY && previousBoard[y][x]!=9) {
-                    cell.setFill(Color.WHITE);
+                // 현재 줄이 공격 라인을 포함하는지 확인
+                if (y >= startLine) {
+                    List<Integer> line = attackLines.get(y - startLine).getLine();
+                    cell.setFill(line.get(x) == 1 ? Color.RED : Color.TRANSPARENT); // 셀 색상 설정 (1이면 빨간색, 0이면 투명)
                 } else {
-                    cell.setFill(Color.TRANSPARENT);
+                    cell.setFill(Color.TRANSPARENT); // 공격 라인이 없는 부분은 투명으로 처리
                 }
-                cell.setStroke(Color.rgb(128, 128, 128, 0.5)); // 셀의 경계선 색상 설정
-                // 셀 상태 디버깅 출력
-                System.out.println("Cell at (" + x + ", " + y + "): " +
-                        "Value = " + previousBoard[y][x] + ", " +
-                        "Color = " + (previousBoard[y][x] == 1 ? "WHITE" : "TRANSPARENT"));
-                pane.getChildren().add(cell);
+
+                pane.getChildren().add(cell); // pane에 셀 추가
             }
         }
-        }
     }
+
+
 
     protected Color getColorOfCell(int cellValue) {
         return switch (cellValue) {
