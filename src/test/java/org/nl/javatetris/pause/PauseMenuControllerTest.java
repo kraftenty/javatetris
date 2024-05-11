@@ -20,7 +20,7 @@ public class PauseMenuControllerTest {
                 () -> {},
                 () -> {},
                 () -> {backToMenuFlag.set(true);},
-                new PauseMenuParam(0)
+                new PauseMenuParam(0, ()->{})
         );
 
         KeyEvent enterKeyEvent = new KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "", KeyCode.ENTER, false, false, false, false);
