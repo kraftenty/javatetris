@@ -1,5 +1,6 @@
 package org.nl.javatetris.settings;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -74,6 +75,7 @@ public class SettingsMenuView {
 
         updateSetting();
         configureMenuItems(layout);
+        addKeyControlHints(layout);
 
         Scene scene = new Scene(
                 layout,
@@ -117,4 +119,14 @@ public class SettingsMenuView {
         menuItems[2].setText("color - " + getLabelOfColorBlindModeSetting());
     }
 
+    // KeyControl hint를 표시
+    private void addKeyControlHints(VBox layout) {
+        Label keyControlHints = new Label(
+                "Up/Down to move, Enter to Select "
+        );
+        keyControlHints.setFont(FontManager.getSquareFont((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2))); // Smaller font size
+        keyControlHints.setTextFill(Color.LIGHTGREY);
+        VBox.setMargin(keyControlHints, new Insets((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2), 0, 0, 0)); // Add top margin to push the label down
+        layout.getChildren().add(keyControlHints);
+    }
 }

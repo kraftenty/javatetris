@@ -2,6 +2,7 @@ package org.nl.javatetris.settings.keysetting;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -111,6 +112,7 @@ public class KeySettingView {
         backLabel.setTextFill(Color.WHITE);
         backLabel.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
         layout.getChildren().add(backLabel);
+        addKeyControlHints(layout);
 
         Scene scene = new Scene(
                 layout,
@@ -157,5 +159,17 @@ public class KeySettingView {
         menuItems[2].setText(Settings.getInstance().getKeySetting().getRightKeyString());
         menuItems[3].setText(Settings.getInstance().getKeySetting().getDownKeyString());
         menuItems[4].setText(Settings.getInstance().getKeySetting().getDropKeyString());
+    }
+
+    // KeyControl hint를 표시
+    private void addKeyControlHints(VBox layout) {
+        Label keyControlHints = new Label(
+                "Up/Down to move, Enter to Select \n\n" +
+                "Select and Press key want to use"
+        );
+        keyControlHints.setFont(FontManager.getSquareFont((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2))); // Smaller font size
+        keyControlHints.setTextFill(Color.LIGHTGREY);
+        VBox.setMargin(keyControlHints, new Insets((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2), 0, 0, 0)); // Add top margin to push the label down
+        layout.getChildren().add(keyControlHints);
     }
 }

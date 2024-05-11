@@ -1,5 +1,6 @@
 package org.nl.javatetris.game.lobby.classic;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -45,6 +46,7 @@ public class ClassicModeLobbyView {
 
         updateDifficultyText();
         configureMenuItems(layout);
+        addKeyControlHints(layout);
 
         Scene scene = new Scene(
                 layout,
@@ -98,6 +100,18 @@ public class ClassicModeLobbyView {
             menuItems[0].setText("Difficulty - normal");
         else
             menuItems[0].setText("Difficulty - hard");
+    }
+
+    // KeyControl hint를 표시
+    private void addKeyControlHints(VBox layout) {
+        Label keyControlHints = new Label(
+                "Up/Down to move, Enter to Select "
+        );
+        keyControlHints.setFont(FontManager.getSquareFont((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2))); // Smaller font size
+        keyControlHints.setTextFill(Color.LIGHTGREY);
+        keyControlHints.setEffect(DROP_SHADOW);
+        VBox.setMargin(keyControlHints, new Insets((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2), 0, 0, 0)); // Add top margin to push the label down
+        layout.getChildren().add(keyControlHints);
     }
 
 }
