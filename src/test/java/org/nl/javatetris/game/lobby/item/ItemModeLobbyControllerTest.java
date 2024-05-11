@@ -1,4 +1,4 @@
-package org.nl.javatetris.game.single.item;
+package org.nl.javatetris.game.lobby.item;
 
 import javafx.scene.input.KeyEvent;
 import org.junit.jupiter.api.Assertions;

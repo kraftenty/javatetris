@@ -24,6 +24,20 @@ public class BattleGamePlayController {
     private Board board2;
     private TetrominoGenerator tetrominoGenerator1;
     private TetrominoGenerator tetrominoGenerator2;
+
+    //테스트 용도
+    public static Timeline getTimeline1() {
+        return timeline1;
+    }
+
+    public static Timeline getTimeline2() {
+        return timeline2;
+    }
+
+    public static Timeline getTimer() {
+        return timer;
+    }
+
     private static Timeline timeline1;
     private static Timeline timeline2;
     private static Timeline timer;
