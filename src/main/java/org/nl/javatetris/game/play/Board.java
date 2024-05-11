@@ -361,9 +361,6 @@ public class Board {
         // 이 예시에서는 현재 테트로미노의 회전 메서드를 호출하여 "가상의" 회전을 수행하고,
         // 그 결과를 기반으로 회전 가능 여부를 판단합니다.
 
-        // 무게추인 경우 회전 불가
-        if (currentTetromino.getShapeNumber() == W)
-            return;
 
         clearTetrominoFromBoard();
         if (!canRotate()) {
@@ -523,7 +520,7 @@ public class Board {
         int tetrominoNum = currentTetromino.getShapeNumber();
         int rotationIdx = currentTetromino.getShapeIndex();
 
-        if (tetrominoNum >= 11 && tetrominoNum <= 17) {  //지우는 블럭을 일반 블록 취급
+        if (tetrominoNum >= EI && tetrominoNum <= EZ) {  //지우는 블럭을 일반 블록 취급
             tetrominoNum -= 10;
             rotationIdx = (rotationIdx) % 4;
         }
@@ -542,6 +539,9 @@ public class Board {
     // 테트로미노가 보드 내에서 회전할 수 있는지 검사하는 메서드
     public boolean canRotate() {
         if (currentTetromino.getShapeNumber() == O || currentTetromino.getShapeNumber() == EO) return true;
+
+        if (currentTetromino.getShapeNumber() >= B && currentTetromino.getShapeNumber()<=W)
+            return false;
 
         Tetromino rotatedTetromino = currentTetromino.getRotatedTetromino();
         int[][] shape = rotatedTetromino.getShape();

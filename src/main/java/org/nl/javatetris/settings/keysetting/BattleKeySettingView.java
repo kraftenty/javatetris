@@ -16,32 +16,41 @@ import javafx.util.Duration;
 import org.nl.javatetris.config.manager.FontManager;
 import org.nl.javatetris.settings.Settings;
 
-public class KeySettingView {
+public class BattleKeySettingView {
 
-    private KeySettingController keySettingController;
+    private BattleKeySettingController battleKeySettingController;
     private Timeline blinkTimeline;
 
-    public KeySettingView(Runnable onSettings, Runnable onBattleKeySetting) {
-        this.keySettingController = new KeySettingController(menuItems.length, onSettings, onBattleKeySetting);
+    public BattleKeySettingView(Runnable onSettings) {
+        this.battleKeySettingController = new BattleKeySettingController(menuItems.length, onSettings);
         initializeBlinkTimeline();
     }
 
     private static Label[] menuItems = new Label[]{
+            new Label(Settings.getInstance().getKeySetting().getP1RotateKeyString()),
+            new Label(Settings.getInstance().getKeySetting().getP1LeftKeyString()),
+            new Label(Settings.getInstance().getKeySetting().getRightKeyString()),
+            new Label(Settings.getInstance().getKeySetting().getDownKeyString()),
+            new Label(Settings.getInstance().getKeySetting().getDropKeyString()),
             new Label(Settings.getInstance().getKeySetting().getRotateKeyString()),
             new Label(Settings.getInstance().getKeySetting().getLeftKeyString()),
             new Label(Settings.getInstance().getKeySetting().getRightKeyString()),
             new Label(Settings.getInstance().getKeySetting().getDownKeyString()),
             new Label(Settings.getInstance().getKeySetting().getDropKeyString()),
-            new Label("Battle Key Setting"),
             new Label("Back")
     };
 
     private static Label[] explainItems = new Label[]{
-            new Label("Rotate"),
-            new Label("Move Left"),
-            new Label("Move Right"),
-            new Label("Move Down"),
-            new Label("Drop"),
+            new Label("P1 Rotate"),
+            new Label("P1 Move Left"),
+            new Label("P1 Move Right"),
+            new Label("P1 Move Down"),
+            new Label("P1 Drop"),
+            new Label("P2 Rotate"),
+            new Label("P2 Move Left"),
+            new Label("P2 Move Right"),
+            new Label("P2 Move Down"),
+            new Label("P2 Drop"),
             //new Label("설정으로 돌아가기")
     };
 
@@ -50,8 +59,8 @@ public class KeySettingView {
         blinkTimeline = new Timeline(
                 new KeyFrame(Duration.ZERO, e -> {
                     // 선택된 항목의 색상을 변경
-                    if (keySettingController.getSelectedItemIndex() < menuItems.length - 2) {
-                        Label selectedItem = menuItems[keySettingController.getSelectedItemIndex()];
+                    if (battleKeySettingController.getSelectedItemIndex() < menuItems.length - 1) {
+                        Label selectedItem = menuItems[battleKeySettingController.getSelectedItemIndex()];
                         selectedItem.setTextFill(selectedItem.getTextFill().equals(Color.RED) ? Color.WHITE : Color.RED);
                     }
                 }),
@@ -62,7 +71,7 @@ public class KeySettingView {
 
     // 키 설정값을 바꾸려고 엔터를 눌렀을 때 호출되는 메소드
     private void startBlinking(int selectedIndex) {
-        if (selectedIndex < menuItems.length - 2) {
+        if (selectedIndex < menuItems.length - 1) {
 //            blinkTimeline.stop(); // 현재 진행 중인 애니메이션을 중지
             blinkTimeline.play(); // 깜빡임 애니메이션 시작
         }
@@ -85,38 +94,34 @@ public class KeySettingView {
         // 배경 설정
         layout.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
-        Label title = new Label("Key Setting");
+        Label title = new Label("Battle Key Setting");
         title.setTextFill(Color.YELLOW);
         title.setFont(FontManager.getTopshowFont(Settings.getInstance().getSizeSetting().getTitleFontSize()));
         layout.getChildren().add(title);
 
         updateSetting();
-        for (int i = 0; i < menuItems.length - 2; i++) {
+        for (int i = 0; i < menuItems.length - 1; i++) {
             HBox row = new HBox(10);
             row.setAlignment(Pos.CENTER);
 
             Label explainItem = explainItems[i];
             explainItem.setTextFill(Color.CYAN);
-            explainItem.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
-            HBox.setMargin(explainItem, new javafx.geometry.Insets(0, 20, 0, 0));
+            explainItem.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()*0.8));
+            HBox.setMargin(explainItem, new Insets(0, 20, 0, 0));
 
             Label menuItem = menuItems[i];
             menuItem.setTextFill(Color.WHITE);
-            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
-            HBox.setMargin(menuItem, new javafx.geometry.Insets(0, 0, 0, 20));
+            menuItem.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()*0.8));
+            HBox.setMargin(menuItem, new Insets(0, 0, 0, 20));
 
             row.getChildren().addAll(explainItem, menuItem);
             layout.getChildren().add(row);
         }
 
-        //Battle Key Setting, Back 표시
-        for (int i = menuItems.length - 2; i < menuItems.length; i++) {
-            Label label = menuItems[i];
-            label.setTextFill(Color.WHITE);
-            label.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
-            layout.getChildren().add(label);
-        }
-
+        Label backLabel = menuItems[menuItems.length - 1];
+        backLabel.setTextFill(Color.WHITE);
+        backLabel.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()*0.8));
+        layout.getChildren().add(backLabel);
         addKeyControlHints(layout);
 
         Scene scene = new Scene(
@@ -134,20 +139,20 @@ public class KeySettingView {
 //        });
 
         scene.setOnKeyPressed(e -> {
-            keySettingController.handleKeyPress(e);
+            battleKeySettingController.handleKeyPress(e);
             // 선택된 항목 변경 시 깜빡임 중지
             stopBlinking();
             // Enter 키가 눌렸을 때 깜빡임 시작
             if (e.getCode() == KeyCode.ENTER) {
-                startBlinking(keySettingController.getSelectedItemIndex());
+                startBlinking(battleKeySettingController.getSelectedItemIndex());
             }
             // UI 업데이트
             updateSetting();
-            updateMenuItems(keySettingController.getSelectedItemIndex());
+            updateMenuItems(battleKeySettingController.getSelectedItemIndex());
         });
 
         // 초기 선택 상태 업데이트
-        updateMenuItems(keySettingController.getSelectedItemIndex());
+        updateMenuItems(battleKeySettingController.getSelectedItemIndex());
 
         return scene;
     }
@@ -159,11 +164,16 @@ public class KeySettingView {
     }
 
     private void updateSetting(){
-        menuItems[0].setText(Settings.getInstance().getKeySetting().getRotateKeyString());
-        menuItems[1].setText(Settings.getInstance().getKeySetting().getLeftKeyString());
-        menuItems[2].setText(Settings.getInstance().getKeySetting().getRightKeyString());
-        menuItems[3].setText(Settings.getInstance().getKeySetting().getDownKeyString());
-        menuItems[4].setText(Settings.getInstance().getKeySetting().getDropKeyString());
+        menuItems[0].setText(Settings.getInstance().getKeySetting().getP1RotateKeyString());
+        menuItems[1].setText(Settings.getInstance().getKeySetting().getP1LeftKeyString());
+        menuItems[2].setText(Settings.getInstance().getKeySetting().getP1RightKeyString());
+        menuItems[3].setText(Settings.getInstance().getKeySetting().getP1DownKeyString());
+        menuItems[4].setText(Settings.getInstance().getKeySetting().getP1DropKeyString());
+        menuItems[5].setText(Settings.getInstance().getKeySetting().getP2RotateKeyString());
+        menuItems[6].setText(Settings.getInstance().getKeySetting().getP2LeftKeyString());
+        menuItems[7].setText(Settings.getInstance().getKeySetting().getP2RightKeyString());
+        menuItems[8].setText(Settings.getInstance().getKeySetting().getP2DownKeyString());
+        menuItems[9].setText(Settings.getInstance().getKeySetting().getP2DropKeyString());
     }
 
     // KeyControl hint를 표시

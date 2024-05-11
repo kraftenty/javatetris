@@ -15,6 +15,7 @@ import org.nl.javatetris.pause.PauseMenuParam;
 import org.nl.javatetris.pause.PauseMenuView;
 import org.nl.javatetris.scoreboard.ScoreBoardView;
 import org.nl.javatetris.settings.SettingsMenuView;
+import org.nl.javatetris.settings.keysetting.BattleKeySettingView;
 import org.nl.javatetris.settings.keysetting.KeySettingView;
 import org.nl.javatetris.settings.resetscoreboard.ResetScoreBoardView;
 import org.nl.javatetris.settings.resetsettings.ResetSettingsView;
@@ -38,6 +39,7 @@ public class SceneManager {
     private Scene CheckingInitSetScene;
     private Scene CheckingBoardInitScene;
     private Scene SettingKeyScene;
+    private Scene SettingBattleKeyScene;
 
     private static int currentSceneNumber; // 현재 Scene 번호
 
@@ -208,11 +210,19 @@ public class SceneManager {
     }
 
     public void showSettingKeyScene() {
-        KeySettingView keySettingView = new KeySettingView(this::showSettingsMenu);
+        KeySettingView keySettingView = new KeySettingView(this::showSettingsMenu, this::showSettingBattleKeyScene);
         this.SettingKeyScene = keySettingView.createScene();
 
         setScene(SettingKeyScene);
         currentSceneNumber = SETTING_KEY_MENU_SCENE;
+    }
+
+    public void showSettingBattleKeyScene() {
+        BattleKeySettingView battleKeySettingView = new BattleKeySettingView(this::showSettingKeyScene);
+        this.SettingBattleKeyScene = battleKeySettingView.createScene();
+
+        setScene(SettingBattleKeyScene);
+        currentSceneNumber = SETTING_BATTLE_KEY_MENU_SCENE;
     }
 
     public void showScoreBoard() {

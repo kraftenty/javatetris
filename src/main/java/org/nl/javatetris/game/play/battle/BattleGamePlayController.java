@@ -13,6 +13,7 @@ import org.nl.javatetris.game.tetromino.generator.ClassicModeTetrominoGenerator;
 import org.nl.javatetris.game.tetromino.generator.ItemModeTetrominoGenerator;
 import org.nl.javatetris.game.tetromino.generator.TetrominoGenerator;
 import org.nl.javatetris.pause.PauseMenuParam;
+import org.nl.javatetris.settings.Settings;
 
 import java.util.function.Consumer;
 
@@ -332,19 +333,19 @@ public class BattleGamePlayController {
             onPause.accept(new PauseMenuParam(PAUSE_MENU_BATTLE_MODE, this::shutdownGame, this::resumeTimer));
         }
         // 플레이어 1
-        else if (keyCode == KeyCode.S.getCode()) { // 플레이어1 - 아래(S)
+        else if (keyCode == Settings.getInstance().getKeySetting().getP1DownKeyValue()) { // 플레이어1 - 아래(S)
             boolean isProperlyDowned = board1.moveTetrominoDown();
             if (!isProperlyDowned) {
                 isGameOver = true;
             }
             addScoreOnDown1();
-        } else if (keyCode == KeyCode.A.getCode()) { // 플레이어1 - 왼쪽(A)
+        } else if (keyCode == Settings.getInstance().getKeySetting().getP1LeftKeyValue()) {
             board1.moveTetrominoLeft();
-        } else if (keyCode == KeyCode.D.getCode()) { // 플레이어1 - 오른쪽(D)
+        } else if (keyCode == Settings.getInstance().getKeySetting().getP1RightKeyValue()) {
             board1.moveTetrominoRight();
-        } else if (keyCode == KeyCode.W.getCode()) { // 플레이어1 - 회전(W)
+        } else if (keyCode == Settings.getInstance().getKeySetting().getP1RotateKeyValue()) {
             board1.rotateTetromino();
-        } else if (keyCode == KeyCode.Q.getCode()) { // 플레이어1 - 드롭(Q)
+        } else if (keyCode == Settings.getInstance().getKeySetting().getP1DropKeyValue()) {
             int offset = board1.dropTetromino();
             if (offset == 0) {
                 isGameOver = true;
@@ -352,19 +353,19 @@ public class BattleGamePlayController {
             addScoreOnDrop1(offset);
         }
         // 플레이어 2
-        else if (keyCode == KeyCode.K.getCode()) { // 플레이어2 - 아래(K)
+        else if (keyCode == Settings.getInstance().getKeySetting().getP2DownKeyValue()) { // 플레이어2 - 아래(K)
             boolean isProperlyDowned = board2.moveTetrominoDown();
             if (!isProperlyDowned) {
                 isGameOver = true;
             }
             addScoreOnDown2();
-        } else if (keyCode == KeyCode.J.getCode()) { // 플레이어2 - 왼쪽(J)
+        } else if (keyCode == Settings.getInstance().getKeySetting().getP2LeftKeyValue()) {
             board2.moveTetrominoLeft();
-        } else if (keyCode == KeyCode.L.getCode()) { // 플레이어2 - 오른쪽(L)
+        } else if (keyCode == Settings.getInstance().getKeySetting().getP2RightKeyValue()) {
             board2.moveTetrominoRight();
-        } else if (keyCode == KeyCode.I.getCode()) { // 플레이어2 - 회전(I)
+        } else if (keyCode == Settings.getInstance().getKeySetting().getP2RotateKeyValue()) {
             board2.rotateTetromino();
-        } else if (keyCode == KeyCode.U.getCode()) { // 플레이어2 - 드롭(U)
+        } else if (keyCode == Settings.getInstance().getKeySetting().getP2DropKeyValue()) {
             int offset = board2.dropTetromino();
             if (offset == 0) {
                 isGameOver = true;

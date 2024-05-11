@@ -25,6 +25,7 @@ public class ViewConst {
     public static final int CLASSIC_MODE_LOBBY_SCENE = 10;
     public static final int ITEM_MODE_LOBBY_SCENE = 11;
     public static final int BATTLE_MODE_LOBBY_SCENE = 12;
+    public static final int SETTING_BATTLE_KEY_MENU_SCENE = 13;
 
 
     public static final int BASE_DEFAULT_FONT_SIZE = 18;

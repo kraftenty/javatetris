@@ -13,7 +13,7 @@ public class KeySettingControllerTest {
     @Test
     public void invalidKeyTest() {
         // given
-        KeySettingController keySettingController = new KeySettingController(6, () -> {});
+        KeySettingController keySettingController = new KeySettingController(7, () -> {}, ()->{});
 
         // when
         boolean result = keySettingController.isInvalidKey(27); // ESC 키
@@ -26,7 +26,7 @@ public class KeySettingControllerTest {
     @Test
     public void duplicatedKeyTest() {
         // given
-        KeySettingController keySettingController = new KeySettingController(6, () -> {});
+        KeySettingController keySettingController = new KeySettingController(7, () -> {}, ()->{});
 
         // when
         boolean result = keySettingController.isNotDuplicatedKey(0, 9999); // 왼쪽 화살표 키
@@ -42,13 +42,14 @@ public class KeySettingControllerTest {
     public void onSettingsTest_1() {
         // given
         AtomicBoolean onSettingsFlag = new AtomicBoolean(false);
-        KeySettingController controller = new KeySettingController(6, () -> {onSettingsFlag.set(true);});
+        KeySettingController controller = new KeySettingController(7, () -> {onSettingsFlag.set(true);}, ()->{});
 
         KeyEvent enterKeyEvent = new KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "", KeyCode.ENTER, false, false, false, false);
 
         KeyEvent downKeyEvent = new KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "", KeyCode.DOWN, false, false, false, false);
 
         // when
+        controller.handleKeyPress(downKeyEvent);
         controller.handleKeyPress(downKeyEvent);
         controller.handleKeyPress(downKeyEvent);
         controller.handleKeyPress(downKeyEvent);
@@ -64,7 +65,7 @@ public class KeySettingControllerTest {
     public void onSettingsTest_2() {
         // given
         AtomicBoolean onSettingsFlag = new AtomicBoolean(false);
-        KeySettingController controller = new KeySettingController(6, () -> {onSettingsFlag.set(true);});
+        KeySettingController controller = new KeySettingController(7, () -> {onSettingsFlag.set(true);}, ()->{});
 
         KeyEvent escKeyEvent = new KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "", KeyCode.ESCAPE, false, false, false, false);
 
