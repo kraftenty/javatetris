@@ -73,7 +73,7 @@ public class ItemModeTetrominoGenerator implements TetrominoGenerator {
         if (randomInt < 1) {
             // 1% 확률로 핵
             return new TetrominoNuclear();
-        } else if (randomInt <= 27) {
+        } else if (randomInt <= 28) {
             // 27% 확률로 폭탄
             return new TetrominoBomb();
         } else if (randomInt <= 51) {
