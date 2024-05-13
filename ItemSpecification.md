@@ -42,15 +42,11 @@
 세로줄 폭탄 아이템이 다른 블럭에 닿아 더 이상 움직이지 못하게 되어 붉은색 범위의 블럭들이 삭제되는 모습이다.
 
 ### 3-2. 폭탄(Bomb)
-![Alt text](/src/main/resources/images/itemExamples/bomb1.jpg)
-![Alt text](/src/main/resources/images/itemExamples/bomb2.jpg)
-![Alt text](/src/main/resources/images/itemExamples/bomb3.jpg)
+<img src="/src/main/resources/images/itemExamples/bomb1.jpg" width="250px" height="300px"><img src="/src/main/resources/images/itemExamples/bomb2.jpg" width="250px" height="300px"><img src="/src/main/resources/images/itemExamples/bomb3.jpg" width="250px" height="300px">
 <br>
 폭탄 아이템이 다른 블럭에 닿아 더 이상 움직이지 못하게 되어 붉은색 범위의 블럭들이 삭제되는 모습이다.
 
 ### 3-3. 핵폭탄(Nuclear)
-![Alt text](/src/main/resources/images/itemExamples/nuc1.jpg)
-![Alt text](/src/main/resources/images/itemExamples/nuc2.jpg)
-![Alt text](/src/main/resources/images/itemExamples/nuc3.jpg)
+<img src="/src/main/resources/images/itemExamples/nuc1.jpg" width="250px" height="300px"><img src="/src/main/resources/images/itemExamples/nuc2.jpg" width="250px" height="300px"><img src="/src/main/resources/images/itemExamples/nuc3.jpg" width="250px" height="300px">
 <br>
 핵폭탄 아이템이 다른 블럭에 닿아 더 이상 움직이지 못하게 되어 붉은색 범위의 블럭들이 삭제되는 모습이다.
