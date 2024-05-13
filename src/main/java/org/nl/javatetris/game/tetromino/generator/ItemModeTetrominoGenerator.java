@@ -11,7 +11,7 @@ import java.util.Random;
 import static org.nl.javatetris.config.constant.ModelConst.EO;
 import static org.nl.javatetris.config.constant.ModelConst.TETROMINO_TYPES;
 
-//commit 된 부분 가져옴
+
 public class ItemModeTetrominoGenerator implements TetrominoGenerator {
 
     private final Queue<Tetromino> tetrominoQueue = new LinkedList<>();

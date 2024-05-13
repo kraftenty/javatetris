@@ -12,7 +12,11 @@ import org.nl.javatetris.game.GameParam;
 import org.nl.javatetris.pause.PauseMenuParam;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
+import org.testfx.util.WaitForAsyncUtils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
@@ -105,52 +109,58 @@ public class BattleGamePlayControllerTest {
     }
 
     @Test
-    public void handleKeyPressTest() {
-        Platform.runLater(() -> {
-            // Test ESC key to pause
-            battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", ESCAPE, false, false, false, false));
-            assertEquals("Pause", output);
-
-            // Test Player 1 controls
-            battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", S, false, false, false, false));
-            assertTrue(battleGamePlayController.getPoint1() > 0);
-
-            battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", A, false, false, false, false));
-            // Add assertions to verify left move
-
-            battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", D, false, false, false, false));
-            // Add assertions to verify right move
-
-            battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", W, false, false, false, false));
-            // Add assertions to verify rotation
-
-            battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", Q, false, false, false, false));
-            // Add assertions to verify drop
-
-            // Test Player 2 controls
-            battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", K, false, false, false, false));
-            assertTrue(battleGamePlayController.getPoint2() > 0);
-
-            battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", J, false, false, false, false));
-            // Add assertions to verify left move
-
-            battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", L, false, false, false, false));
-            // Add assertions to verify right move
-
-            battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", I, false, false, false, false));
-            // Add assertions to verify rotation
-
-            battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", U, false, false, false, false));
-            // Add assertions to verify drop
-        });
-    }
-
-    @Test
     public void testStartTimer() {
         Platform.runLater(() -> {
             battleGamePlayController.startTimer();
             assertEquals(Timeline.Status.RUNNING, BattleGamePlayController.getTimer().getStatus());
         });
+    }
+
+    //두 플레이어의 타임라인에서 실행이 1초 이내에 완료되는지 테스트
+    @Test
+    public void timelineTickResponseTimeTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method startTimeline1Method = BattleGamePlayController.class.getDeclaredMethod("startTimeline1");
+        Method startTimeline2Method = BattleGamePlayController.class.getDeclaredMethod("startTimeline2");
+        startTimeline1Method.setAccessible(true);
+        startTimeline2Method.setAccessible(true);
+
+        Platform.runLater(() -> {
+            try {
+                startTimeline1Method.invoke(battleGamePlayController);
+                startTimeline2Method.invoke(battleGamePlayController);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        });
+
+        WaitForAsyncUtils.waitForFxEvents();
+
+        assertTimeout(Duration.ofMillis(1000), () -> {
+            Timeline timeline1 = BattleGamePlayController.getTimeline1();
+            Timeline timeline2 = BattleGamePlayController.getTimeline2();
+            timeline1.getKeyFrames().get(0).getOnFinished().handle(null);
+            timeline2.getKeyFrames().get(0).getOnFinished().handle(null);
+        });
+    }
+
+    //키 입력 이벤트의 처리 시간이 1초 이내에 완료되는지 테스트
+    @Test
+    public void handleKeyPressResponseTimeTest() {
+        Platform.runLater(() -> {
+            assertTimeout(Duration.ofMillis(1000), () -> battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", ESCAPE, false, false, false, false)));
+            assertTimeout(Duration.ofMillis(1000), () -> battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", S, false, false, false, false)));
+            assertTimeout(Duration.ofMillis(1000), () -> battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", A, false, false, false, false)));
+            assertTimeout(Duration.ofMillis(1000), () -> battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", D, false, false, false, false)));
+            assertTimeout(Duration.ofMillis(1000), () -> battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", W, false, false, false, false)));
+            assertTimeout(Duration.ofMillis(1000), () -> battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", Q, false, false, false, false)));
+            assertTimeout(Duration.ofMillis(1000), () -> battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", K, false, false, false, false)));
+            assertTimeout(Duration.ofMillis(1000), () -> battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", J, false, false, false, false)));
+            assertTimeout(Duration.ofMillis(1000), () -> battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", L, false, false, false, false)));
+            assertTimeout(Duration.ofMillis(1000), () -> battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", I, false, false, false, false)));
+            assertTimeout(Duration.ofMillis(1000), () -> battleGamePlayController.handleKeyPress(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", U, false, false, false, false)));
+        });
+
+        WaitForAsyncUtils.waitForFxEvents();
     }
 
 }

@@ -5,9 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.nl.javatetris.game.tetromino.generator.ItemModeTetrominoGenerator;
 import org.nl.javatetris.game.tetromino.generator.TetrominoGenerator;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTimeout;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.nl.javatetris.config.constant.ModelConst.*;
 
 public class BoardTest {
@@ -154,5 +157,36 @@ public class BoardTest {
 
         // 버퍼가 비어 있는지 확인
         Assertions.assertTrue(board.getDamagedLineBuffer().isEmpty());
+    }
+
+    //Board 클래스의 주요 동작이 1초 미만의 시간 내에 완료되는지 테스트
+    @Test
+    public void testBoardActionsResponseTime() {
+        Board board = new Board(() -> {}, tetrominoGenerator);
+
+        // 블럭을 스폰한 후 테스트 시작
+        board.spawnTetromino(false);
+
+        // 블럭 이동 테스트
+        assertTimeout(Duration.ofMillis(1000), () -> board.moveTetrominoDown());
+        assertTimeout(Duration.ofMillis(1000), () -> board.moveTetrominoLeft());
+        assertTimeout(Duration.ofMillis(1000), () -> board.moveTetrominoRight());
+        assertTimeout(Duration.ofMillis(1000), () -> board.rotateTetromino());
+        assertTimeout(Duration.ofMillis(1000), () -> board.dropTetromino());
+
+        // 데미지 처리 테스트
+        List<Integer> line1 = new ArrayList<>();
+        List<Integer> line2 = new ArrayList<>();
+        for (int i = 0; i < X_MAX - 2; i++) {
+            line1.add(1);
+            line2.add(i % 2);
+        }
+
+        List<LineDTO> damagedLines = new ArrayList<>();
+        damagedLines.add(new LineDTO(line1));
+        damagedLines.add(new LineDTO(line2));
+
+        assertTimeout(Duration.ofMillis(1000), () -> board.receiveDamage(damagedLines));
+        assertTimeout(Duration.ofMillis(1000), () -> board.addDamagedLinesToBoard());
     }
 }

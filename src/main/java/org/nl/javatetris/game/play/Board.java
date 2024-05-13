@@ -54,6 +54,9 @@ public class Board {
         if (damagedLines.size() < 2) {
             return;
         }
+        if (damagedLineBuffer.size()>=10){
+            return;
+        }
         damagedLineBuffer.addAll(damagedLines);  // damagedLines 를 버퍼에 추가
     }
 

@@ -26,6 +26,11 @@ public class SingleGamePlayController {
 
     private Board board;                            // 보드
     private TetrominoGenerator tetrominoGenerator;  // 테트로미노 생성기
+
+    public static Timeline getTimeline() {       //테스트용
+        return timeline;
+    }
+
     private static Timeline timeline;                      // 타임라인
 
     private GameParam gameParam;                    // 게임 파라미터
@@ -152,7 +157,6 @@ public class SingleGamePlayController {
         double baseSpeed = 1.0 - level * 0.1;
 
         // 난이도에 따라 속도 조정하기
-        //초반 속도는 그대로이고 줄 삭제에 대한 속도만 바꿔야 하는건지? 수정예정
         int difficulty = gameParam.getDifficulty();
         switch (difficulty) {
             case 0:
