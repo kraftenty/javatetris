@@ -82,7 +82,7 @@ public class Board {
                 int targetY = Y_MAX - linesToElivate - 1 + y; // 새 줄이 추가될 y 위치
                 for (int x = 1; x < X_MAX - 1; x++) {
                     if (x <= newLine.size()) {
-                        board[targetY][x] = newLine.get(x - 1) == 1 ? W : EMPTY; // x - 1은 damagedLineBuffer의 인덱스 조정
+                        board[targetY][x] = newLine.get(x - 1) == 1 ? DAMAGED_BLOCK : EMPTY; // x - 1은 damagedLineBuffer의 인덱스 조정
                     }
                 }
             }

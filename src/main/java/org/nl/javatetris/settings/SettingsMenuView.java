@@ -39,7 +39,7 @@ public class SettingsMenuView {
 
 
 
-    private static String getLabelOfWindowSizeSetting() {
+    private static  String getLabelOfWindowSizeSetting() {
         if (Settings.getInstance().getSizeSetting().getOffset() == 0) {
             return "Small";
         } else if (Settings.getInstance().getSizeSetting().getOffset() == 1) {
@@ -55,7 +55,7 @@ public class SettingsMenuView {
         } else if (Settings.getInstance().getColorSetting().getColorOffset() == 1) {
             return "Red-Green Blindness";
         } else {
-            return "Blue Blindness";
+            return "Blue-Yellow Blindness";
         }
     }
 

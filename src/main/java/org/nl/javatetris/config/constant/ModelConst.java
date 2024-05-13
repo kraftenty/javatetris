@@ -35,6 +35,7 @@ public class ModelConst {
     public static final int B = 66;             // Bomb
     public static final int W = 87;             // Weight
     public static final int V = 86;             // VerticalBomb
+    public static final int DAMAGED_BLOCK = 90; // DamagedBlock
 
 
     public static final int Y_MAX = 22;          // 세로 크기 (20 + 테두리 2칸)

@@ -214,6 +214,7 @@ public abstract class GamePlayView {
             // 아이템 테트로미노
             case N, B, V, E -> TRANSPARENT;
             case W -> DARKGRAY;
+            case DAMAGED_BLOCK -> Color.rgb(70, 70, 70, 1);
             // 기본 배경
             default -> Color.rgb(255, 255, 255, 0.3);
         };
