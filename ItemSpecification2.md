@@ -2,12 +2,10 @@
 
 
 <table>
-    <tr>
-        <td>번호</td>
-        <td>아이템</td>
-        <td>상세</td>
-        <td>요구사항</td>
-    </tr>
+        <th>번호</th>
+        <th>아이템</th>
+        <th>상세</th>
+        <th>요구사항</th>
     <tr>
         <td>1-1</td>
         <td rowspan="6">Vertical Bomb</td>
