@@ -1,4 +1,4 @@
-package org.nl.javatetris.game.single;
+package org.nl.javatetris.game.play.single;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;

@@ -41,6 +41,6 @@ public class ControllerConst {
 
 
     // BattleMode - TimeAttackMode 의 제한시간
-    public static final int TIME_ATTACK_DURATION_SECONDS = 10;
+    public static final int TIME_ATTACK_DURATION_SECONDS = 100;
 
 }
