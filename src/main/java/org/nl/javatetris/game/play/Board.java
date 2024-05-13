@@ -57,6 +57,11 @@ public class Board {
         if (damagedLineBuffer.size()>=10){
             return;
         }
+        int spaceAvailable = 10 - damagedLineBuffer.size();
+        if (damagedLines.size() > spaceAvailable) {
+            // 새로운 줄이 현재 빈 공간을 초과하는 경우 초과된 줄을 자름
+            damagedLines = damagedLines.subList(0, spaceAvailable);
+        }
         damagedLineBuffer.addAll(damagedLines);  // damagedLines 를 버퍼에 추가
     }
 

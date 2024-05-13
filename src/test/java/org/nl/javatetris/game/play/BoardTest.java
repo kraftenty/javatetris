@@ -7,7 +7,11 @@ import org.nl.javatetris.game.tetromino.generator.TetrominoGenerator;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -157,6 +161,71 @@ public class BoardTest {
 
         // 버퍼가 비어 있는지 확인
         Assertions.assertTrue(board.getDamagedLineBuffer().isEmpty());
+    }
+
+    //버퍼에 10줄이 채워져있을 때 줄 삭제 테스트
+    @Test
+    public void testIgnoreDamageWhenBufferFull() {
+        Board board = new Board(() -> {}, tetrominoGenerator);
+
+        // 10줄의 공격 라인이 버퍼에 채워짐
+        List<LineDTO> initialLines = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            List<Integer> line = IntStream.range(0, X_MAX - 2).mapToObj(j -> 1).collect(Collectors.toList());
+            LineDTO lineDTO = new LineDTO(line);
+            initialLines.add(lineDTO);
+            board.getDamagedLineBuffer().add(lineDTO);
+        }
+
+        // 새로운 공격 라인을 추가
+        List<Integer> newLine = IntStream.range(0, X_MAX - 2).mapToObj(j -> j % 2).collect(Collectors.toList());
+        List<LineDTO> newDamagedLines = Collections.singletonList(new LineDTO(newLine));
+
+        board.receiveDamage(newDamagedLines);
+
+        // 버퍼가 여전히 10줄인지 확인
+        Assertions.assertEquals(10, board.getDamagedLineBuffer().size());
+
+        // 버퍼가 원래 라인으로 유지되었는지 확인
+        List<LineDTO> bufferLines = board.getDamagedLineBuffer();
+        for (int i = 0; i < 10; i++) {
+            Assertions.assertSame(initialLines.get(i), bufferLines.get(i));
+        }
+    }
+
+    //현재 10줄이 다 차있지 않더라도 넘어온 줄의 수를 더하여 10줄이 넘게 됐을 때 테스트
+    @Test
+    public void testAddDamageAndTrimBuffer() {
+        Board board = new Board(() -> {}, tetrominoGenerator);
+
+        // 이미 8줄의 공격 라인이 버퍼에 채워진 상태
+        for (int i = 0; i < 8; i++) {
+            List<Integer> line = IntStream.range(0, X_MAX - 2).mapToObj(j -> 1).collect(Collectors.toList());
+            board.getDamagedLineBuffer().add(new LineDTO(line));
+        }
+
+        // 새로운 3줄의 공격 라인을 추가
+        List<Integer> newLine1 = IntStream.range(0, X_MAX - 2).mapToObj(j -> j % 2).collect(Collectors.toList());
+        List<Integer> newLine2 = IntStream.range(0, X_MAX - 2).mapToObj(j -> (j + 1) % 2).collect(Collectors.toList());
+        List<Integer> newLine3 = IntStream.range(0, X_MAX - 2).mapToObj(j -> j % 2).collect(Collectors.toList());
+        List<LineDTO> newDamagedLines = Arrays.asList(new LineDTO(newLine1), new LineDTO(newLine2), new LineDTO(newLine3));
+
+        board.receiveDamage(newDamagedLines);
+
+        // 버퍼의 새로운 2줄이 추가되고 새로운 3줄 중 가장 아래 1줄이 잘렸는지 확인
+        List<LineDTO> bufferLines = board.getDamagedLineBuffer();
+
+        // 기존 8줄은 그대로인지 확인
+        for (int i = 0; i < 8; i++) {
+            Assertions.assertEquals(1, bufferLines.get(i).getLine().stream().distinct().count());
+        }
+
+        // 새로운 2줄이 추가되었는지 확인
+        Assertions.assertEquals(newLine1, bufferLines.get(8).getLine());
+        Assertions.assertEquals(newLine2, bufferLines.get(9).getLine());
+
+        // 새로운 3줄 중 가장 아래 1줄이 잘렸는지 확인
+        Assertions.assertFalse(bufferLines.contains(new LineDTO(newLine3)));
     }
 
     //Board 클래스의 주요 동작이 1초 미만의 시간 내에 완료되는지 테스트
