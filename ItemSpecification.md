@@ -3,11 +3,11 @@
 
 ## 1. 아이템 목록                  
 
-| 아이템                   | 외관                                                                                              | 설명               | 등장확률 |
-|-----------------------|-------------------------------------------------------------------------------------------------|------------------|:----:|
-| 세로줄 폭탄(Vertical Bomb) | <img src="/src/main/resources/images/itemLogo/itemVerticalBomb.jpg" width="25px" height="25px"> | 설치된 부분의 세로줄 삭제   | 24%  |
-| 폭탄(Bomb)              | <img src="/src/main/resources/images/itemLogo/itemBomb.jpg" width="25px" height="25px">                  | 설치된 부분 기준 3x3 삭제 | 27%  |
-| 핵폭탄(Nuclear)         | <img src="/src/main/resources/images/itemLogo/itemNuclear.jpg" width="25px" height="25px">               | 보드의 모든 블럭 삭제     |  1%  |
+|   | 아이템                   | 외관                                                                                              | 설명               | 등장확률 |
+|---|-----------------------|-------------------------------------------------------------------------------------------------|------------------|:----:|
+| 1 | 세로줄 폭탄(Vertical Bomb) | <img src="/src/main/resources/images/itemLogo/itemVerticalBomb.jpg" width="25px" height="25px"> | 설치된 부분의 세로줄 삭제   | 24%  |
+| 2 |폭탄(Bomb)              | <img src="/src/main/resources/images/itemLogo/itemBomb.jpg" width="25px" height="25px">                  | 설치된 부분 기준 3x3 삭제 | 27%  |
+| 3 |핵폭탄(Nuclear)         | <img src="/src/main/resources/images/itemLogo/itemNuclear.jpg" width="25px" height="25px">               | 보드의 모든 블럭 삭제     |  1%  |
 ***
 ## 2. 아이템 상세
 
@@ -37,9 +37,7 @@
 ## 3. 아이템 사용 예시
 
 ### 3-1. 세로줄 폭탄(Vertical Bomb)
-<img src="/src/main/resources/images/itemExamples/bomb1.jpg" width="250px" height="300px">
-<img src="/src/main/resources/images/itemExamples/bomb2.jpg" width="250px" height="300px">
-<img src="/src/main/resources/images/itemExamples/bomb3.jpg" width="250px" height="300px">
+<img src="/src/main/resources/images/itemExamples/ver1.jpg" width="250px" height="300px"><img src="/src/main/resources/images/itemExamples/ver2.jpg" width="250px" height="300px"><img src="/src/main/resources/images/itemExamples/ver3.jpg" width="250px" height="300px">
 <br>
 세로줄 폭탄 아이템이 다른 블럭에 닿아 더 이상 움직이지 못하게 되어 붉은색 범위의 블럭들이 삭제되는 모습이다.
 
