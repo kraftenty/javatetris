@@ -2,8 +2,6 @@ package org.nl.javatetris.scoreboard;
 
 
 import org.nl.javatetris.config.constant.ControllerConst;
-import org.nl.javatetris.config.constant.ModelConst;
-import org.nl.javatetris.gameplay.GameParam;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,6 +11,7 @@ import static org.nl.javatetris.config.constant.ModelConst.*;
 
 public class ScoreBoard implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 2L;
 
     private static ScoreBoard instance;

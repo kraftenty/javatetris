@@ -1,6 +1,7 @@
 package org.nl.javatetris.scoreboard;
 
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -16,13 +17,13 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import org.nl.javatetris.settings.Settings;
-import org.nl.javatetris.config.FontManager;
+import org.nl.javatetris.config.manager.FontManager;
 
 
 public class ScoreBoardView {
 
-    private ScoreBoardController scoreBoardController;
-    private static Label[] menuItems = new Label[]{
+    private final ScoreBoardController scoreBoardController;
+    private static final Label[] menuItems = new Label[]{
             new Label("Main Menu"),
     };
 
@@ -68,7 +69,7 @@ public class ScoreBoardView {
         itemTitle.setAlignment(Pos.CENTER_LEFT);
         itemLayout.getChildren().add(itemTitle);
 
-        // 최근 점수를 본 적이 없다면 각 모드의 recentScoreIndex를 가져옴
+        // 최근 점수를 본 적이 없다면 각 모드의 recentScoreIndex 를 가져옴
         Integer classicModeRecentScoreIndex = null;
         if (!ScoreBoard.isClassicModeRecentScoreViewedFlag()) {
             ScoreBoard.setClassicModeRecentScoreViewedFlag(true);
@@ -90,6 +91,7 @@ public class ScoreBoardView {
         horizontalLayout.getChildren().addAll(classicLayout, itemLayout);
         verticalLayout.getChildren().add(horizontalLayout);
         configureMenuItems(verticalLayout);
+        addKeyControlHints(verticalLayout);
 
         Scene scene = new Scene(
                 verticalLayout,
@@ -117,7 +119,7 @@ public class ScoreBoardView {
             // 순위 번호 생성
             Text rankText = new Text(i + 1 + ". ");
             rankText.setFill(Color.CYAN);
-            rankText.setFont(FontManager.getSquareFont((int) Settings.getInstance().getSizeSetting().getDefaultFontSize() / 1.5));
+            rankText.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize() / 1.5));
 
             // scoreInfo 생성
             String scoreInfo = null;
@@ -131,9 +133,9 @@ public class ScoreBoardView {
 
             Text scoreInfoText = new Text(scoreInfo);
             scoreInfoText.setFill(recentScoreIndex != null && recentScoreIndex == i ? Color.CYAN : Color.WHITE);
-            scoreInfoText.setFont(FontManager.getSquareFont((int) Settings.getInstance().getSizeSetting().getDefaultFontSize() / 1.5));
+            scoreInfoText.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize() / 1.5));
 
-            // TextFlow에 순위와 나머지 정보 추가
+            // TextFlow 에 순위와 나머지 정보 추가
             TextFlow textFlow = new TextFlow(rankText, scoreInfoText);
             if (gameMode == 0) {
                 textFlow.setTextAlignment(TextAlignment.LEFT);
@@ -141,7 +143,7 @@ public class ScoreBoardView {
                 textFlow.setTextAlignment(TextAlignment.RIGHT);
             }
 
-            // VBox에 TextFlow 추가
+            // VBox 에 TextFlow 추가
             layout.getChildren().add(textFlow);
         }
     }
@@ -160,5 +162,16 @@ public class ScoreBoardView {
         for (int i = 0; i < menuItems.length; i++) {
             menuItems[i].setTextFill(i == selectedIndex ? Color.RED : Color.WHITE);
         }
+    }
+
+    // KeyControl hint를 표시
+    private void addKeyControlHints(VBox layout) {
+        Label keyControlHints = new Label(
+                "Up/Down to move, Enter to Select "
+        );
+        keyControlHints.setFont(FontManager.getSquareFont((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2))); // Smaller font size
+        keyControlHints.setTextFill(Color.LIGHTGREY);
+        VBox.setMargin(keyControlHints, new Insets((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2), 0, 0, 0)); // Add top margin to push the label down
+        layout.getChildren().add(keyControlHints);
     }
 }

@@ -9,13 +9,15 @@ public class MainController {
     private int menuItemsCount;
     private Runnable onClassicModeLobby;
     private Runnable onItemModeLobby;
+    private Runnable onBattleModeLobby;
     private Runnable onSettings;
     private Runnable onScoreBoard;
 
-    public MainController(int menuItemsCount, Runnable onClassicModeLobby, Runnable onItemModeLobby, Runnable onSettings, Runnable onScoreBoard) {
+    public MainController(int menuItemsCount, Runnable onClassicModeLobby, Runnable onItemModeLobby, Runnable onBattleModeLobby, Runnable onSettings, Runnable onScoreBoard) {
         this.menuItemsCount = menuItemsCount;
         this.onClassicModeLobby = onClassicModeLobby;
         this.onItemModeLobby = onItemModeLobby;
+        this.onBattleModeLobby = onBattleModeLobby;
         this.onSettings = onSettings;
         this.onScoreBoard = onScoreBoard;
     }
@@ -37,12 +39,15 @@ public class MainController {
                         onItemModeLobby.run();
                         break;
                     case 2:
-                        onSettings.run();
+                        onBattleModeLobby.run();
                         break;
                     case 3:
-                        onScoreBoard.run();
+                        onSettings.run();
                         break;
                     case 4:
+                        onScoreBoard.run();
+                        break;
+                    case 5:
                         Platform.exit();
                         break;
                 }

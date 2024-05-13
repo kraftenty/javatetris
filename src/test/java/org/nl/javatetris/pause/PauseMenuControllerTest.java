@@ -15,10 +15,13 @@ public class PauseMenuControllerTest {
     public void onBackToMenuTest() {
         // given
         AtomicBoolean backToMenuFlag = new AtomicBoolean(false);
-        PauseMenuController controller = new PauseMenuController(3, () -> {
-        }, () -> {
-            backToMenuFlag.set(true);
-        });
+        PauseMenuController controller = new PauseMenuController(
+                3,
+                () -> {},
+                () -> {},
+                () -> {backToMenuFlag.set(true);},
+                new PauseMenuParam(0, ()->{})
+        );
 
         KeyEvent enterKeyEvent = new KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "", KeyCode.ENTER, false, false, false, false);
 
@@ -36,10 +39,13 @@ public class PauseMenuControllerTest {
     public void onResumeTest_select(){
         // given
         AtomicBoolean resumeFlag = new AtomicBoolean(false);
-        PauseMenuController controller = new PauseMenuController(3, () -> {
-            resumeFlag.set(true);
-        }, () -> {
-        });
+        PauseMenuController controller = new PauseMenuController(
+                3,
+                () -> {resumeFlag.set(true);},
+                () -> {},
+                () -> {},
+                new PauseMenuParam(0)
+        );
 
         KeyEvent enterKeyEvent = new KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "", KeyCode.ENTER, false, false, false, false);
 
@@ -54,10 +60,13 @@ public class PauseMenuControllerTest {
     public void onResumeTest_esc() {
         // given
         AtomicBoolean resumeFlag = new AtomicBoolean(false);
-        PauseMenuController controller = new PauseMenuController(3, () -> {
-            resumeFlag.set(true);
-        }, () -> {
-        });
+        PauseMenuController controller = new PauseMenuController(
+                3,
+                () -> {resumeFlag.set(true);},
+                () -> {},
+                () -> {},
+                new PauseMenuParam(0)
+        );
 
         KeyEvent escKeyEvent = new KeyEvent(null, null, KeyEvent.KEY_PRESSED, "", "", KeyCode.ESCAPE, false, false, false, false);
 

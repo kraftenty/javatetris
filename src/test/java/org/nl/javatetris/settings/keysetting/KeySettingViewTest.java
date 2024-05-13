@@ -24,7 +24,7 @@ public class KeySettingViewTest {
     @Test
     public void KeySettingSceneCreateTest() {
         // Given
-        KeySettingView keySettingView = new KeySettingView(() -> {});
+        KeySettingView keySettingView = new KeySettingView(() -> {}, ()->{});
         // When
         Scene scene = keySettingView.createScene();
         // Then

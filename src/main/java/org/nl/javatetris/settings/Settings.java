@@ -144,6 +144,19 @@ public class Settings implements Serializable {
         private int downKeyValue;
         private int rotateKeyValue;
         private int dropKeyValue;
+        private int p1LeftKeyValue;
+        private int p1RightKeyValue;
+        private int p1DownKeyValue;
+        private int p1RotateKeyValue;
+        private int p1DropKeyValue;
+        private int p2LeftKeyValue;
+        private int p2RightKeyValue;
+        private int p2DownKeyValue;
+        private int p2RotateKeyValue;
+        private int p2DropKeyValue;
+
+
+
 
         public KeySetting() {
             this.leftKeyValue = DEFAULT_LEFT_KEY;
@@ -151,6 +164,18 @@ public class Settings implements Serializable {
             this.downKeyValue = DEFAULT_DOWN_KEY;
             this.rotateKeyValue = DEFAULT_ROTATE_KEY;
             this.dropKeyValue = DEFAULT_DROP_KEY;
+
+            this.p1LeftKeyValue = DEFAULT_P1_LEFT_KEY;
+            this.p1RightKeyValue = DEFAULT_P1_RIGHT_KEY;
+            this.p1DownKeyValue = DEFAULT_P1_DOWN_KEY;
+            this.p1RotateKeyValue = DEFAULT_P1_ROTATE_KEY;
+            this.p1DropKeyValue = DEFAULT_P1_DROP_KEY;
+
+            this.p2LeftKeyValue = DEFAULT_P2_LEFT_KEY;
+            this.p2RightKeyValue = DEFAULT_P2_RIGHT_KEY;
+            this.p2DownKeyValue = DEFAULT_P2_DOWN_KEY;
+            this.p2RotateKeyValue = DEFAULT_P2_ROTATE_KEY;
+            this.p2DropKeyValue = DEFAULT_P2_DROP_KEY;
         }
 
         public int getLeftKeyValue() {
@@ -210,6 +235,109 @@ public class Settings implements Serializable {
         }
 
         public void setDropKeyValue(int dropKeyValue) {this.dropKeyValue = dropKeyValue;}
+
+        // Player 1 Getters and Setters
+        public int getP1LeftKeyValue() {
+            return p1LeftKeyValue;
+        }
+
+        public String getP1LeftKeyString() {return getKeyString(p1LeftKeyValue);}
+
+        public void setP1LeftKeyValue(int p1LeftKeyValue) {
+            this.p1LeftKeyValue = p1LeftKeyValue;
+        }
+
+        public int getP1RightKeyValue() {
+            return p1RightKeyValue;
+        }
+
+        public String getP1RightKeyString() {return getKeyString(p1RightKeyValue);}
+
+        public void setP1RightKeyValue(int p1RightKeyValue) {
+            this.p1RightKeyValue = p1RightKeyValue;
+        }
+
+        public int getP1DownKeyValue() {
+            return p1DownKeyValue;
+        }
+
+        public String getP1DownKeyString() {return getKeyString(p1DownKeyValue);}
+
+        public void setP1DownKeyValue(int p1DownKeyValue) {
+            this.p1DownKeyValue = p1DownKeyValue;
+        }
+
+        public int getP1RotateKeyValue() {
+            return p1RotateKeyValue;
+        }
+
+        public String getP1RotateKeyString() {return getKeyString(p1RotateKeyValue);}
+
+        public void setP1RotateKeyValue(int p1RotateKeyValue) {
+            this.p1RotateKeyValue = p1RotateKeyValue;
+        }
+
+        public int getP1DropKeyValue() {
+            return p1DropKeyValue;
+        }
+
+        public String getP1DropKeyString() {return getKeyString(p1DropKeyValue);}
+
+        public void setP1DropKeyValue(int p1DropKeyValue) {
+            this.p1DropKeyValue = p1DropKeyValue;
+        }
+
+        // Player 2 Getters and Setters
+        public int getP2LeftKeyValue() {
+            return p2LeftKeyValue;
+        }
+
+        public String getP2LeftKeyString() {return getKeyString(p2LeftKeyValue);}
+
+        public void setP2LeftKeyValue(int p2LeftKeyValue) {
+            this.p2LeftKeyValue = p2LeftKeyValue;
+        }
+
+        public int getP2RightKeyValue() {
+            return p2RightKeyValue;
+        }
+
+        public String getP2RightKeyString() {return getKeyString(p2RightKeyValue);}
+
+        public void setP2RightKeyValue(int p2RightKeyValue) {
+            this.p2RightKeyValue = p2RightKeyValue;
+        }
+
+        public int getP2DownKeyValue() {
+            return p2DownKeyValue;
+        }
+
+        public String getP2DownKeyString() {return getKeyString(p2DownKeyValue);}
+
+        public void setP2DownKeyValue(int p2DownKeyValue) {
+            this.p2DownKeyValue = p2DownKeyValue;
+        }
+
+        public int getP2RotateKeyValue() {
+            return p2RotateKeyValue;
+        }
+
+        public String getP2RotateKeyString() {return getKeyString(p2RotateKeyValue);}
+
+        public void setP2RotateKeyValue(int p2RotateKeyValue) {
+            this.p2RotateKeyValue = p2RotateKeyValue;
+        }
+
+        public int getP2DropKeyValue() {
+            return p2DropKeyValue;
+        }
+
+        public String getP2DropKeyString() {return getKeyString(p2DropKeyValue);}
+
+        public void setP2DropKeyValue(int p2DropKeyValue) {
+            this.p2DropKeyValue = p2DropKeyValue;
+        }
+
 
         // 27 91 92 93 112 ~ 123 144 145 불가능 (ESC, 윈도우, F1~F12, NUMLOCK, SCROLLLOCK)
         // 임시로 이렇게 처리 후에 다른데로 옮기던지 방법 찾기

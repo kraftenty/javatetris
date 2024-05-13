@@ -23,7 +23,7 @@ public class MainViewTest {
     @Test
     public void MainSceneCreateTest() {
         // Given
-        MainView mainView = new MainView(() -> {}, () -> {}, () -> {}, () -> {});
+        MainView mainView = new MainView(() -> {}, () -> {}, () -> {}, () -> {}, () -> {});
         // When
         Scene scene = mainView.createScene();
         // Then

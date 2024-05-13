@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 import org.nl.javatetris.scoreboard.ScoreBoard;
 
 import org.nl.javatetris.settings.SettingsManager;
-import org.nl.javatetris.config.SceneManager;
+import org.nl.javatetris.config.manager.SceneManager;
 
 public class Main extends Application {
 

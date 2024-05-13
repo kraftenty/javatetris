@@ -1,11 +1,12 @@
 package org.nl.javatetris.settings;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import org.nl.javatetris.config.FontManager;
+import org.nl.javatetris.config.manager.FontManager;
 
 public class SettingsMenuView {
 
@@ -38,7 +39,7 @@ public class SettingsMenuView {
 
 
 
-    private static String getLabelOfWindowSizeSetting() {
+    private static  String getLabelOfWindowSizeSetting() {
         if (Settings.getInstance().getSizeSetting().getOffset() == 0) {
             return "Small";
         } else if (Settings.getInstance().getSizeSetting().getOffset() == 1) {
@@ -54,7 +55,7 @@ public class SettingsMenuView {
         } else if (Settings.getInstance().getColorSetting().getColorOffset() == 1) {
             return "Red-Green Blindness";
         } else {
-            return "Blue Blindness";
+            return "Blue-Yellow Blindness";
         }
     }
 
@@ -74,6 +75,7 @@ public class SettingsMenuView {
 
         updateSetting();
         configureMenuItems(layout);
+        addKeyControlHints(layout);
 
         Scene scene = new Scene(
                 layout,
@@ -117,4 +119,14 @@ public class SettingsMenuView {
         menuItems[2].setText("color - " + getLabelOfColorBlindModeSetting());
     }
 
+    // KeyControl hint를 표시
+    private void addKeyControlHints(VBox layout) {
+        Label keyControlHints = new Label(
+                "Up/Down to move, Enter to Select "
+        );
+        keyControlHints.setFont(FontManager.getSquareFont((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2))); // Smaller font size
+        keyControlHints.setTextFill(Color.LIGHTGREY);
+        VBox.setMargin(keyControlHints, new Insets((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2), 0, 0, 0)); // Add top margin to push the label down
+        layout.getChildren().add(keyControlHints);
+    }
 }

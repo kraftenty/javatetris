@@ -2,6 +2,7 @@ package org.nl.javatetris.settings.keysetting;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -12,7 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import org.nl.javatetris.config.FontManager;
+import org.nl.javatetris.config.manager.FontManager;
 import org.nl.javatetris.settings.Settings;
 
 public class KeySettingView {
@@ -20,8 +21,8 @@ public class KeySettingView {
     private KeySettingController keySettingController;
     private Timeline blinkTimeline;
 
-    public KeySettingView(Runnable onSettings) {
-        this.keySettingController = new KeySettingController(menuItems.length, onSettings);
+    public KeySettingView(Runnable onSettings, Runnable onBattleKeySetting) {
+        this.keySettingController = new KeySettingController(menuItems.length, onSettings, onBattleKeySetting);
         initializeBlinkTimeline();
     }
 
@@ -31,6 +32,7 @@ public class KeySettingView {
             new Label(Settings.getInstance().getKeySetting().getRightKeyString()),
             new Label(Settings.getInstance().getKeySetting().getDownKeyString()),
             new Label(Settings.getInstance().getKeySetting().getDropKeyString()),
+            new Label("Battle Key Setting"),
             new Label("Back")
     };
 
@@ -48,7 +50,7 @@ public class KeySettingView {
         blinkTimeline = new Timeline(
                 new KeyFrame(Duration.ZERO, e -> {
                     // 선택된 항목의 색상을 변경
-                    if (keySettingController.getSelectedItemIndex() < menuItems.length - 1) {
+                    if (keySettingController.getSelectedItemIndex() < menuItems.length - 2) {
                         Label selectedItem = menuItems[keySettingController.getSelectedItemIndex()];
                         selectedItem.setTextFill(selectedItem.getTextFill().equals(Color.RED) ? Color.WHITE : Color.RED);
                     }
@@ -60,7 +62,7 @@ public class KeySettingView {
 
     // 키 설정값을 바꾸려고 엔터를 눌렀을 때 호출되는 메소드
     private void startBlinking(int selectedIndex) {
-        if (selectedIndex < menuItems.length - 1) {
+        if (selectedIndex < menuItems.length - 2) {
 //            blinkTimeline.stop(); // 현재 진행 중인 애니메이션을 중지
             blinkTimeline.play(); // 깜빡임 애니메이션 시작
         }
@@ -89,7 +91,7 @@ public class KeySettingView {
         layout.getChildren().add(title);
 
         updateSetting();
-        for (int i = 0; i < menuItems.length - 1; i++) {
+        for (int i = 0; i < menuItems.length - 2; i++) {
             HBox row = new HBox(10);
             row.setAlignment(Pos.CENTER);
 
@@ -107,10 +109,15 @@ public class KeySettingView {
             layout.getChildren().add(row);
         }
 
-        Label backLabel = menuItems[menuItems.length - 1];
-        backLabel.setTextFill(Color.WHITE);
-        backLabel.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
-        layout.getChildren().add(backLabel);
+        //Battle Key Setting, Back 표시
+        for (int i = menuItems.length - 2; i < menuItems.length; i++) {
+            Label label = menuItems[i];
+            label.setTextFill(Color.WHITE);
+            label.setFont(FontManager.getSquareFont(Settings.getInstance().getSizeSetting().getDefaultFontSize()));
+            layout.getChildren().add(label);
+        }
+
+        addKeyControlHints(layout);
 
         Scene scene = new Scene(
                 layout,
@@ -157,5 +164,17 @@ public class KeySettingView {
         menuItems[2].setText(Settings.getInstance().getKeySetting().getRightKeyString());
         menuItems[3].setText(Settings.getInstance().getKeySetting().getDownKeyString());
         menuItems[4].setText(Settings.getInstance().getKeySetting().getDropKeyString());
+    }
+
+    // KeyControl hint를 표시
+    private void addKeyControlHints(VBox layout) {
+        Label keyControlHints = new Label(
+                "Up/Down to move, Enter to Select \n\n" +
+                "Select and Press key want to use"
+        );
+        keyControlHints.setFont(FontManager.getSquareFont((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2))); // Smaller font size
+        keyControlHints.setTextFill(Color.LIGHTGREY);
+        VBox.setMargin(keyControlHints, new Insets((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2), 0, 0, 0)); // Add top margin to push the label down
+        layout.getChildren().add(keyControlHints);
     }
 }
