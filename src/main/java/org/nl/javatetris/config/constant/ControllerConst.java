@@ -14,6 +14,18 @@ public class ControllerConst {
     public static final int DEFAULT_ROTATE_KEY = 38;
     public static final int DEFAULT_DROP_KEY = 32;
 
+    public static final int DEFAULT_P1_LEFT_KEY = 65;
+    public static final int DEFAULT_P1_RIGHT_KEY = 68;
+    public static final int DEFAULT_P1_ROTATE_KEY = 87;
+    public static final int DEFAULT_P1_DOWN_KEY = 83;
+    public static final int DEFAULT_P1_DROP_KEY = 81;
+
+    public static final int DEFAULT_P2_LEFT_KEY = 74;
+    public static final int DEFAULT_P2_RIGHT_KEY = 76;
+    public static final int DEFAULT_P2_ROTATE_KEY = 73;
+    public static final int DEFAULT_P2_DOWN_KEY = 75;
+    public static final int DEFAULT_P2_DROP_KEY = 85;
+
     // 키 설정으로 등록되면 안되는 키.
     // 27 91 92 93 112 ~ 123 144 145 불가능 (ESC, 윈도우, F1~F12, NUM LOCK, SCROLL LOCK)
     // 윈도우 윈도우키 = 524, 맥os 커맨드키 = 768

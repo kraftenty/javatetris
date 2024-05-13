@@ -1,6 +1,7 @@
 package org.nl.javatetris.scoreboard;
 
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -90,6 +91,7 @@ public class ScoreBoardView {
         horizontalLayout.getChildren().addAll(classicLayout, itemLayout);
         verticalLayout.getChildren().add(horizontalLayout);
         configureMenuItems(verticalLayout);
+        addKeyControlHints(verticalLayout);
 
         Scene scene = new Scene(
                 verticalLayout,
@@ -160,5 +162,16 @@ public class ScoreBoardView {
         for (int i = 0; i < menuItems.length; i++) {
             menuItems[i].setTextFill(i == selectedIndex ? Color.RED : Color.WHITE);
         }
+    }
+
+    // KeyControl hint를 표시
+    private void addKeyControlHints(VBox layout) {
+        Label keyControlHints = new Label(
+                "Up/Down to move, Enter to Select "
+        );
+        keyControlHints.setFont(FontManager.getSquareFont((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2))); // Smaller font size
+        keyControlHints.setTextFill(Color.LIGHTGREY);
+        VBox.setMargin(keyControlHints, new Insets((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2), 0, 0, 0)); // Add top margin to push the label down
+        layout.getChildren().add(keyControlHints);
     }
 }

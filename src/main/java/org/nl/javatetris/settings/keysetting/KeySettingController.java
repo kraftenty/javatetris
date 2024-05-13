@@ -10,12 +10,14 @@ public class KeySettingController {
 
     private int menuItemsCount;
     private Runnable onSettings;
+    private Runnable onBattleKeySetting;
     private int selectedItemIndex = 0;
     private boolean isWaitingForKey = false; //키 입력대기 여부를 나타내는 변수
 
-    public KeySettingController(int menuItemsCount, Runnable onSettings) {
+    public KeySettingController(int menuItemsCount, Runnable onSettings, Runnable onBattleKeySetting) {
         this.menuItemsCount = menuItemsCount;
         this.onSettings = onSettings;
+        this.onBattleKeySetting = onBattleKeySetting;
     }
 
     public void handleKeyPress(KeyEvent e) {
@@ -69,7 +71,11 @@ public class KeySettingController {
                     if (selectedItemIndex < 5) {
                         // 키 변경 항목 선택 시 키 입력 대기로 전환
                         isWaitingForKey = true;
-                    } else {
+                    }
+                    else if (selectedItemIndex == 5) {
+                        onBattleKeySetting.run();
+                    }
+                    else {
                         // 설정으로 돌아가기
                         onSettings.run();
                     }

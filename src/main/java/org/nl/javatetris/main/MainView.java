@@ -104,7 +104,8 @@ public class MainView {
                 "Up Down to move, Enter to Select "
         );
         keyControlHints.setFont(FontManager.getSquareFont((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2))); // Smaller font size
-        keyControlHints.setTextFill(Color.GRAY);
+        keyControlHints.setTextFill(Color.LIGHTGREY);
+        keyControlHints.setEffect(DROP_SHADOW);
         VBox.setMargin(keyControlHints, new Insets((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2), 0, 0, 0)); // Add top margin to push the label down
         layout.getChildren().add(keyControlHints);
     }

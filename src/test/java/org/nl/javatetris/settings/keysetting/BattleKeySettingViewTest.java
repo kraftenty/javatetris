@@ -9,7 +9,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
-public class KeySettingViewTest {
+public class BattleKeySettingViewTest {
 
     @BeforeAll
     public static void setupHeadlessMode() {
@@ -22,11 +22,11 @@ public class KeySettingViewTest {
     }
 
     @Test
-    public void KeySettingSceneCreateTest() {
+    public void BattleKeySettingSceneCreateTest() {
         // Given
-        KeySettingView keySettingView = new KeySettingView(() -> {}, ()->{});
+        BattleKeySettingView battleKeySettingView = new BattleKeySettingView(() -> {});
         // When
-        Scene scene = keySettingView.createScene();
+        Scene scene = battleKeySettingView.createScene();
         // Then
         // 성공적으로 scene 이 생성되면 테스트 성공
     }

@@ -1,5 +1,6 @@
 package org.nl.javatetris.game.lobby.battle;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -46,6 +47,7 @@ public class BattleModeLobbyView {
         layout.getChildren().add(title);
 
         configureMenuItems(layout);
+        addKeyControlHints(layout);
 
         Scene scene = new Scene(
                 layout,
@@ -89,6 +91,18 @@ public class BattleModeLobbyView {
         for (int i = 0; i < menuItems.length; i++) {
             menuItems[i].setTextFill(i == selectedIndex ? Color.RED : Color.WHITE);
         }
+    }
+
+    // KeyControl hint를 표시
+    private void addKeyControlHints(VBox layout) {
+        Label keyControlHints = new Label(
+                "Up/Down to move, Enter to Select "
+        );
+        keyControlHints.setFont(FontManager.getSquareFont((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2))); // Smaller font size
+        keyControlHints.setTextFill(Color.LIGHTGREY);
+        keyControlHints.setEffect(DROP_SHADOW);
+        VBox.setMargin(keyControlHints, new Insets((int)(Settings.getInstance().getSizeSetting().getDefaultFontSize()/2), 0, 0, 0)); // Add top margin to push the label down
+        layout.getChildren().add(keyControlHints);
     }
 
 }
