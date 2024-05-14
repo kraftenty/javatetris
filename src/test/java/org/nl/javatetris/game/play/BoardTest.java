@@ -155,8 +155,8 @@ public class BoardTest {
 
         // 보드 상태 확인
         for (int x = 1; x < X_MAX - 1; x++) {
-            Assertions.assertEquals(line1.get(x - 1) == 1 ? W : EMPTY, board.getValueAt(Y_MAX - 3, x));
-            Assertions.assertEquals(line2.get(x - 1) == 1 ? W : EMPTY, board.getValueAt(Y_MAX - 2, x));
+            Assertions.assertEquals(line1.get(x - 1) == 1 ? DAMAGED_BLOCK: EMPTY, board.getValueAt(Y_MAX - 3, x));
+            Assertions.assertEquals(line2.get(x - 1) == 1 ? DAMAGED_BLOCK: EMPTY, board.getValueAt(Y_MAX - 2, x));
         }
 
         // 버퍼가 비어 있는지 확인
